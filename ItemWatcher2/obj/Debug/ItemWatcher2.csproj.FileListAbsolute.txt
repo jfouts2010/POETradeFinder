@@ -1,0 +1,13 @@
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.Properties.Resources.resources
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.csproj.GenerateResource.Cache
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.exe.config
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.exe
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.pdb
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.exe
+C:\Users\Ian\Documents\OtherRepos\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.pdb

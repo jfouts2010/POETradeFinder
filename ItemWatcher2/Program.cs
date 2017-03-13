@@ -22,14 +22,15 @@ namespace ItemWatcher2
         public static string currencyfilename = "SavedCurrencies.json";
         public static List<NotChaosCurrencyConversion> othercurrencies;
 
-        
+
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-
+            LoadBasicInfo();
+            SaveNames();
 
 
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
@@ -236,13 +237,19 @@ namespace ItemWatcher2
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
+
+            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(othercurrencies);
+            System.IO.File.Delete(currencyfilename);
+            System.IO.File.WriteAllText(currencyfilename, serialized);
+
         }
         public static void LoadBasicInfo()
         {
             try
             {
                 allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 allItems = new List<WatchedItem>();
             }
@@ -261,8 +268,8 @@ namespace ItemWatcher2
 
 
 
+    }
 
-    
 
 
     public class Item
