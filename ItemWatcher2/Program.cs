@@ -18,7 +18,7 @@ namespace ItemWatcher2
     static class Program
     {
         public static List<WatchedItem> allItems = new List<WatchedItem>();
-
+        public static string filename = "SavedItems.json";
 
         [STAThread]
         static void Main()
@@ -26,8 +26,9 @@ namespace ItemWatcher2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            string filename = "SavedItems.json";
-            allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(filename));
+
+
+
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
@@ -211,6 +212,17 @@ namespace ItemWatcher2
             char[] x = input.Where(c => char.IsDigit(c)).ToArray();
             string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
             return (int)(Convert.ToInt32(y));
+        }
+
+        public static void SaveNames()
+        {
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
+            System.IO.File.Delete(filename);
+            System.IO.File.WriteAllText(filename,serialized);
+        }
+        public static void LoadNames()
+        {
+            allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(filename));
         }
     }
 
