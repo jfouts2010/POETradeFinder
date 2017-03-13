@@ -59,6 +59,15 @@ namespace ConsoleApplication2
                             foreach (JToken item in items)
                             {
                                 Item itemProp = item.ToObject<Item>();
+                                itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                                if (NinjaItems.Where(p => p.name == itemProp.name).Count() > 0 && itemProp.note != null && itemProp.note.Contains("chaos"))
+                                {
+                                    NinjaItem NinjaItem = NinjaItems.First(p => p.name == itemProp.name);
+                                    if (NinjaItem.chaos_value * 0.75 < getTheNumbers(itemProp.note))
+                                    {
+
+                                    }
+                                }
                                 if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && itemProp.typeLine.Contains("Breach Leaguestone"))
                                 {
                                     string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
@@ -69,7 +78,7 @@ namespace ConsoleApplication2
 
                                             if (itemProp.note != null && itemProp.note.Contains("chaos") && getTheNumbers(itemProp.note) < 20)
                                             {
-                                                string s = name + " has a "+ itemProp.typeLine+" with note:" + itemProp.note + " (worth60c)";
+                                                string s = name + " has a " + itemProp.typeLine + " with note:" + itemProp.note + " (worth60c)";
                                                 Console.WriteLine(s);
                                                 s = "@" + name + " Hi, I'd like to buy your Talisman Leaguestone of Terror for " + getTheNumbers(itemProp.note) + " chaos";
                                                 Clipboard.SetText(s);
@@ -230,14 +239,16 @@ namespace ConsoleApplication2
                     }
                 }
             }
-            foreach(JObject jo in Jsons)
+            foreach (JObject jo in Jsons)
             {
                 foreach (JObject jo2 in jo.First.First.Children().ToList())
                 {
                     NinjaItem newNinjaItem = new NinjaItem();
                     newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
+                    newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
                     newNinjaItem.chaos_value = Convert.ToDouble(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                    NinjaItems.Add(newNinjaItem);
+                    if(newNinjaItem.chaos_value > 5)
+                        NinjaItems.Add(newNinjaItem);
                 }
             }
         }

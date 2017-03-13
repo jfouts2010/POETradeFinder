@@ -1,17 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
-using HtmlAgilityPack;
 using System.Media;
+using Newtonsoft.Json.Linq;
 
 namespace ItemWatcher2
 {
@@ -24,15 +18,10 @@ namespace ItemWatcher2
 
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-            LoadBasicInfo();
-            SaveNames();
-
-
+            List<NinjaItem> NinjaItems = new List<NinjaItem>();
+            SetNinjaValues(NinjaItems);
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
@@ -70,6 +59,17 @@ namespace ItemWatcher2
                             foreach (JToken item in items)
                             {
                                 Item itemProp = item.ToObject<Item>();
+                                if (itemProp.league != "Legacy")
+                                    continue;
+                                itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                                if (NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0 && itemProp.note != null && itemProp.note.Contains("chaos"))
+                                {
+                                    NinjaItem NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                    if (NinjaItem.chaos_value * 0.75 > getTheNumbers(itemProp.note))
+                                    {
+
+                                    }
+                                }
                                 if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && itemProp.typeLine.Contains("Breach Leaguestone"))
                                 {
                                     string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
@@ -217,7 +217,52 @@ namespace ItemWatcher2
             string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
             return (int)(Convert.ToInt32(y));
         }
-
+        public static void SetNinjaValues(List<NinjaItem> NinjaItems)
+        {
+            List<JObject> Jsons = new List<JObject>();
+            List<string> APIURLS = new List<string>();
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            foreach (string s in APIURLS)
+            {
+                HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
+                // Get response  
+                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    {
+                        Jsons.Add(JObject.Parse(reader.ReadToEnd()));
+                    }
+                }
+            }
+            foreach (JObject jo in Jsons)
+            {
+                foreach (JObject jo2 in jo.First.First.Children().ToList())
+                {
+                    NinjaItem newNinjaItem = new NinjaItem();
+                    newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
+                    newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
+                    newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
+                    newNinjaItem.chaos_value = Convert.ToDouble(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
+                    if (newNinjaItem.chaos_value > 5 && !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
+                        NinjaItems.Add(newNinjaItem);
+                }
+            }
+        }
+        public class NinjaItem
+        {
+            public string name { get; set; }
+            public double chaos_value { get; set; }
+            public string type { get; set; }
+            public string base_type { get; set; }
+        }
         public static void AddNewName(string name, string value)
         {
             allItems.Add(new WatchedItem()
@@ -237,11 +282,6 @@ namespace ItemWatcher2
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
-
-            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(othercurrencies);
-            System.IO.File.Delete(currencyfilename);
-            System.IO.File.WriteAllText(currencyfilename, serialized);
-
         }
         public static void LoadBasicInfo()
         {
@@ -268,40 +308,42 @@ namespace ItemWatcher2
 
 
 
+
+
+
+
+        public class Item
+        {
+            public string verified { get; set; }
+            public string w { get; set; }
+            public string h { get; set; }
+            public string ilvl { get; set; }
+            public string league { get; set; }
+            public string id { get; set; }
+            //public string[] sockets { get; set; }
+            public string name { get; set; }
+            public string typeLine { get; set; }
+            public string identified { get; set; }
+            public string corrupted { get; set; }
+            public string note { get; set; }
+            public int frameType { get; set; }
+            //public string requirements { get; set; }
+            public string[] implicitMods { get; set; }
+            public string[] explicitMods { get; set; }
+        }
+        [Serializable]
+        public class WatchedItem
+        {
+            public string name { get; set; }
+            public double value { get; set; }
+        }
+
+        public class NotChaosCurrencyConversion
+        {
+            public string name { get; set; }
+            public decimal valueInChaos { get; set; }
+        }
+
+
     }
-
-
-
-    public class Item
-    {
-        public string verified { get; set; }
-        public string w { get; set; }
-        public string h { get; set; }
-        public string ilvl { get; set; }
-        public string league { get; set; }
-        public string id { get; set; }
-        //public string[] sockets { get; set; }
-        public string name { get; set; }
-        public string typeLine { get; set; }
-        public string identified { get; set; }
-        public string corrupted { get; set; }
-        public string note { get; set; }
-        //public string requirements { get; set; }
-        public string[] implicitMods { get; set; }
-        public string[] explicitMods { get; set; }
-    }
-    [Serializable]
-    public class WatchedItem
-    {
-        public string name { get; set; }
-        public double value { get; set; }
-    }
-
-    public class NotChaosCurrencyConversion
-    {
-        public string name { get; set; }
-        public decimal valueInChaos { get; set; }
-    }
-
-
 }
