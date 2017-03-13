@@ -1,0 +1,10 @@
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.csprojResolveAssemblyReference.cache
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.Properties.Resources.resources
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.csproj.GenerateResource.Cache
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.exe.config
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.exe
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\ItemWatcher2.pdb
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.exe
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.pdb
