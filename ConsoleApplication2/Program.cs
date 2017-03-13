@@ -20,7 +20,8 @@ namespace ConsoleApplication2
         [STAThread]
         static void Main(string[] args)
         {
-
+            List<NinjaItem> NinjaItems = new List<NinjaItem>();
+            SetNinjaValues(NinjaItems);
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
@@ -204,6 +205,42 @@ namespace ConsoleApplication2
             string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
             return (int)(Convert.ToInt32(y));
         }
+        public static void SetNinjaValues(List<NinjaItem> NinjaItems)
+        {
+            List<JObject> Jsons = new List<JObject>();
+            List<string> APIURLS = new List<string>();
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+            foreach (string s in APIURLS)
+            {
+                HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
+                // Get response  
+                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    {
+                        Jsons.Add(JObject.Parse(reader.ReadToEnd()));
+                    }
+                }
+            }
+            foreach(JObject jo in Jsons)
+            {
+                foreach (JObject jo2 in jo.First.First.Children().ToList())
+                {
+                    NinjaItem newNinjaItem = new NinjaItem();
+                    newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
+                    newNinjaItem.chaos_value = Convert.ToDouble(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
+                    NinjaItems.Add(newNinjaItem);
+                }
+            }
+        }
     }
 
     public class Item
@@ -223,5 +260,11 @@ namespace ConsoleApplication2
         //public string requirements { get; set; }
         public string[] implicitMods { get; set; }
         public string[] explicitMods { get; set; }
+    }
+    public class NinjaItem
+    {
+        public string name { get; set; }
+        public double chaos_value { get; set; }
+        public string type { get; set; }
     }
 }
