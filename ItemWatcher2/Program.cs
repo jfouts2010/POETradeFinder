@@ -13,17 +13,21 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Media;
 
-namespace ConsoleApplication2
+namespace ItemWatcher2
 {
-    class Program
+    static class Program
     {
-        
         public static List<WatchedItem> allItems = new List<WatchedItem>();
+
+
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
             string filename = "SavedItems.json";
-            allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>( System.IO.File.ReadAllText(filename));
+            allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(filename));
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
@@ -71,7 +75,7 @@ namespace ConsoleApplication2
 
                                             if (itemProp.note != null && itemProp.note.Contains("chaos") && getTheNumbers(itemProp.note) < 20)
                                             {
-                                                string s = name + " has a "+ itemProp.typeLine+" with note:" + itemProp.note + " (worth60c)";
+                                                string s = name + " has a " + itemProp.typeLine + " with note:" + itemProp.note + " (worth60c)";
                                                 Console.WriteLine(s);
                                                 s = "@" + name + " Hi, I'd like to buy your Talisman Leaguestone of Terror for " + getTheNumbers(itemProp.note) + " chaos";
                                                 Clipboard.SetText(s);
@@ -201,6 +205,7 @@ namespace ConsoleApplication2
                 }
             }
         }
+
         public static int getTheNumbers(string input)
         {
             char[] x = input.Where(c => char.IsDigit(c)).ToArray();
@@ -208,6 +213,15 @@ namespace ConsoleApplication2
             return (int)(Convert.ToInt32(y));
         }
     }
+
+
+
+
+
+
+
+    
+
 
     public class Item
     {
