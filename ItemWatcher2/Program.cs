@@ -17,9 +17,12 @@ namespace ItemWatcher2
 {
     static class Program
     {
-        public static List<WatchedItem> allItems = new List<WatchedItem>();
-        public static string filename = "SavedItems.json";
+        public static List<WatchedItem> allItems;
+        public static string itemfilename = "SavedItems.json";
+        public static string currencyfilename = "SavedCurrencies.json";
+        public static List<NotChaosCurrencyConversion> othercurrencies;
 
+        
         [STAThread]
         static void Main()
         {
@@ -214,17 +217,44 @@ namespace ItemWatcher2
             return (int)(Convert.ToInt32(y));
         }
 
+        public static void AddNewName(string name, string value)
+        {
+            allItems.Add(new WatchedItem()
+            {
+                name = name,
+                value = Convert.ToDouble(value),
+            });
+        }
+
+        public static void RemoveName(int index)
+        {
+            allItems.RemoveAt(index);
+        }
+
         public static void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
-            System.IO.File.Delete(filename);
-            System.IO.File.WriteAllText(filename,serialized);
+            System.IO.File.Delete(itemfilename);
+            System.IO.File.WriteAllText(itemfilename, serialized);
         }
-        public static void LoadNames()
+        public static void LoadBasicInfo()
         {
-            allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(filename));
+            try
+            {
+                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
+            }catch(Exception e)
+            {
+                allItems = new List<WatchedItem>();
+            }
+            try
+            {
+                othercurrencies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NotChaosCurrencyConversion>>(System.IO.File.ReadAllText(currencyfilename));
+            }
+            catch (Exception e)
+            {
+                othercurrencies = new List<NotChaosCurrencyConversion>();
+            }
         }
-    }
 
 
 
@@ -257,6 +287,14 @@ namespace ItemWatcher2
     public class WatchedItem
     {
         public string name { get; set; }
+        public double value { get; set; }
     }
+
+    public class NotChaosCurrencyConversion
+    {
+        public string name { get; set; }
+        public decimal valueInChaos { get; set; }
+    }
+
 
 }
