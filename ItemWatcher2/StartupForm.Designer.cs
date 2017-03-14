@@ -53,6 +53,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtFuse = new System.Windows.Forms.TextBox();
+            this.txtExalt = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtAlch = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -275,11 +281,66 @@
             this.label9.TabIndex = 24;
             this.label9.Text = "Splinters Per Chaos";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(16, 447);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(58, 13);
+            this.label10.TabIndex = 25;
+            this.label10.Text = "Exalt Ratio";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(86, 447);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(58, 13);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "Fuse Ratio";
+            // 
+            // txtFuse
+            // 
+            this.txtFuse.Location = new System.Drawing.Point(89, 474);
+            this.txtFuse.Name = "txtFuse";
+            this.txtFuse.Size = new System.Drawing.Size(40, 20);
+            this.txtFuse.TabIndex = 29;
+            // 
+            // txtExalt
+            // 
+            this.txtExalt.Location = new System.Drawing.Point(19, 474);
+            this.txtExalt.Name = "txtExalt";
+            this.txtExalt.Size = new System.Drawing.Size(40, 20);
+            this.txtExalt.TabIndex = 28;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(163, 447);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(56, 13);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "Alch Ratio";
+            // 
+            // txtAlch
+            // 
+            this.txtAlch.Location = new System.Drawing.Point(166, 474);
+            this.txtAlch.Name = "txtAlch";
+            this.txtAlch.Size = new System.Drawing.Size(40, 20);
+            this.txtAlch.TabIndex = 30;
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(458, 463);
+            this.ClientSize = new System.Drawing.Size(458, 522);
+            this.Controls.Add(this.txtAlch);
+            this.Controls.Add(this.txtFuse);
+            this.Controls.Add(this.txtExalt);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
@@ -340,5 +401,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtFuse;
+        private System.Windows.Forms.TextBox txtExalt;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtAlch;
     }
 }

@@ -56,7 +56,11 @@ namespace ItemWatcher2
                 do_breachstones = this.chkDoBreach.Checked,
                 do_all_uniques = this.chkDoUniques.Checked,
                 do_all_uniques_with_ranges = this.chkUniqueRanges.Checked,
-                do_watch_list = this.chkDoWatchlist.Checked
+                do_watch_list = this.chkDoWatchlist.Checked,
+
+                alch_ratio = Convert.ToDecimal(this.txtAlch.Text),
+                exalt_ratio = Convert.ToInt32(this.txtExalt.Text),
+                fusing_ratio = Convert.ToDecimal(this.txtFuse.Text)
             };
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
@@ -86,7 +90,10 @@ namespace ItemWatcher2
                     do_watch_list = true,
                     esh_value = 3,
                     tul_value = 16,
-                    xoph_value = 6
+                    xoph_value = 6,
+                    exalt_ratio=68,
+                     alch_ratio=.333M,
+                      fusing_ratio=.444M
                 };
             }
             this.txtEsh.Text = config.esh_value.ToString();
@@ -96,6 +103,9 @@ namespace ItemWatcher2
             this.chkDoWatchlist.Checked = config.do_watch_list;
             this.chkDoUniques.Checked = config.do_all_uniques;
             this.chkUniqueRanges.Checked = config.do_all_uniques_with_ranges;
+            this.txtExalt.Text = config.exalt_ratio.ToString();
+            this.txtFuse.Text = config.fusing_ratio.ToString();
+            this.txtAlch.Text = config.alch_ratio.ToString();
         }
 
         private void btnAddNewClick(object sender, EventArgs e)
@@ -112,7 +122,7 @@ namespace ItemWatcher2
         {
             try
             {
-                allItems.RemoveAt(Convert.ToInt32(txtIndex.Text));
+                allItems.RemoveAt(listBox1.SelectedIndex);
                 reload();
             }
             catch(Exception eeeee)
@@ -138,6 +148,11 @@ namespace ItemWatcher2
         }
 
         private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
         {
 
         }
