@@ -16,15 +16,17 @@ namespace ItemWatcher2
 {
     public partial class Form1 : Form
     {
-        public static List<WatchedItem> allItems;
+        public static List<NinjaItem> allItems;
+
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
-        [STAThread]
+
         public Form1()
         {
+            LoadBasicInfo();
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
@@ -97,11 +99,11 @@ namespace ItemWatcher2
                                 itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                 if (NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0 && itemProp.note != null && itemProp.note.Contains("chaos"))
                                 {
-                                    NinjaItem NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
-                                    if (NinjaItem.chaos_value * 0.9 > getTheNumbers(itemProp.note))
+                                    NinjaItem localitem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                    if (localitem.chaos_value * 0.9 > getTheNumbers(itemProp.note))
                                     {
                                         Slot s = new Slot();
-                                        s.BaseItem = NinjaItem;
+                                        s.BaseItem = localitem;
                                         s.SellItem = itemProp;
                                         if (Slots.Count == 3)
                                             Slots.RemoveAt(2);
@@ -109,10 +111,20 @@ namespace ItemWatcher2
                                         SetSlots(Slots);
                                     }
                                 }
-
-                                if(allItems.Where(p => itemProp.name.Contains( p.name)).Count()>0)
+                                
+                                if (allItems.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
                                 {
-
+                                    NinjaItem localitem = allItems.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
+                                    if (localitem.chaos_value * 0.8 > getTheNumbers(itemProp.note))
+                                    {
+                                        Slot s = new Slot();
+                                        s.BaseItem = localitem;
+                                        s.SellItem = itemProp;
+                                        if (Slots.Count == 3)
+                                            Slots.RemoveAt(2);
+                                        Slots.Insert(0, s);
+                                        SetSlots(Slots);
+                                    }
                                 }
                                 if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && itemProp.typeLine.Contains("Breach Leaguestone"))
                                 {
@@ -268,7 +280,7 @@ namespace ItemWatcher2
                 });
                 richTextBox1.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox1.Lines = Slots[0].SellItem.implicitMods.Concat(new string[] {"__________________" }).ToArray().Concat(Slots[0].SellItem.explicitMods).ToArray();
+                    richTextBox1.Lines = Slots[0].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[0].SellItem.explicitMods).ToArray();
                 });
                 richTextBox2.Invoke((MethodInvoker)delegate
                 {
@@ -416,18 +428,11 @@ namespace ItemWatcher2
 
             public override string ToString()
             {
-                return "name: " + name + " cost: " + chaos_value; 
+                return "name: " + name + " cost: " + chaos_value;
 
             }
         }
-        public static void AddNewName(string name, string value)
-        {
-            allItems.Add(new WatchedItem()
-            {
-                name = name,
-                value = Convert.ToDouble(value),
-            });
-        }
+
 
         public static void RemoveName(int index)
         {
@@ -444,11 +449,11 @@ namespace ItemWatcher2
         {
             try
             {
-                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
+                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
             }
             catch (Exception e)
             {
-                allItems = new List<WatchedItem>();
+                allItems = new List<NinjaItem>();
             }
             try
             {
@@ -500,7 +505,7 @@ namespace ItemWatcher2
 
             public override string ToString()
             {
-                return name+" : " + value;
+                return name + " : " + value;
             }
         }
 
