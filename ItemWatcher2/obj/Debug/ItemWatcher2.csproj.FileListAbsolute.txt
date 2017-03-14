@@ -8,3 +8,4 @@ C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.dll
 C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\bin\Debug\Newtonsoft.Json.xml
 C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.exe
 C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.pdb
+C:\Users\jfouts\Documents\TradeFinder\ItemWatcher2\obj\Debug\ItemWatcher2.Form1.resources
