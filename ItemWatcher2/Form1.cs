@@ -22,6 +22,7 @@ namespace ItemWatcher2
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
+        [STAThread]
         public Form1()
         {
             InitializeComponent();
@@ -30,9 +31,12 @@ namespace ItemWatcher2
             bgw.RunWorkerAsync();
 
         }
+        [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
-
+            Slots.Add(new Slot());
+            Slots.Add(new Slot());
+            Slots.Add(new Slot());
             List<NinjaItem> NinjaItems = new List<NinjaItem>();
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -84,15 +88,25 @@ namespace ItemWatcher2
                             foreach (JToken item in items)
                             {
                                 Item itemProp = item.ToObject<Item>();
+                                if (itemProp.implicitMods == null)
+                                    itemProp.implicitMods = new string[] { "" };
+                                if (itemProp.explicitMods == null)
+                                    itemProp.explicitMods = new string[] { "" };
                                 if (itemProp.league != "Legacy")
                                     continue;
                                 itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                 if (NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0 && itemProp.note != null && itemProp.note.Contains("chaos"))
                                 {
                                     NinjaItem NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
-                                    if (NinjaItem.chaos_value * 0.75 > getTheNumbers(itemProp.note))
+                                    if (NinjaItem.chaos_value * 0.9 > getTheNumbers(itemProp.note))
                                     {
-
+                                        Slot s = new Slot();
+                                        s.BaseItem = NinjaItem;
+                                        s.SellItem = itemProp;
+                                        if (Slots.Count == 3)
+                                            Slots.RemoveAt(2);
+                                        Slots.Insert(0, s);
+                                        SetSlots(Slots);
                                     }
                                 }
                                 if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && itemProp.typeLine.Contains("Breach Leaguestone"))
@@ -235,6 +249,90 @@ namespace ItemWatcher2
                 }
             }
         }
+        public void SetSlots(List<Slot> Slots)
+        {
+            if (Slots[0].BaseItem != null)
+            {
+                textBox2.Invoke((MethodInvoker)delegate
+                {
+                    textBox2.Text = Slots[0].BaseItem.name + " " + Slots[0].BaseItem.base_type;
+                });
+                textBox3.Invoke((MethodInvoker)delegate
+                {
+                    textBox3.Text = getTheNumbers(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value;
+                });
+                richTextBox1.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox1.Lines = Slots[0].SellItem.implicitMods.Concat(new string[] {"__________________" }).ToArray().Concat(Slots[0].SellItem.explicitMods).ToArray();
+                });
+                richTextBox2.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox2.Lines = Slots[0].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[0].BaseItem.Explicits).ToArray();
+                });
+                checkBox1.Invoke((MethodInvoker)delegate
+                {
+                    checkBox1.Checked = Slots[0].BaseItem.type == "9";
+                });
+                checkBox4.Invoke((MethodInvoker)delegate
+                {
+                    checkBox4.Checked = Slots[0].SellItem.corrupted.ToLower().Contains("true");
+                });
+            }
+            if (Slots[1].BaseItem != null)
+            {
+                textBox4.Invoke((MethodInvoker)delegate
+                {
+                    textBox4.Text = Slots[1].BaseItem.name + " " + Slots[1].BaseItem.base_type;
+                });
+                textBox5.Invoke((MethodInvoker)delegate
+                {
+                    textBox5.Text = getTheNumbers(Slots[1].SellItem.note) + " : " + Slots[1].BaseItem.chaos_value;
+                });
+                richTextBox3.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox3.Lines = Slots[1].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[1].SellItem.explicitMods).ToArray();
+                });
+                richTextBox4.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox4.Lines = Slots[1].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[1].BaseItem.Explicits).ToArray();
+                });
+                checkBox2.Invoke((MethodInvoker)delegate
+                {
+                    checkBox2.Checked = Slots[1].BaseItem.type == "9";
+                });
+                checkBox5.Invoke((MethodInvoker)delegate
+                {
+                    checkBox5.Checked = Slots[1].SellItem.corrupted.ToLower().Contains("true");
+                });
+            }
+            if (Slots[2].BaseItem != null)
+            {
+                textBox6.Invoke((MethodInvoker)delegate
+                {
+                    textBox6.Text = Slots[2].BaseItem.name + " " + Slots[2].BaseItem.base_type;
+                });
+                textBox7.Invoke((MethodInvoker)delegate
+                {
+                    textBox7.Text = getTheNumbers(Slots[2].SellItem.note) + " : " + Slots[2].BaseItem.chaos_value;
+                });
+                richTextBox5.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox5.Lines = Slots[2].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[2].SellItem.explicitMods).ToArray();
+                });
+                richTextBox6.Invoke((MethodInvoker)delegate
+                {
+                    richTextBox6.Lines = Slots[2].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[2].BaseItem.Explicits).ToArray();
+                });
+                checkBox3.Invoke((MethodInvoker)delegate
+                {
+                    checkBox3.Checked = Slots[2].BaseItem.type == "9";
+                });
+                checkBox6.Invoke((MethodInvoker)delegate
+                {
+                    checkBox6.Checked = Slots[2].SellItem.corrupted.ToLower().Contains("true");
+                });
+            }
+        }
         public static int getTheNumbers(string input)
         {
             char[] x = input.Where(c => char.IsDigit(c)).ToArray();
@@ -282,6 +380,8 @@ namespace ItemWatcher2
                             implicits.Add(implicitRoll.First.First.ToString());
                         }
                     }
+                    if (implicits.Count == 0)
+                        implicits.Add("");
                     List<string> explicits = new List<string>();
                     foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
                     {
@@ -290,10 +390,12 @@ namespace ItemWatcher2
                             explicits.Add(explicitRoll.First.First.ToString());
                         }
                     }
+                    if (explicits.Count == 0)
+                        explicits.Add("");
                     newNinjaItem.Explicits = explicits;
                     newNinjaItem.Implicits = implicits;
                     newNinjaItem.chaos_value = Convert.ToDouble(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                    if (newNinjaItem.chaos_value > 5 && !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
+                    if (newNinjaItem.chaos_value > 20 && !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
                         NinjaItems.Add(newNinjaItem);
                 }
             }
@@ -390,6 +492,21 @@ namespace ItemWatcher2
         {
             public string name { get; set; }
             public decimal valueInChaos { get; set; }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -58,12 +58,19 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(12, 33);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(190, 20);
             this.textBox1.TabIndex = 0;
             // 
@@ -134,6 +141,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(12, 136);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(87, 20);
             this.textBox2.TabIndex = 8;
             // 
@@ -141,6 +149,7 @@
             // 
             this.textBox3.Location = new System.Drawing.Point(105, 136);
             this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(87, 20);
             this.textBox3.TabIndex = 9;
             // 
@@ -148,6 +157,7 @@
             // 
             this.richTextBox1.Location = new System.Drawing.Point(198, 136);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(236, 96);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
@@ -156,37 +166,43 @@
             // 
             this.richTextBox2.Location = new System.Drawing.Point(469, 136);
             this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
             this.richTextBox2.Size = new System.Drawing.Size(240, 96);
             this.richTextBox2.TabIndex = 13;
             this.richTextBox2.Text = "";
             // 
             // richTextBox3
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(469, 270);
+            this.richTextBox3.Location = new System.Drawing.Point(198, 270);
             this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.ReadOnly = true;
             this.richTextBox3.Size = new System.Drawing.Size(240, 96);
             this.richTextBox3.TabIndex = 22;
             this.richTextBox3.Text = "";
             // 
             // richTextBox4
             // 
-            this.richTextBox4.Location = new System.Drawing.Point(198, 270);
+            this.richTextBox4.Location = new System.Drawing.Point(469, 270);
             this.richTextBox4.Name = "richTextBox4";
+            this.richTextBox4.ReadOnly = true;
             this.richTextBox4.Size = new System.Drawing.Size(236, 96);
             this.richTextBox4.TabIndex = 21;
             this.richTextBox4.Text = "";
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(105, 270);
+            this.textBox4.Location = new System.Drawing.Point(12, 270);
             this.textBox4.Name = "textBox4";
+            this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(87, 20);
             this.textBox4.TabIndex = 20;
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(12, 270);
+            this.textBox5.AcceptsReturn = true;
+            this.textBox5.Location = new System.Drawing.Point(105, 270);
             this.textBox5.Name = "textBox5";
+            this.textBox5.ReadOnly = true;
             this.textBox5.Size = new System.Drawing.Size(87, 20);
             this.textBox5.TabIndex = 19;
             // 
@@ -237,31 +253,35 @@
             // 
             // richTextBox5
             // 
-            this.richTextBox5.Location = new System.Drawing.Point(469, 406);
+            this.richTextBox5.Location = new System.Drawing.Point(198, 406);
             this.richTextBox5.Name = "richTextBox5";
+            this.richTextBox5.ReadOnly = true;
             this.richTextBox5.Size = new System.Drawing.Size(240, 96);
             this.richTextBox5.TabIndex = 31;
             this.richTextBox5.Text = "";
             // 
             // richTextBox6
             // 
-            this.richTextBox6.Location = new System.Drawing.Point(198, 406);
+            this.richTextBox6.Location = new System.Drawing.Point(469, 406);
             this.richTextBox6.Name = "richTextBox6";
+            this.richTextBox6.ReadOnly = true;
             this.richTextBox6.Size = new System.Drawing.Size(236, 96);
             this.richTextBox6.TabIndex = 30;
             this.richTextBox6.Text = "";
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(105, 406);
+            this.textBox6.Location = new System.Drawing.Point(12, 406);
             this.textBox6.Name = "textBox6";
+            this.textBox6.ReadOnly = true;
             this.textBox6.Size = new System.Drawing.Size(87, 20);
             this.textBox6.TabIndex = 29;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(12, 406);
+            this.textBox7.Location = new System.Drawing.Point(105, 406);
             this.textBox7.Name = "textBox7";
+            this.textBox7.ReadOnly = true;
             this.textBox7.Size = new System.Drawing.Size(87, 20);
             this.textBox7.TabIndex = 28;
             // 
@@ -310,11 +330,80 @@
             this.button17.Text = "Name";
             this.button17.UseVisualStyleBackColor = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoCheck = false;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(12, 162);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(50, 17);
+            this.checkBox1.TabIndex = 32;
+            this.checkBox1.Text = "Relic";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(12, 296);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(50, 17);
+            this.checkBox2.TabIndex = 33;
+            this.checkBox2.Text = "Relic";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(12, 432);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(50, 17);
+            this.checkBox3.TabIndex = 34;
+            this.checkBox3.Text = "Relic";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(105, 162);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(72, 17);
+            this.checkBox4.TabIndex = 35;
+            this.checkBox4.Text = "Corrupted";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(105, 296);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(72, 17);
+            this.checkBox5.TabIndex = 36;
+            this.checkBox5.Text = "Corrupted";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(105, 432);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(72, 17);
+            this.checkBox6.TabIndex = 37;
+            this.checkBox6.Text = "Corrupted";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 606);
+            this.Controls.Add(this.checkBox6);
+            this.Controls.Add(this.checkBox5);
+            this.Controls.Add(this.checkBox4);
+            this.Controls.Add(this.checkBox3);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.richTextBox5);
             this.Controls.Add(this.richTextBox6);
             this.Controls.Add(this.textBox6);
@@ -347,6 +436,7 @@
             this.Controls.Add(this.textBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -384,6 +474,12 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox6;
     }
 }
 
