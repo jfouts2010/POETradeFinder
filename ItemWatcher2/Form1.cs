@@ -18,9 +18,12 @@ namespace ItemWatcher2
 {
     public partial class Form1 : Form
     {
-        public static List<WatchedItem> allItems;
+        public static List<NinjaItem> allItems;
+        public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
+        public static string configfile = "Config.json";
+
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Form1.Slot>();
@@ -536,15 +539,20 @@ namespace ItemWatcher2
             public string base_type { get; set; }
             public List<string> Implicits { get; set; }
             public List<string> Explicits { get; set; }
+
+            public override string ToString()
+            {
+                return name + " : " + chaos_value;
+            }
         }
         public static void AddNewName(string name, string value)
-        {
-            allItems.Add(new WatchedItem()
+            {
+            allItems.Add(new NinjaItem()
             {
                 name = name,
-                value = Convert.ToDouble(value),
+                chaos_value = Convert.ToDouble(value),
             });
-        }
+            }
 
         public static void RemoveName(int index)
         {
@@ -561,11 +569,19 @@ namespace ItemWatcher2
         {
             try
             {
-                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
+                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
             }
             catch (Exception e)
             {
-                allItems = new List<WatchedItem>();
+                allItems = new List<NinjaItem>();
+            }
+            try
+            {
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(configfile));
+            }
+            catch (Exception e)
+            {
+                allItems = new List<NinjaItem>();
             }
             try
             {
@@ -576,14 +592,6 @@ namespace ItemWatcher2
                 othercurrencies = new List<NotChaosCurrencyConversion>();
             }
         }
-
-
-
-
-
-
-
-
 
         public class Slot
         {
@@ -617,6 +625,19 @@ namespace ItemWatcher2
         {
             public string name { get; set; }
             public double value { get; set; }
+            }
+        [Serializable]
+        public class ItemWatchConfig
+        {
+            public decimal esh_value { get; set; }
+            public decimal xoph_value { get; set; }
+            public decimal tul_value { get; set; }
+
+            public bool do_breachstones { get; set; }
+            public bool do_watch_list { get; set; }
+            public bool do_all_uniques { get; set; }
+            public bool do_all_uniques_with_ranges { get; set; }
+
         }
 
         public class NotChaosCurrencyConversion
@@ -646,7 +667,7 @@ namespace ItemWatcher2
             {
                 string s = Slots[0].Message;
                 Clipboard.SetText(s);
-            }
+    }
         }
         [STAThread]
         private void button8_Click(object sender, EventArgs e)
