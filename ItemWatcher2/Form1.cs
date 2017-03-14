@@ -20,6 +20,7 @@ namespace ItemWatcher2
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
         private static BackgroundWorker bgw;
+        public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
         public Form1()
         {
@@ -27,21 +28,23 @@ namespace ItemWatcher2
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
             bgw.RunWorkerAsync();
-           
+
         }
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
-           
+
             List<NinjaItem> NinjaItems = new List<NinjaItem>();
-            textBox1.Invoke((MethodInvoker)delegate {
+            textBox1.Invoke((MethodInvoker)delegate
+            {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
             SetNinjaValues(NinjaItems);
-            textBox1.Invoke((MethodInvoker)delegate {
+            textBox1.Invoke((MethodInvoker)delegate
+            {
                 textBox1.Text = "Poe.Ninja Items Converted";
             });
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
-            
+
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
             using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
@@ -54,7 +57,10 @@ namespace ItemWatcher2
                 }
             }
             // Create the web request  
-
+            textBox1.Invoke((MethodInvoker)delegate
+            {
+                textBox1.Text = "Running";
+            });
             while (true)
             {
                 HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
@@ -268,6 +274,24 @@ namespace ItemWatcher2
                     newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
                     newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
                     newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
+                    List<string> implicits = new List<string>();
+                    foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
+                    {
+                        foreach (JObject implicitRoll in j)
+                        {
+                            implicits.Add(implicitRoll.First.First.ToString());
+                        }
+                    }
+                    List<string> explicits = new List<string>();
+                    foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
+                    {
+                        foreach (JObject explicitRoll in j)
+                        {
+                            explicits.Add(explicitRoll.First.First.ToString());
+                        }
+                    }
+                    newNinjaItem.Explicits = explicits;
+                    newNinjaItem.Implicits = implicits;
                     newNinjaItem.chaos_value = Convert.ToDouble(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
                     if (newNinjaItem.chaos_value > 5 && !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
                         NinjaItems.Add(newNinjaItem);
@@ -331,7 +355,11 @@ namespace ItemWatcher2
 
 
 
-
+        public class Slot
+        {
+            public Item SellItem;
+            public NinjaItem BaseItem;
+        }
         public class Item
         {
             public string verified { get; set; }
