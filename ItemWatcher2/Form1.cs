@@ -109,6 +109,11 @@ namespace ItemWatcher2
                                         SetSlots(Slots);
                                     }
                                 }
+
+                                if(allItems.Where(p => itemProp.name.Contains( p.name)).Count()>0)
+                                {
+
+                                }
                                 if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && itemProp.typeLine.Contains("Breach Leaguestone"))
                                 {
                                     string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
@@ -408,6 +413,12 @@ namespace ItemWatcher2
             public string base_type { get; set; }
             public List<string> Implicits { get; set; }
             public List<string> Explicits { get; set; }
+
+            public override string ToString()
+            {
+                return "name: " + name + " cost: " + chaos_value; 
+
+            }
         }
         public static void AddNewName(string name, string value)
         {
@@ -486,6 +497,11 @@ namespace ItemWatcher2
         {
             public string name { get; set; }
             public double value { get; set; }
+
+            public override string ToString()
+            {
+                return name+" : " + value;
+            }
         }
 
         public class NotChaosCurrencyConversion
