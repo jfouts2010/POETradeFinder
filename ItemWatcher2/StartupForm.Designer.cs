@@ -59,6 +59,12 @@
             this.txtExalt = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txtAlch = new System.Windows.Forms.TextBox();
+            this.txtMaxPrice = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtProfitPercent = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtMinProfit = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -264,7 +270,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(231, 385);
+            this.button1.Location = new System.Drawing.Point(245, 447);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(181, 49);
             this.button1.TabIndex = 23;
@@ -330,11 +336,67 @@
             this.txtAlch.Size = new System.Drawing.Size(40, 20);
             this.txtAlch.TabIndex = 30;
             // 
+            // txtMaxPrice
+            // 
+            this.txtMaxPrice.Location = new System.Drawing.Point(224, 414);
+            this.txtMaxPrice.Name = "txtMaxPrice";
+            this.txtMaxPrice.Size = new System.Drawing.Size(88, 20);
+            this.txtMaxPrice.TabIndex = 31;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(221, 398);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(88, 13);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Max Flip Price (c)";
+            // 
+            // txtProfitPercent
+            // 
+            this.txtProfitPercent.Location = new System.Drawing.Point(315, 414);
+            this.txtProfitPercent.Name = "txtProfitPercent";
+            this.txtProfitPercent.Size = new System.Drawing.Size(67, 20);
+            this.txtProfitPercent.TabIndex = 33;
+            this.txtProfitPercent.TextChanged += new System.EventHandler(this.txtProfitPercent_TextChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(315, 398);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(76, 13);
+            this.label14.TabIndex = 34;
+            this.label14.Text = "Profit Ratio (%)";
+            // 
+            // txtMinProfit
+            // 
+            this.txtMinProfit.Location = new System.Drawing.Point(390, 414);
+            this.txtMinProfit.Name = "txtMinProfit";
+            this.txtMinProfit.Size = new System.Drawing.Size(50, 20);
+            this.txtMinProfit.TabIndex = 35;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(390, 398);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(69, 13);
+            this.label15.TabIndex = 36;
+            this.label15.Text = "Flat profit min";
+            this.label15.Click += new System.EventHandler(this.label15_Click);
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(458, 522);
+            this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.txtMinProfit);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.txtProfitPercent);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.txtMaxPrice);
             this.Controls.Add(this.txtAlch);
             this.Controls.Add(this.txtFuse);
             this.Controls.Add(this.txtExalt);
@@ -407,5 +469,11 @@
         private System.Windows.Forms.TextBox txtExalt;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txtAlch;
+        private System.Windows.Forms.TextBox txtMaxPrice;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtProfitPercent;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtMinProfit;
+        private System.Windows.Forms.Label label15;
     }
 }

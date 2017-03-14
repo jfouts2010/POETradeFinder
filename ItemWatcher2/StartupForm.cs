@@ -60,7 +60,11 @@ namespace ItemWatcher2
 
                 alch_ratio = Convert.ToDecimal(this.txtAlch.Text),
                 exalt_ratio = Convert.ToInt32(this.txtExalt.Text),
-                fusing_ratio = Convert.ToDecimal(this.txtFuse.Text)
+                fusing_ratio = Convert.ToDecimal(this.txtFuse.Text),
+
+                profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text),
+                max_price = Convert.ToInt32(this.txtMaxPrice.Text),
+                min_profit_range = Convert.ToInt32(this.txtMinProfit.Text),
             };
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
@@ -106,6 +110,9 @@ namespace ItemWatcher2
             this.txtExalt.Text = config.exalt_ratio.ToString();
             this.txtFuse.Text = config.fusing_ratio.ToString();
             this.txtAlch.Text = config.alch_ratio.ToString();
+            this.txtMaxPrice.Text = config.max_price.ToString();
+            this.txtProfitPercent.Text = config.profit_percent.ToString();
+            this.txtMinProfit.Text = config.min_profit_range.ToString();
         }
 
         private void btnAddNewClick(object sender, EventArgs e)
@@ -113,7 +120,7 @@ namespace ItemWatcher2
             allItems.Add(new NinjaItem()
             {
                 name = txtItemName.Text,
-                chaos_value = Convert.ToDouble(txtItemValue.Text)
+                chaos_value = Convert.ToDecimal(txtItemValue.Text)
             });
             reload();
         }
@@ -153,6 +160,16 @@ namespace ItemWatcher2
         }
 
         private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtProfitPercent_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label15_Click(object sender, EventArgs e)
         {
 
         }
