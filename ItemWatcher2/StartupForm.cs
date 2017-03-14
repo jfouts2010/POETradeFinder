@@ -13,7 +13,7 @@ namespace ItemWatcher2
 {
     public partial class StartupForm : Form
     {
-        public static List<WatchedItem> allItems;
+        public static List<NinjaItem> allItems;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
        
@@ -35,7 +35,7 @@ namespace ItemWatcher2
         private void reload()
         {
             this.listBox1.Items.Clear();
-            foreach(WatchedItem item in allItems)
+            foreach(NinjaItem item in allItems)
             {
                 this.listBox1.Items.Add(item);
 
@@ -55,11 +55,11 @@ namespace ItemWatcher2
         {
             try
             {
-                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
+                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
             }
             catch (Exception e)
             {
-                allItems = new List<WatchedItem>();
+                allItems = new List<NinjaItem>();
             }
             try
             {
@@ -73,10 +73,10 @@ namespace ItemWatcher2
 
         private void btnAddNewClick(object sender, EventArgs e)
         {
-            allItems.Add(new WatchedItem()
+            allItems.Add(new NinjaItem()
             {
                 name = txtItemName.Text,
-                value = Convert.ToDouble(txtItemValue.Text)
+                chaos_value = Convert.ToDouble(txtItemValue.Text)
             });
             reload();
         }
