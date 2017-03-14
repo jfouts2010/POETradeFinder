@@ -14,6 +14,7 @@ namespace ItemWatcher2
     public partial class StartupForm : Form
     {
         public static List<NinjaItem> allItems;
+        public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
        
@@ -26,10 +27,7 @@ namespace ItemWatcher2
         private void StartupForm_Load(object sender, EventArgs e)
         {
             LoadBasicInfo();
-
             reload();
-            
-
         }
 
         private void reload()
@@ -38,20 +36,33 @@ namespace ItemWatcher2
             foreach(NinjaItem item in allItems)
             {
                 this.listBox1.Items.Add(item);
-
             }
             
         }
 
        
         
-        public static void SaveNames()
+        public void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
+            config = new ItemWatchConfig()
+            {
+                esh_value = Convert.ToDecimal(txtEsh.Text),
+                xoph_value = Convert.ToDecimal(txtXoph.Text),
+
+                tul_value = Convert.ToDecimal(txtTul.Text),
+                do_breachstones = this.chkDoBreach.Checked,
+                do_all_uniques = this.chkDoUniques.Checked,
+                do_all_uniques_with_ranges = this.chkUniqueRanges.Checked,
+                do_watch_list = this.chkDoWatchlist.Checked
+            };
+            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            System.IO.File.Delete(configfile);
+            System.IO.File.WriteAllText(configfile, serialized);
         }
-        public static void LoadBasicInfo()
+        public void LoadBasicInfo()
         {
             try
             {
@@ -63,12 +74,28 @@ namespace ItemWatcher2
             }
             try
             {
-                othercurrencies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NotChaosCurrencyConversion>>(System.IO.File.ReadAllText(currencyfilename));
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(configfile));
             }
             catch (Exception e)
             {
-                othercurrencies = new List<NotChaosCurrencyConversion>();
+                config = new ItemWatchConfig()
+                {
+                    do_all_uniques = true,
+                    do_all_uniques_with_ranges = false,
+                    do_breachstones = true,
+                    do_watch_list = true,
+                    esh_value = 3,
+                    tul_value = 16,
+                    xoph_value = 6
+                };
             }
+            this.txtEsh.Text = config.esh_value.ToString();
+            this.txtXoph.Text = config.xoph_value.ToString();
+            this.txtTul.Text = config.tul_value.ToString();
+            this.chkDoBreach.Checked = config.do_breachstones;
+            this.chkDoWatchlist.Checked = config.do_watch_list;
+            this.chkDoUniques.Checked = config.do_all_uniques;
+            this.chkUniqueRanges.Checked = config.do_all_uniques_with_ranges;
         }
 
         private void btnAddNewClick(object sender, EventArgs e)
@@ -97,6 +124,22 @@ namespace ItemWatcher2
         private void btnSave_Click(object sender, EventArgs e)
         {
             SaveNames();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveNames();
+            this.Close();
+        }
+
+        private void txtEsh_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

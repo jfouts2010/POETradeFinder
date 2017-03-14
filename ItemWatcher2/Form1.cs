@@ -17,9 +17,11 @@ namespace ItemWatcher2
     public partial class Form1 : Form
     {
         public static List<NinjaItem> allItems;
-
+        public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
+        public static string configfile = "Config.json";
+
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
@@ -457,6 +459,14 @@ namespace ItemWatcher2
             }
             try
             {
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(configfile));
+            }
+            catch (Exception e)
+            {
+                allItems = new List<NinjaItem>();
+            }
+            try
+            {
                 othercurrencies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NotChaosCurrencyConversion>>(System.IO.File.ReadAllText(currencyfilename));
             }
             catch (Exception e)
@@ -464,14 +474,6 @@ namespace ItemWatcher2
                 othercurrencies = new List<NotChaosCurrencyConversion>();
             }
         }
-
-
-
-
-
-
-
-
 
         public class Slot
         {
@@ -507,6 +509,19 @@ namespace ItemWatcher2
             {
                 return name + " : " + value;
             }
+        }
+        [Serializable]
+        public class ItemWatchConfig
+        {
+            public decimal esh_value { get; set; }
+            public decimal xoph_value { get; set; }
+            public decimal tul_value { get; set; }
+
+            public bool do_breachstones { get; set; }
+            public bool do_watch_list { get; set; }
+            public bool do_all_uniques { get; set; }
+            public bool do_all_uniques_with_ranges { get; set; }
+
         }
 
         public class NotChaosCurrencyConversion
