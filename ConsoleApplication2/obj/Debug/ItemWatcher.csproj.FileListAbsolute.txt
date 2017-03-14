@@ -1,1 +1,11 @@
 C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\ItemWatcher.exe.config
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\ItemWatcher.exe
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\ItemWatcher.pdb
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\obj\Debug\ItemWatcher.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\obj\Debug\ItemWatcher.exe
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\ConsoleApplication2\obj\Debug\ItemWatcher.pdb
