@@ -450,6 +450,11 @@ namespace ItemWatcher2
             public string base_type { get; set; }
             public List<string> Implicits { get; set; }
             public List<string> Explicits { get; set; }
+
+            public override string ToString()
+            {
+                return name + " : " + chaos_value;
+            }
         }
         public static void AddNewName(string name, string value)
             {
