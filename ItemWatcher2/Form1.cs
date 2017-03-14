@@ -9,8 +9,11 @@ using System.Linq;
 using System.Media;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+
 namespace ItemWatcher2
 {
     public partial class Form1 : Form
@@ -62,7 +65,15 @@ namespace ItemWatcher2
 
             string changeID = "48923177-51911962-48505106-56446125-56515275";
             // Get response  
-
+            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    JObject jo = JObject.Parse(reader.ReadToEnd());
+                    changeID = jo.Children().ToList()[1].First.ToString();
+                }
+            }
             // Create the web request  
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -273,7 +284,7 @@ namespace ItemWatcher2
             {
                 textBox8.Invoke((MethodInvoker)delegate
                 {
-                    textBox8.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth;
+                     textBox8.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth;
                 });
             }
             if (LeaguestoneSlots[1].SellItem != null)
@@ -375,6 +386,7 @@ namespace ItemWatcher2
                 });
             }
         }
+        
         public static int GetPriceInChaos(string input)
         {
             decimal multiplier = 0;
@@ -401,6 +413,12 @@ namespace ItemWatcher2
             char[] x = input.Where(c => char.IsDigit(c)).ToArray();
             string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
             return (int)(Convert.ToInt32(y) * multiplier) ;
+        }
+        public static int GetMultipleNumbers(string input)
+        {
+            char[] x = input.Where(c => char.IsDigit(c)).ToArray();
+            string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
+            return (int)(Convert.ToInt32(y));
         }
         public static void SetNinjaValues(List<NinjaItem> NinjaItems)
         {
@@ -462,6 +480,111 @@ namespace ItemWatcher2
                         NinjaItems.Add(newNinjaItem);
                 }
             }
+            foreach (NinjaItem nj in NinjaItems)
+            {
+                //lets look for rolls
+                if (nj.Explicits.Count > 5)
+                {
+                    List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
+                    foreach (string explicitRoll in nj.Explicits)
+                    {
+                        if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
+                        {
+                            string s = SearchString(explicitRoll);
+                            // lets see if there are multi rolls in a explicit
+                            int countasdf = explicitRoll.Count(c => c == '(');
+                            if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
+                            {
+                                if (explicitRoll.Contains(" to "))
+                                {
+                                    List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                    List<double> MinRolls = new List<double>();
+                                    List<double> MaxRolls = new List<double>();
+                                    foreach (string roll in Rolls)
+                                    {
+                                        double MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                        double MaxRollsTemp = (int)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9);
+                                        if (MaxRollsTemp < MinRollsTemp)
+                                            MaxRolls = MinRolls;
+                                        MinRolls.Add(MinRollsTemp);
+                                        MaxRolls.Add(MaxRollsTemp);
+        }
+                                    explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
+                                }
+                            }
+                            else
+                            {
+                                if (explicitRoll.Contains(" to ("))
+                                {
+                                    List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                    double MinRolls = 0;
+                                    double MaxRolls = 0;
+                                    int SingularRoll = 0;
+                                    foreach (string roll in Rolls)
+                                    {
+                                        if (roll.Contains("(") && roll.Contains(")"))
+                                        {
+                                            MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                            MaxRolls = (int)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9);
+                                            if (MaxRolls < MinRolls)
+                                                MaxRolls = MinRolls;
+                                        }
+                                        else
+                                        {
+                                            SingularRoll = GetMultipleNumbers(roll);
+                                        }
+                                    }
+                                    explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
+                                }
+                                else
+                                {
+                                    int MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
+                                    int MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9);
+                                    if (MaxRoll < MinRoll)
+                                        MaxRoll = MinRoll;
+                                    explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                                }
+                            }
+                            }
+
+                        }
+
+                        string redirectUrl = "";
+                       /* HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+                        request23.Method = "POST";
+                        request23.KeepAlive = true;
+                        request23.ContentType = "application/x-www-form-urlencoded";
+                        StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+                        postwriter.Write("league=Legacy&type=&base=&name=Hand+of+Wisdom+and+Action+Imperial+Claw&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=%23%25+increased+Intelligence&mod_min=10&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                        postwriter.Close();
+                        using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                        {
+                            // Get the response stream  
+                            using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                            {
+                                string s = reader.ReadToEnd();
+                                if (s.Contains("href="))
+                                {
+                                    int start = s.IndexOf(">", s.IndexOf("href="));
+                                    int end = s.IndexOf("<", start + 1);
+                                    redirectUrl = s.Substring(start + 1, end - start - 1);
+                                    string sasdf = WebUtility.UrlEncode("#% increased Dexterity");
+                                }
+                            }
+                        }*/
+                    }
+                }
+            }
+        public static string SearchString(string explicitString)
+        {
+            string s = Regex.Replace(explicitString, @"\d", "#").Replace("(", "").Replace(")", "").Replace("-", "");
+            return s.Replace("####", "#").Replace("###", "#").Replace("##", "#").Replace("#.#", "#");
+        }
+        public class ExplicitField
+        {
+            public string SearchField { get; set; }
+            public double MinRoll { get; set; }
+            public double MaxRoll { get; set; }
         }
         public class NinjaItem
         {
