@@ -453,10 +453,10 @@ namespace ItemWatcher2
         }
         public static void AddNewName(string name, string value)
             {
-            allItems.Add(new WatchedItem()
+            allItems.Add(new NinjaItem()
             {
                 name = name,
-                value = Convert.ToDouble(value),
+                chaos_value = Convert.ToDouble(value),
             });
             }
 
@@ -475,11 +475,11 @@ namespace ItemWatcher2
         {
             try
             {
-                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WatchedItem>>(System.IO.File.ReadAllText(itemfilename));
+                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
             }
             catch (Exception e)
             {
-                allItems = new List<WatchedItem>();
+                allItems = new List<NinjaItem>();
             }
             try
             {
