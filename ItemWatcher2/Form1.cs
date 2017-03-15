@@ -60,7 +60,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Poe.Ninja Items Converted";
             });
-            
+
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
             string changeID = "48923177-51911962-48505106-56446125-56515275";
@@ -356,7 +356,7 @@ namespace ItemWatcher2
             lblSeconds1.Invoke((MethodInvoker)delegate
             {
                 int seconds = (int)now.Subtract(Slots[0].timeset).TotalSeconds;
-                lblSeconds1.Text = seconds.ToString()+" s";
+                lblSeconds1.Text = seconds.ToString() + " s";
                 lblSeconds1.ForeColor = GetColor(seconds);
             });
             lblSeconds2.Invoke((MethodInvoker)delegate
@@ -387,7 +387,7 @@ namespace ItemWatcher2
         }
         public void SetSlots(List<Slot> Slots)
         {
-            
+
             if (Slots[0].BaseItem != null)
             {
                 Slot localslot = Slots[0];
@@ -509,7 +509,7 @@ namespace ItemWatcher2
                         button8.Text = "Not Mine Msg";
                         button8.ForeColor = Color.Red;
                     }
-                    
+
                 });
             }
             if (Slots[2].BaseItem != null)
@@ -661,152 +661,152 @@ namespace ItemWatcher2
             NinjaItems = config.SavedItems;
             if (config.LastSaved == null || config.LastSaved.AddDays(1) < DateTime.Now)
             {
-            List<JObject> Jsons = new List<JObject>();
-            List<string> APIURLS = new List<string>();
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-            foreach (string s in APIURLS)
-            {
-                HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
-                // Get response  
-                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+                List<JObject> Jsons = new List<JObject>();
+                List<string> APIURLS = new List<string>();
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                foreach (string s in APIURLS)
                 {
-                    // Get the response stream  
-                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
+                    // Get response  
+                    using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
                     {
-                        Jsons.Add(JObject.Parse(reader.ReadToEnd()));
-                    }
-                }
-            }
-            foreach (JObject jo in Jsons)
-            {
-                foreach (JObject jo2 in jo.First.First.Children().ToList())
-                {
-                    NinjaItem newNinjaItem = new NinjaItem();
-                    newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
-                    newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
-                    newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
-                    List<string> implicits = new List<string>();
-                    foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
-                    {
-                        foreach (JObject implicitRoll in j)
+                        // Get the response stream  
+                        using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                         {
-                            implicits.Add(implicitRoll.First.First.ToString());
+                            Jsons.Add(JObject.Parse(reader.ReadToEnd()));
                         }
                     }
-                    if (implicits.Count == 0)
-                        implicits.Add("");
-                    List<string> explicits = new List<string>();
-                    foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
-                    {
-                        foreach (JObject explicitRoll in j)
-                        {
-                            explicits.Add(explicitRoll.First.First.ToString());
-                        }
-                    }
-                    if (explicits.Count == 0)
-                        explicits.Add("");
-                    newNinjaItem.Explicits = explicits;
-                    newNinjaItem.Implicits = implicits;
-                    newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                    if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
-                        NinjaItems.Add(newNinjaItem);
                 }
-            }
-            if (config.do_all_uniques_with_ranges)
-                foreach (NinjaItem nj in NinjaItems)
+                foreach (JObject jo in Jsons)
                 {
-                    //lets look for rolls
-                    if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15 && nj.base_type != "")
+                    foreach (JObject jo2 in jo.First.First.Children().ToList())
                     {
-                        List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
-                        foreach (string explicitRoll in nj.Explicits)
+                        NinjaItem newNinjaItem = new NinjaItem();
+                        newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
+                        newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
+                        newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
+                        List<string> implicits = new List<string>();
+                        foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
                         {
-                            if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
+                            foreach (JObject implicitRoll in j)
                             {
-                                string s = SearchString(explicitRoll);
-                                // lets see if there are multi rolls in a explicit
-                                int countasdf = explicitRoll.Count(c => c == '(');
-                                if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
+                                implicits.Add(implicitRoll.First.First.ToString());
+                            }
+                        }
+                        if (implicits.Count == 0)
+                            implicits.Add("");
+                        List<string> explicits = new List<string>();
+                        foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
+                        {
+                            foreach (JObject explicitRoll in j)
+                            {
+                                explicits.Add(explicitRoll.First.First.ToString());
+                            }
+                        }
+                        if (explicits.Count == 0)
+                            explicits.Add("");
+                        newNinjaItem.Explicits = explicits;
+                        newNinjaItem.Implicits = implicits;
+                        newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
+                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
+                            NinjaItems.Add(newNinjaItem);
+                    }
+                }
+                if (config.do_all_uniques_with_ranges)
+                    foreach (NinjaItem nj in NinjaItems)
+                    {
+                        //lets look for rolls
+                        if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15 && nj.base_type != "")
+                        {
+                            List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
+                            foreach (string explicitRoll in nj.Explicits)
+                            {
+                                if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
                                 {
-                                    if (explicitRoll.Contains(" to "))
+                                    string s = SearchString(explicitRoll);
+                                    // lets see if there are multi rolls in a explicit
+                                    int countasdf = explicitRoll.Count(c => c == '(');
+                                    if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
                                     {
-                                        List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
-                                        List<decimal> MinRolls = new List<decimal>();
-                                        List<decimal> MaxRolls = new List<decimal>();
-                                        foreach (string roll in Rolls)
+                                        if (explicitRoll.Contains(" to "))
                                         {
-                                            decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                            decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
-                                            if (MaxRollsTemp < MinRollsTemp)
-                                                MaxRolls = MinRolls;
-                                            MinRolls.Add(MinRollsTemp);
-                                            MaxRolls.Add(MaxRollsTemp);
-                                        }
-                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
-                                    }
-                                }
-                                else
-                                {
-                                    if (explicitRoll.Contains(" to ("))
-                                    {
-                                        List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
-                                        decimal MinRolls = 0;
-                                        decimal MaxRolls = 0;
-                                        decimal SingularRoll = 0;
-                                        foreach (string roll in Rolls)
-                                        {
-                                            if (roll.Contains("(") && roll.Contains(")"))
+                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                            List<decimal> MinRolls = new List<decimal>();
+                                            List<decimal> MaxRolls = new List<decimal>();
+                                            foreach (string roll in Rolls)
                                             {
-                                                MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                                MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
-                                                if (MaxRolls < MinRolls)
+                                                decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                                decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                                if (MaxRollsTemp < MinRollsTemp)
                                                     MaxRolls = MinRolls;
+                                                MinRolls.Add(MinRollsTemp);
+                                                MaxRolls.Add(MaxRollsTemp);
                                             }
-                                            else
-                                            {
-                                                SingularRoll = GetMultipleNumbers(roll);
-                                            }
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
                                         }
-                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
                                     }
                                     else
                                     {
-                                        decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
-                                        decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
-                                        if (MaxRoll < MinRoll)
-                                            MaxRoll = MinRoll;
-                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                                        if (explicitRoll.Contains(" to ("))
+                                        {
+                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                            decimal MinRolls = 0;
+                                            decimal MaxRolls = 0;
+                                            decimal SingularRoll = 0;
+                                            foreach (string roll in Rolls)
+                                            {
+                                                if (roll.Contains("(") && roll.Contains(")"))
+                                                {
+                                                    MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                                    MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                                    if (MaxRolls < MinRolls)
+                                                        MaxRolls = MinRolls;
+                                                }
+                                                else
+                                                {
+                                                    SingularRoll = GetMultipleNumbers(roll);
+                                                }
+                                            }
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
+                                        }
+                                        else
+                                        {
+                                            decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
+                                            decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
+                                            if (MaxRoll < MinRoll)
+                                                MaxRoll = MinRoll;
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                                        }
                                     }
                                 }
                             }
-                        }
-                        string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
-                        string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
-                        foreach (ExplicitField ef in explicitsToCheck)
-                        {
-                            modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
-                            modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
-                        }
-                        if (explicitsToCheck.Count == 0)
-                        {
-                            MinSearch(nj, modsMinSearch, explicitsToCheck);
-                            nj.HasRolls = false;
-                        }
-                        else
-                        {
-                            MinSearch(nj, modsMinSearch, explicitsToCheck);
-                            MaxSearch(nj, modsMaxSearch, explicitsToCheck);
-                            nj.HasRolls = true;
+                            string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
+                            string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                            foreach (ExplicitField ef in explicitsToCheck)
+                            {
+                                modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                                modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                            }
+                            if (explicitsToCheck.Count == 0)
+                            {
+                                MinSearch(nj, modsMinSearch, explicitsToCheck);
+                                nj.HasRolls = false;
+                            }
+                            else
+                            {
+                                MinSearch(nj, modsMinSearch, explicitsToCheck);
+                                MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                                nj.HasRolls = true;
+                            }
                         }
                     }
-                }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
                 string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
@@ -825,12 +825,12 @@ namespace ItemWatcher2
             decimal AvrgSellTop5 = 0;
             int count = 0;
             bool first = true;
-                        string redirectUrl = "";
-                        HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
-                        request23.Method = "POST";
-                        request23.KeepAlive = true;
-                        request23.ContentType = "application/x-www-form-urlencoded";
-                        StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+            string redirectUrl = "";
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+            request23.Method = "POST";
+            request23.KeepAlive = true;
+            request23.ContentType = "application/x-www-form-urlencoded";
+            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
             postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(nj.name + " " + nj.base_type) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMinSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
@@ -861,19 +861,20 @@ namespace ItemWatcher2
                                 }
                                 count++;
                             }
-                            }
-
                         }
+
                     }
-                    if (count > 0)
-                        AvrgSellTop5 = AvrgSellTop5 / count;
                 }
+                if (count > 0)
+                    AvrgSellTop5 = AvrgSellTop5 / count;
             }
             nj.MinSell = MinSell;
             nj.MinAverage = AvrgSellTop5;
-
         }
-        public static void MaxSearch(NinjaItem nj, string modsMaxSearch, List<ExplicitField> explicitsToCheck)
+        
+
+        
+    public static void MaxSearch(NinjaItem nj, string modsMaxSearch, List<ExplicitField> explicitsToCheck)
         {
             string rarity = "unique";
             if (nj.type == "9")
@@ -906,11 +907,10 @@ namespace ItemWatcher2
                         if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5)
                         {
                             if (first)
-                                {
+                            {
                                 HighRollMinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 HighRollMinSell += HighRollMinSell;
                                 first = false;
-                                }
                             }
                             else
                             {
@@ -922,8 +922,9 @@ namespace ItemWatcher2
                     if (count > 0)
                         HighRollMinSell = HighRollMinSell / count;
                 }
-            nj.HighRollMinSell = HighRollMinSell;
-            nj.HighRollAvrgSell = HighRollMinSell;
+                nj.HighRollMinSell = HighRollMinSell;
+                nj.HighRollAvrgSell = HighRollMinSell;
+            }
         }
         public static string SearchString(string explicitString)
         {
@@ -955,6 +956,7 @@ namespace ItemWatcher2
             public decimal MinAverage { get; set; }
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
+            public bool HasRolls { get; set; }
             public override string ToString()
             {
                 return name + " : " + chaos_value;
@@ -1076,9 +1078,9 @@ namespace ItemWatcher2
             public int max_price { get; set; }
             public decimal profit_percent { get; set; }
             public int min_profit_range { get; set; }
-			public int my_number { get; set; }
+            public int my_number { get; set; }
             public int number_of_people { get; set; }
-			public List<NinjaItem> SavedItems { get; set; }
+            public List<NinjaItem> SavedItems { get; set; }
             public DateTime LastSaved { get; set; }
         }
 
