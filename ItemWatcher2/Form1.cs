@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques) ;// && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
 
             NinjaItems = config.SavedItems;
@@ -109,7 +109,7 @@ namespace ItemWatcher2
                         seenItems.Clear();
                     }
                     SetTimeseconds(Slots);
-                    if (DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    if (config.do_all_uniques_with_ranges &&  DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
                     {
                         LoadBasicInfo();
                         NinjaItems = config.SavedItems;
@@ -1162,8 +1162,10 @@ namespace ItemWatcher2
             public int min_profit_range { get; set; }
             public int my_number { get; set; }
             public int number_of_people { get; set; }
+
             public List<NinjaItem> SavedItems { get; set; }
             public DateTime LastSaved { get; set; }
+            public bool refresh_items { get; set; }
         }
 
         public class NotChaosCurrencyConversion
