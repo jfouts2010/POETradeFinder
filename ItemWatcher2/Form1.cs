@@ -82,8 +82,9 @@ namespace ItemWatcher2
             });
             while (true)
             {
-                try {
-                    if(DateTime.Now.Subtract(lastClearedSeen).TotalSeconds>3600)
+                try
+                {
+                    if (DateTime.Now.Subtract(lastClearedSeen).TotalSeconds > 3600)
                     {
                         seenItems.Clear();
                     }
@@ -116,8 +117,8 @@ namespace ItemWatcher2
                                         continue;
                                     else
                                         seenItems.Add(itemProp.id, itemProp);
-                                    
-                                    
+
+
                                     if (itemProp.implicitMods == null)
                                         itemProp.implicitMods = new string[] { "" };
                                     if (itemProp.explicitMods == null)
@@ -293,7 +294,8 @@ namespace ItemWatcher2
                             }
                         }
                     }
-                }catch(Exception eee)
+                }
+                catch (Exception eee)
                 {
                 }
             }
@@ -304,18 +306,23 @@ namespace ItemWatcher2
             s.SellItem = itemProp;
             s.name = name;
             s.worth = value;
-                                            
-            s.Message = "@" + name + " Hi, I would like to buy your "+ s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Legacy (stash tab \""+itemProp.inventoryId+"\"; position: left "+itemProp.x + ", top " + itemProp.y + ")" ;
+
+            s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
             if (LeaguestoneSlots.Count == 3)
                 LeaguestoneSlots.RemoveAt(2);
             LeaguestoneSlots.Insert(0, s);
             if (LeaguestoneSlots[0].SellItem != null)
             {
-                textBox8.Invoke((MethodInvoker)delegate
+                richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                     textBox8.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth +" : " + DateTime.Now.ToShortTimeString() +" "+ LeaguestoneSlots[0].name;
+                    richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                    richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
+            richtxtBox2Rep.Invoke((MethodInvoker)delegate
+            {
+                richtxtBox2Rep.ForeColor = Color.Black;
+            });
             if (LeaguestoneSlots[1].SellItem != null)
             {
                 textBox9.Invoke((MethodInvoker)delegate
@@ -335,13 +342,19 @@ namespace ItemWatcher2
         {
             if (Slots[0].BaseItem != null)
             {
-                textBox2.Invoke((MethodInvoker)delegate
+                richtxtBox2Rep.Invoke((MethodInvoker)delegate
                 {
-                    textBox2.Text = Slots[0].BaseItem.name+" " + Slots[0].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() +" "+ Slots[0].name;
+                    richtxtBox2Rep.Text = Slots[0].BaseItem.name + " " + Slots[0].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[0].name;
+                    richtxtBox2Rep.ForeColor = Color.DarkGreen;
                 });
+                richTxtBox8Rep.Invoke((MethodInvoker)delegate
+                {
+                    richTxtBox8Rep.ForeColor = Color.Black;
+                });
+                
                 textBox3.Invoke((MethodInvoker)delegate
                 {
-                    textBox3.Text = GetPriceInChaos(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value + " : " + ((Decimal)  Slots[0].BaseItem.chaos_value -GetPriceInChaos(Slots[0].SellItem.note))/ ((Decimal)GetPriceInChaos(Slots[0].SellItem.note)) * 100 +"%";
+                    textBox3.Text = GetPriceInChaos(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value + " : " + ((Decimal)Slots[0].BaseItem.chaos_value - GetPriceInChaos(Slots[0].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[0].SellItem.note)) * 100 + "%";
                 });
                 richTextBox1.Invoke((MethodInvoker)delegate
                 {
@@ -368,7 +381,7 @@ namespace ItemWatcher2
                 });
                 textBox5.Invoke((MethodInvoker)delegate
                 {
-                    textBox5.Text = GetPriceInChaos(Slots[1].SellItem.note) + " : " + Slots[1].BaseItem.chaos_value + " : " + ((Decimal)Slots[1].BaseItem.chaos_value - GetPriceInChaos(Slots[1].SellItem.note )) / ((Decimal)GetPriceInChaos(Slots[1].SellItem.note)) * 100 + "%";
+                    textBox5.Text = GetPriceInChaos(Slots[1].SellItem.note) + " : " + Slots[1].BaseItem.chaos_value + " : " + ((Decimal)Slots[1].BaseItem.chaos_value - GetPriceInChaos(Slots[1].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[1].SellItem.note)) * 100 + "%";
                 });
                 richTextBox3.Invoke((MethodInvoker)delegate
                 {
@@ -421,8 +434,8 @@ namespace ItemWatcher2
             {
                 char[] x = input.Where(c => char.IsDigit(c)).ToArray();
                 string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
-                decimal value =  (Convert.ToDecimal(y));
-                
+                decimal value = (Convert.ToDecimal(y));
+
                 if (input.Contains("exa"))
                 {
                     return value + " exalted";
@@ -473,11 +486,12 @@ namespace ItemWatcher2
 
                 char[] x = input.Where(c => char.IsDigit(c)).ToArray();
                 string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
-                decimal value =  Convert.ToInt32(y) * multiplier;
+                decimal value = Convert.ToInt32(y) * multiplier;
                 if (value == 0)
                     return 1000000;
                 return value;
-            }catch(Exception eeee)
+            }
+            catch (Exception eeee)
             {
                 return 999999;
             }
@@ -646,7 +660,7 @@ namespace ItemWatcher2
                 */
 
 
-            }
+        }
         public static string SearchString(string explicitString)
         {
             string s = Regex.Replace(explicitString, @"\d", "#").Replace("(", "").Replace(")", "").Replace("-", "");
