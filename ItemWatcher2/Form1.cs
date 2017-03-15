@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques) ;// && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -107,7 +107,7 @@ namespace ItemWatcher2
                         seenItems.Clear();
                     }
                     SetTimeseconds(Slots);
-                    if (DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    if (config.do_all_uniques_with_ranges &&  DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
                     {
                         LoadBasicInfo();
                         NinjaItems = config.SavedItems;
@@ -480,7 +480,7 @@ namespace ItemWatcher2
                 });
                 slot0minandavrg.Invoke((MethodInvoker)delegate
                                {
-                                   slot0minandavrg.Lines = Slots[0].BaseItem.Top5Sells.ToArray();
+                                   slot0minandavrg.Lines = Slots[0].BaseItem.Top5Sells?.ToArray();
                                });
             }
             if (Slots[1].BaseItem != null)
@@ -543,7 +543,7 @@ namespace ItemWatcher2
                 });
                 slot1minandavrg.Invoke((MethodInvoker)delegate
                               {
-                                  slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells.ToArray();
+                                  slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells?.ToArray();
                               });
             }
             if (Slots[2].BaseItem != null)
@@ -604,7 +604,7 @@ namespace ItemWatcher2
                 });
                 slot2minandavrg.Invoke((MethodInvoker)delegate
                              {
-                                 slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells.ToArray();
+                                 slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells?.ToArray();
                              });
             }
         }
@@ -1124,8 +1124,10 @@ namespace ItemWatcher2
             public int min_profit_range { get; set; }
             public int my_number { get; set; }
             public int number_of_people { get; set; }
+
             public List<NinjaItem> SavedItems { get; set; }
             public DateTime LastSaved { get; set; }
+            public bool refresh_items { get; set; }
         }
 
         public class NotChaosCurrencyConversion

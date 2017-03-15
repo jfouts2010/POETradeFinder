@@ -68,7 +68,8 @@ namespace ItemWatcher2
             config.min_profit_range = Convert.ToInt32(this.txtMinProfit.Text);
 
 			config.my_number = Convert.ToInt32(this.txtYourNumber.Text);
-            config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);
+            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
