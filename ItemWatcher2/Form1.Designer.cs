@@ -85,9 +85,9 @@ namespace ItemWatcher2
             this.lblSeconds1 = new System.Windows.Forms.Label();
             this.lblSeconds2 = new System.Windows.Forms.Label();
             this.lblSeconds3 = new System.Windows.Forms.Label();
-            this.slot0minandavrg = new System.Windows.Forms.TextBox();
-            this.slot1minandavrg = new System.Windows.Forms.TextBox();
-            this.slot2minandavrg = new System.Windows.Forms.TextBox();
+            this.slot0minandavrg = new System.Windows.Forms.RichTextBox();
+            this.slot1minandavrg = new System.Windows.Forms.RichTextBox();
+            this.slot2minandavrg = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -161,8 +161,6 @@ namespace ItemWatcher2
             this.button7.Text = "Message";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
-            
-
             // 
             // textBox3
             // 
@@ -234,7 +232,6 @@ namespace ItemWatcher2
             this.button8.Text = "Message";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
-            
             // 
             // button9
             // 
@@ -315,7 +312,6 @@ namespace ItemWatcher2
             this.button13.Text = "Message";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
-            
             // 
             // button14
             // 
@@ -599,35 +595,39 @@ namespace ItemWatcher2
             this.lblSeconds3.Size = new System.Drawing.Size(39, 13);
             this.lblSeconds3.TabIndex = 56;
             this.lblSeconds3.Text = "Seller1";
-  // slot0minandavrg
             // 
-            this.slot0minandavrg.Location = new System.Drawing.Point(310, 162);
+            // slot0minandavrg
+            // 
+            this.slot0minandavrg.Location = new System.Drawing.Point(233, 162);
             this.slot0minandavrg.Name = "slot0minandavrg";
-            this.slot0minandavrg.ReadOnly = true;
-            this.slot0minandavrg.Size = new System.Drawing.Size(87, 20);
-            this.slot0minandavrg.TabIndex = 48;
+            this.slot0minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot0minandavrg.TabIndex = 57;
+            this.slot0minandavrg.Text = "";
             // 
             // slot1minandavrg
             // 
-            this.slot1minandavrg.Location = new System.Drawing.Point(310, 296);
+            this.slot1minandavrg.Location = new System.Drawing.Point(233, 296);
             this.slot1minandavrg.Name = "slot1minandavrg";
-            this.slot1minandavrg.ReadOnly = true;
-            this.slot1minandavrg.Size = new System.Drawing.Size(87, 20);
-            this.slot1minandavrg.TabIndex = 49;
+            this.slot1minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot1minandavrg.TabIndex = 58;
+            this.slot1minandavrg.Text = "";
             // 
             // slot2minandavrg
             // 
-            this.slot2minandavrg.Location = new System.Drawing.Point(310, 432);
+            this.slot2minandavrg.Location = new System.Drawing.Point(233, 433);
             this.slot2minandavrg.Name = "slot2minandavrg";
-            this.slot2minandavrg.ReadOnly = true;
-            this.slot2minandavrg.Size = new System.Drawing.Size(87, 20);
-            this.slot2minandavrg.TabIndex = 50;
+            this.slot2minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot2minandavrg.TabIndex = 59;
+            this.slot2minandavrg.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1050, 656);
+            this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.slot2minandavrg);
+            this.Controls.Add(this.slot1minandavrg);
+            this.Controls.Add(this.slot0minandavrg);
             this.Controls.Add(this.lblSeconds3);
             this.Controls.Add(this.lblSeconds2);
             this.Controls.Add(this.lblSeconds1);
@@ -637,9 +637,6 @@ namespace ItemWatcher2
             this.Controls.Add(this.lblSeller3);
             this.Controls.Add(this.lblSeller2);
             this.Controls.Add(this.lblSeller1);
-            this.Controls.Add(this.slot2minandavrg);
-            this.Controls.Add(this.slot1minandavrg);
-            this.Controls.Add(this.slot0minandavrg
             this.Controls.Add(this.richTxtBox8Rep);
             this.Controls.Add(this.richtxtBox2Rep);
             this.Controls.Add(this.button24);
@@ -751,9 +748,9 @@ namespace ItemWatcher2
         private System.Windows.Forms.Label lblSeconds1;
         private System.Windows.Forms.Label lblSeconds2;
         private System.Windows.Forms.Label lblSeconds3;
-        private System.Windows.Forms.TextBox slot0minandavrg;
-        private System.Windows.Forms.TextBox slot1minandavrg;
-        private System.Windows.Forms.TextBox slot2minandavrg;
+        private System.Windows.Forms.RichTextBox slot0minandavrg;
+        private System.Windows.Forms.RichTextBox slot1minandavrg;
+        private System.Windows.Forms.RichTextBox slot2minandavrg;
     }
 }
 
