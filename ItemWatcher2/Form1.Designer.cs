@@ -85,6 +85,9 @@ namespace ItemWatcher2
             this.lblSeconds1 = new System.Windows.Forms.Label();
             this.lblSeconds2 = new System.Windows.Forms.Label();
             this.lblSeconds3 = new System.Windows.Forms.Label();
+            this.slot0minandavrg = new System.Windows.Forms.TextBox();
+            this.slot1minandavrg = new System.Windows.Forms.TextBox();
+            this.slot2minandavrg = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -592,6 +595,29 @@ namespace ItemWatcher2
             this.lblSeconds3.Size = new System.Drawing.Size(39, 13);
             this.lblSeconds3.TabIndex = 56;
             this.lblSeconds3.Text = "Seller1";
+  // slot0minandavrg
+            // 
+            this.slot0minandavrg.Location = new System.Drawing.Point(310, 162);
+            this.slot0minandavrg.Name = "slot0minandavrg";
+            this.slot0minandavrg.ReadOnly = true;
+            this.slot0minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot0minandavrg.TabIndex = 48;
+            // 
+            // slot1minandavrg
+            // 
+            this.slot1minandavrg.Location = new System.Drawing.Point(310, 296);
+            this.slot1minandavrg.Name = "slot1minandavrg";
+            this.slot1minandavrg.ReadOnly = true;
+            this.slot1minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot1minandavrg.TabIndex = 49;
+            // 
+            // slot2minandavrg
+            // 
+            this.slot2minandavrg.Location = new System.Drawing.Point(310, 432);
+            this.slot2minandavrg.Name = "slot2minandavrg";
+            this.slot2minandavrg.ReadOnly = true;
+            this.slot2minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot2minandavrg.TabIndex = 50;
             // 
             // Form1
             // 
@@ -607,12 +633,14 @@ namespace ItemWatcher2
             this.Controls.Add(this.lblSeller3);
             this.Controls.Add(this.lblSeller2);
             this.Controls.Add(this.lblSeller1);
-            this.Controls.Add(this.txtSmallItem1);
+			this.Controls.Add(this.txtSmallItem1);
             this.Controls.Add(this.txtItemName1);
             this.Controls.Add(this.btnPoeTrade3);
             this.Controls.Add(this.btnPoeTrade2);
-            this.Controls.Add(this.btnPoeTrade1);
-            this.Controls.Add(this.button21);
+            this.Controls.Add(this.btnPoeTrade1)			this.Controls.Add(this.slot1minandavrg);
+            this.Controls.Add(this.slot0minandavrg
+            this.Controls.Add(this.richTxtBox8Rep);
+            this.Controls.Add(this.richtxtBox2Rep);            this.Controls.Add(this.button21);
             this.Controls.Add(this.msgSmall3);
             this.Controls.Add(this.msgSmall2);
             this.Controls.Add(this.msgSmall1);
@@ -718,6 +746,9 @@ namespace ItemWatcher2
         private System.Windows.Forms.Label lblSeconds1;
         private System.Windows.Forms.Label lblSeconds2;
         private System.Windows.Forms.Label lblSeconds3;
+        private System.Windows.Forms.TextBox slot0minandavrg;
+        private System.Windows.Forms.TextBox slot1minandavrg;
+        private System.Windows.Forms.TextBox slot2minandavrg;
     }
 }
 

@@ -33,8 +33,26 @@ namespace ItemWatcher2
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
+            BackgroundWorker bgw2 = new BackgroundWorker();
+            bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
+            bgw2.RunWorkerAsync();
 
+        }
+        private void SyncNinja(object sender, DoWorkEventArgs e)
+        {
+            System.Threading.Thread.Sleep(10000);
+            LoadBasicInfo();
+            while (true)
+            {
+                if (config.LastSaved.AddHours(1) < DateTime.Now)
+                {
+                    SetNinjaValues(new List<NinjaItem>());
+                    LoadBasicInfo();
+                }
+                else
+                    System.Threading.Thread.Sleep(60000);
+            }
         }
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
@@ -43,6 +61,7 @@ namespace ItemWatcher2
             DateTime lastTimeAPIcalled = DateTime.Now;
             Dictionary<string, Item> seenItems = new Dictionary<string, Item>();
             DateTime lastClearedSeen = DateTime.Now;
+            DateTime refreshConfig = DateTime.Now;
             Slots.Add(new Slot());
             Slots.Add(new Slot());
             Slots.Add(new Slot());
@@ -54,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques)
+            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -87,7 +106,13 @@ namespace ItemWatcher2
                     {
                         seenItems.Clear();
                     }
-                    SetTimeseconds(Slots);
+ 					SetTimeseconds(Slots);
+                    if (DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    {
+                        LoadBasicInfo();
+                        NinjaItems = config.SavedItems;
+                        refreshConfig = DateTime.Now;
+                    }
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
 
                     // Get response  
@@ -400,6 +425,7 @@ namespace ItemWatcher2
                 {
                     txtSmallItem1.ForeColor = Color.Black;
                 });
+
                 lblSeller1.Invoke((MethodInvoker)delegate
                 {
                     lblSeller1.Text = localslot.name;
@@ -450,6 +476,10 @@ namespace ItemWatcher2
                         btnMsg1.ForeColor = Color.Red;
                     }
                     //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
+                });
+ slot0minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot0minandavrg.Text = Slots[0].BaseItem.MinSell + ":" + Slots[0].BaseItem.MinAverage;
                 });
             }
             if (Slots[1].BaseItem != null)
@@ -510,6 +540,10 @@ namespace ItemWatcher2
                     }
 
                 });
+  slot1minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot1minandavrg.Text = Slots[1].BaseItem.MinSell + ":" + Slots[1].BaseItem.MinAverage;
+                });
             }
             if (Slots[2].BaseItem != null)
             {
@@ -566,6 +600,10 @@ namespace ItemWatcher2
                         btnMsg3.Text = "Not Mine Msg";
                         btnMsg3.ForeColor = Color.Red;
                     }
+                });
+   slot2minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot2minandavrg.Text = Slots[2].BaseItem.MinSell + ":" + Slots[2].BaseItem.MinAverage;
                 });
             }
         }
@@ -658,7 +696,6 @@ namespace ItemWatcher2
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems)
         {
             NinjaItems = config.SavedItems;
-            if (config.LastSaved == null || config.LastSaved.AddDays(1) < DateTime.Now)
             {
                 List<JObject> Jsons = new List<JObject>();
                 List<string> APIURLS = new List<string>();
@@ -714,7 +751,7 @@ namespace ItemWatcher2
                         newNinjaItem.Explicits = explicits;
                         newNinjaItem.Implicits = implicits;
                         newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
+                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && NinjaItems.Where(p=>p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
@@ -740,6 +777,27 @@ namespace ItemWatcher2
                                             List<decimal> MinRolls = new List<decimal>();
                                             List<decimal> MaxRolls = new List<decimal>();
                                             foreach (string roll in Rolls)
+                                            decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                            decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                            if (MaxRollsTemp < MinRollsTemp)
+                                                MaxRolls = MinRolls;
+                                            MinRolls.Add(MinRollsTemp);
+                                            MaxRolls.Add(MaxRollsTemp);
+                                        }
+                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
+                                    }
+                                }
+                                else
+                                {
+                                    if (explicitRoll.Contains(" to ("))
+                                    {
+                                        List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                        decimal MinRolls = 0;
+                                        decimal MaxRolls = 0;
+                                        decimal SingularRoll = 0;
+                                        foreach (string roll in Rolls)
+                                        {
+                                            if (roll.Contains("(") && roll.Contains(")"))
                                             {
                                                 decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
                                                 decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
@@ -805,6 +863,26 @@ namespace ItemWatcher2
                                 nj.HasRolls = true;
                             }
                         }
+
+                        string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
+                        string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                        foreach (ExplicitField ef in explicitsToCheck)
+                        {
+                            modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                            modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                        }
+                        if (explicitsToCheck.Count == 0)
+                        {
+                            MinSearch(nj, modsMinSearch, explicitsToCheck);
+                            nj.HasRolls = false;
+                        }
+                        else
+                        {
+                            MinSearch(nj, modsMinSearch, explicitsToCheck);
+                            MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                            nj.HasRolls = true;
+                        }
+
                     }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
@@ -822,6 +900,7 @@ namespace ItemWatcher2
             //min search
             decimal MinSell = 0;
             decimal AvrgSellTop5 = 0;
+            List<decimal> Top5Prices = new List<decimal>();
             int count = 0;
             bool first = true;
             string redirectUrl = "";
@@ -852,10 +931,12 @@ namespace ItemWatcher2
                                 {
                                     MinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                     AvrgSellTop5 += MinSell;
+                                    Top5Prices.Add(MinSell);
                                     first = false;
                                 }
                                 else
                                 {
+                                    Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
                                     AvrgSellTop5 += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 }
                                 count++;
@@ -911,19 +992,19 @@ namespace ItemWatcher2
                                 HighRollMinSell += HighRollMinSell;
                                 first = false;
                             }
-                            else
-                            {
-                                HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
-                            }
-                            count++;
                         }
+                        else
+                        {
+                            HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
+                        }
+                        count++;
                     }
-                    if (count > 0)
-                        HighRollMinSell = HighRollMinSell / count;
                 }
-                nj.HighRollMinSell = HighRollMinSell;
-                nj.HighRollAvrgSell = HighRollMinSell;
+                if (count > 0)
+                    HighRollMinSell = HighRollMinSell / count;
             }
+            nj.HighRollMinSell = HighRollMinSell;
+            nj.HighRollAvrgSell = HighRollMinSell;
         }
         public static string SearchString(string explicitString)
         {
@@ -955,6 +1036,7 @@ namespace ItemWatcher2
             public decimal MinAverage { get; set; }
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
+            public bool HasRolls;
             public bool HasRolls { get; set; }
             public override string ToString()
             {
