@@ -65,6 +65,10 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtMinProfit = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.txtNumberOfPeople = new System.Windows.Forms.TextBox();
+            this.txtYourNumber = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -170,7 +174,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(315, 142);
+            this.btnSave.Location = new System.Drawing.Point(315, 84);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 12;
@@ -386,11 +390,47 @@
             this.label15.Text = "Flat profit min";
             this.label15.Click += new System.EventHandler(this.label15_Click);
             // 
+            // txtNumberOfPeople
+            // 
+            this.txtNumberOfPeople.Location = new System.Drawing.Point(315, 135);
+            this.txtNumberOfPeople.Name = "txtNumberOfPeople";
+            this.txtNumberOfPeople.Size = new System.Drawing.Size(100, 20);
+            this.txtNumberOfPeople.TabIndex = 37;
+            // 
+            // txtYourNumber
+            // 
+            this.txtYourNumber.Location = new System.Drawing.Point(315, 176);
+            this.txtYourNumber.Name = "txtYourNumber";
+            this.txtYourNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtYourNumber.TabIndex = 38;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(315, 115);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(92, 13);
+            this.label16.TabIndex = 39;
+            this.label16.Text = "Number of People";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(312, 160);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(69, 13);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "Your Number";
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.txtYourNumber);
+            this.Controls.Add(this.txtNumberOfPeople);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txtMinProfit);
             this.Controls.Add(this.label14);
@@ -475,5 +515,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtMinProfit;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtNumberOfPeople;
+        private System.Windows.Forms.TextBox txtYourNumber;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
     }
 }

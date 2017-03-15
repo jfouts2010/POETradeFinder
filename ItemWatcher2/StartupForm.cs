@@ -65,6 +65,9 @@ namespace ItemWatcher2
                 profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text),
                 max_price = Convert.ToInt32(this.txtMaxPrice.Text),
                 min_profit_range = Convert.ToInt32(this.txtMinProfit.Text),
+
+                my_number = Convert.ToInt32(this.txtYourNumber.Text),
+                number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text),
             };
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
@@ -113,6 +116,8 @@ namespace ItemWatcher2
             this.txtMaxPrice.Text = config.max_price.ToString();
             this.txtProfitPercent.Text = config.profit_percent.ToString();
             this.txtMinProfit.Text = config.min_profit_range.ToString();
+            this.txtNumberOfPeople.Text = config.number_of_people.ToString();
+            this.txtYourNumber.Text = config.my_number.ToString();
         }
 
         private void btnAddNewClick(object sender, EventArgs e)
