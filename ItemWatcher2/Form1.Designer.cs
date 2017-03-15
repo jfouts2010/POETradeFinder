@@ -69,11 +69,15 @@
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
+            this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
             this.richTxtBox8Rep = new System.Windows.Forms.RichTextBox();
-this.button22 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
-            this.button24 = new System.Windows.Forms.Button();            this.SuspendLayout();
+            this.button24 = new System.Windows.Forms.Button();
+            this.slot0minandavrg = new System.Windows.Forms.TextBox();
+            this.slot1minandavrg = new System.Windows.Forms.TextBox();
+            this.slot2minandavrg = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
             // 
             // textBox1
             // 
@@ -452,7 +456,7 @@ this.button22 = new System.Windows.Forms.Button();
             this.button21.Text = "Leaguestones";
             this.button21.UseVisualStyleBackColor = true;
             // 
-// richtxtBox2Rep
+            // richtxtBox2Rep
             // 
             this.richtxtBox2Rep.Location = new System.Drawing.Point(12, 136);
             this.richtxtBox2Rep.Name = "richtxtBox2Rep";
@@ -468,7 +472,9 @@ this.button22 = new System.Windows.Forms.Button();
             this.richTxtBox8Rep.ReadOnly = true;
             this.richTxtBox8Rep.Size = new System.Drawing.Size(697, 20);
             this.richTxtBox8Rep.TabIndex = 45;
-            this.richTxtBox8Rep.Text = "";// button22
+            this.richTxtBox8Rep.Text = "";
+            // 
+            // button22
             // 
             this.button22.Location = new System.Drawing.Point(938, 203);
             this.button22.Name = "button22";
@@ -496,15 +502,46 @@ this.button22 = new System.Windows.Forms.Button();
             this.button24.TabIndex = 47;
             this.button24.Text = "PoE.Trade";
             this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);            // Form1
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // slot0minandavrg
+            // 
+            this.slot0minandavrg.Location = new System.Drawing.Point(310, 162);
+            this.slot0minandavrg.Name = "slot0minandavrg";
+            this.slot0minandavrg.ReadOnly = true;
+            this.slot0minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot0minandavrg.TabIndex = 48;
+            // 
+            // slot1minandavrg
+            // 
+            this.slot1minandavrg.Location = new System.Drawing.Point(310, 296);
+            this.slot1minandavrg.Name = "slot1minandavrg";
+            this.slot1minandavrg.ReadOnly = true;
+            this.slot1minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot1minandavrg.TabIndex = 49;
+            // 
+            // slot2minandavrg
+            // 
+            this.slot2minandavrg.Location = new System.Drawing.Point(310, 432);
+            this.slot2minandavrg.Name = "slot2minandavrg";
+            this.slot2minandavrg.ReadOnly = true;
+            this.slot2minandavrg.Size = new System.Drawing.Size(87, 20);
+            this.slot2minandavrg.TabIndex = 50;
+            // 
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1050, 656);
-			this.Controls.Add(this.richTxtBox8Rep);
-            this.Controls.Add(this.richtxtBox2Rep);			this.Controls.Add(this.button24);
+            this.Controls.Add(this.slot2minandavrg);
+            this.Controls.Add(this.slot1minandavrg);
+            this.Controls.Add(this.slot0minandavrg);
+            this.Controls.Add(this.richTxtBox8Rep);
+            this.Controls.Add(this.richtxtBox2Rep);
+            this.Controls.Add(this.button24);
             this.Controls.Add(this.button23);
-            this.Controls.Add(this.button22);            this.Controls.Add(this.button21);
+            this.Controls.Add(this.button22);
+            this.Controls.Add(this.button21);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
@@ -599,6 +636,10 @@ this.button22 = new System.Windows.Forms.Button();
 		private System.Windows.Forms.RichTextBox richtxtBox2Rep;
         private System.Windows.Forms.RichTextBox richTxtBox8Rep;		private System.Windows.Forms.Button button22;
         private System.Windows.Forms.Button button23;
-        private System.Windows.Forms.Button button24;    }
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.TextBox slot0minandavrg;
+        private System.Windows.Forms.TextBox slot1minandavrg;
+        private System.Windows.Forms.TextBox slot2minandavrg;
+    }
 }
 

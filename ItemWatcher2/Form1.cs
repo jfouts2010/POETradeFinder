@@ -33,8 +33,26 @@ namespace ItemWatcher2
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
+            BackgroundWorker bgw2 = new BackgroundWorker();
+            bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
+            bgw2.RunWorkerAsync();
 
+        }
+        private void SyncNinja(object sender, DoWorkEventArgs e)
+        {
+            System.Threading.Thread.Sleep(10000);
+            LoadBasicInfo();
+            while (true)
+            {
+                if (config.LastSaved.AddHours(1) < DateTime.Now)
+                {
+                    SetNinjaValues(new List<NinjaItem>());
+                    LoadBasicInfo();
+                }
+                else
+                    System.Threading.Thread.Sleep(60000);
+            }
         }
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
@@ -45,6 +63,7 @@ namespace ItemWatcher2
             LoadBasicInfo();
             Dictionary<string, Item> seenItems = new Dictionary<string, Item>();
             DateTime lastClearedSeen = DateTime.Now;
+            DateTime refreshConfig = DateTime.Now;
             Slots.Add(new Slot());
             Slots.Add(new Slot());
             Slots.Add(new Slot());
@@ -56,13 +75,13 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques)
+            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Poe.Ninja Items Converted";
             });
-            
+
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
             string changeID = "48923177-51911962-48505106-56446125-56515275";
@@ -88,6 +107,12 @@ namespace ItemWatcher2
                     if (DateTime.Now.Subtract(lastClearedSeen).TotalSeconds > 3600)
                     {
                         seenItems.Clear();
+                    }
+                    if (DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    {
+                        LoadBasicInfo();
+                        NinjaItems = config.SavedItems;
+                        refreshConfig = DateTime.Now;
                     }
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
 
@@ -314,10 +339,10 @@ namespace ItemWatcher2
             LeaguestoneSlots.Insert(0, s);
             if (LeaguestoneSlots[0].SellItem != null)
             {
-                
+
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                     richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                    richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
                     richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
@@ -353,7 +378,7 @@ namespace ItemWatcher2
                 {
                     richTxtBox8Rep.ForeColor = Color.Black;
                 });
-                
+
                 textBox3.Invoke((MethodInvoker)delegate
                 {
                     textBox3.Text = GetPriceInChaos(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value + " : " + ((Decimal)Slots[0].BaseItem.chaos_value - GetPriceInChaos(Slots[0].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[0].SellItem.note)) * 100 + "%";
@@ -373,6 +398,10 @@ namespace ItemWatcher2
                 checkBox4.Invoke((MethodInvoker)delegate
                 {
                     checkBox4.Checked = Slots[0].SellItem.corrupted.ToLower().Contains("true");
+                });
+                slot0minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot0minandavrg.Text = Slots[0].BaseItem.MinSell + ":" + Slots[0].BaseItem.MinAverage;
                 });
             }
             if (Slots[1].BaseItem != null)
@@ -401,6 +430,10 @@ namespace ItemWatcher2
                 {
                     checkBox5.Checked = Slots[1].SellItem.corrupted.ToLower().Contains("true");
                 });
+                slot1minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot1minandavrg.Text = Slots[1].BaseItem.MinSell + ":" + Slots[1].BaseItem.MinAverage;
+                });
             }
             if (Slots[2].BaseItem != null)
             {
@@ -427,6 +460,10 @@ namespace ItemWatcher2
                 checkBox6.Invoke((MethodInvoker)delegate
                 {
                     checkBox6.Checked = Slots[2].SellItem.corrupted.ToLower().Contains("true");
+                });
+                slot2minandavrg.Invoke((MethodInvoker)delegate
+                {
+                    slot2minandavrg.Text = Slots[2].BaseItem.MinSell + ":" + Slots[2].BaseItem.MinAverage;
                 });
             }
         }
@@ -512,7 +549,6 @@ namespace ItemWatcher2
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems)
         {
             NinjaItems = config.SavedItems;
-            if (config.LastSaved == null || config.LastSaved.AddDays(1) < DateTime.Now)
             {
                 List<JObject> Jsons = new List<JObject>();
                 List<string> APIURLS = new List<string>();
@@ -568,7 +604,7 @@ namespace ItemWatcher2
                         newNinjaItem.Explicits = explicits;
                         newNinjaItem.Implicits = implicits;
                         newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar"))
+                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && NinjaItems.Where(p=>p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
@@ -603,7 +639,7 @@ namespace ItemWatcher2
                                             MaxRolls.Add(MaxRollsTemp);
                                         }
                                         explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
-        }
+                                    }
                                 }
                                 else
                                 {
@@ -652,11 +688,13 @@ namespace ItemWatcher2
                         if (explicitsToCheck.Count == 0)
                         {
                             MinSearch(nj, modsMinSearch, explicitsToCheck);
+                            nj.HasRolls = false;
                         }
                         else
                         {
                             MinSearch(nj, modsMinSearch, explicitsToCheck);
                             MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                            nj.HasRolls = true;
                         }
 
                     }
@@ -677,6 +715,7 @@ namespace ItemWatcher2
             //min search
             decimal MinSell = 0;
             decimal AvrgSellTop5 = 0;
+            List<decimal> Top5Prices = new List<decimal>();
             int count = 0;
             bool first = true;
             string redirectUrl = "";
@@ -707,17 +746,18 @@ namespace ItemWatcher2
                                 {
                                     MinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                     AvrgSellTop5 += MinSell;
+                                    Top5Prices.Add(MinSell);
                                     first = false;
                                 }
                                 else
                                 {
+                                    Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
                                     AvrgSellTop5 += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 }
                                 count++;
                             }
-                            }
-
                         }
+
                     }
                     if (count > 0)
                         AvrgSellTop5 = AvrgSellTop5 / count;
@@ -760,22 +800,22 @@ namespace ItemWatcher2
                         if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5)
                         {
                             if (first)
-                                {
+                            {
                                 HighRollMinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 HighRollMinSell += HighRollMinSell;
                                 first = false;
-                                }
                             }
-                            else
-                            {
-                                HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
-                            }
-                            count++;
                         }
+                        else
+                        {
+                            HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
+                        }
+                        count++;
                     }
-                    if (count > 0)
-                        HighRollMinSell = HighRollMinSell / count;
                 }
+                if (count > 0)
+                    HighRollMinSell = HighRollMinSell / count;
+            }
             nj.HighRollMinSell = HighRollMinSell;
             nj.HighRollAvrgSell = HighRollMinSell;
         }
@@ -809,6 +849,7 @@ namespace ItemWatcher2
             public decimal MinAverage { get; set; }
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
+            public bool HasRolls;
             public override string ToString()
             {
                 return name + " : " + chaos_value;
@@ -1022,7 +1063,7 @@ namespace ItemWatcher2
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
                     System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
-    }
+                }
             }
         }
 
