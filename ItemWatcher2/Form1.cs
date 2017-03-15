@@ -325,28 +325,28 @@ namespace ItemWatcher2
             if (LeaguestoneSlots[0].SellItem != null)
             {
 
-                richTxtBox8Rep.Invoke((MethodInvoker)delegate
+                txtSmallItem1.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
-                    richTxtBox8Rep.ForeColor = Color.DarkGreen;
+                    txtSmallItem1.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                    txtSmallItem1.ForeColor = Color.DarkGreen;
                 });
             }
-            richtxtBox2Rep.Invoke((MethodInvoker)delegate
+            txtItemName1.Invoke((MethodInvoker)delegate
             {
-                richtxtBox2Rep.ForeColor = Color.Black;
+                txtItemName1.ForeColor = Color.Black;
             });
             if (LeaguestoneSlots[1].SellItem != null)
             {
-                textBox9.Invoke((MethodInvoker)delegate
+                txtSmallItem2.Invoke((MethodInvoker)delegate
                 {
-                    textBox9.Text = LeaguestoneSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[1].SellItem.note) + " chaos:" + LeaguestoneSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[1].name;
+                    txtSmallItem2.Text = LeaguestoneSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[1].SellItem.note) + " chaos:" + LeaguestoneSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[1].name;
                 });
             }
             if (LeaguestoneSlots[2].SellItem != null)
             {
-                textBox10.Invoke((MethodInvoker)delegate
+                txtSmallItem3.Invoke((MethodInvoker)delegate
                 {
-                    textBox10.Text = LeaguestoneSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[2].SellItem.note) + " chaos:" + LeaguestoneSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[2].name;
+                    txtSmallItem3.Text = LeaguestoneSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[2].SellItem.note) + " chaos:" + LeaguestoneSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[2].name;
                 });
             }
         }
@@ -391,14 +391,14 @@ namespace ItemWatcher2
             if (Slots[0].BaseItem != null)
             {
                 Slot localslot = Slots[0];
-                richtxtBox2Rep.Invoke((MethodInvoker)delegate
+                txtItemName1.Invoke((MethodInvoker)delegate
                 {
-                    richtxtBox2Rep.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
-                    richtxtBox2Rep.ForeColor = Color.DarkGreen;
+                    txtItemName1.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
+                    txtItemName1.ForeColor = Color.DarkGreen;
                 });
-                richTxtBox8Rep.Invoke((MethodInvoker)delegate
+                txtSmallItem1.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.ForeColor = Color.Black;
+                    txtSmallItem1.ForeColor = Color.Black;
                 });
                 lblSeller1.Invoke((MethodInvoker)delegate
                 {
@@ -408,47 +408,46 @@ namespace ItemWatcher2
                 {
                     lblTime1.Text = DateTime.Now.ToShortTimeString();
                 });
-
-                textBox3.Invoke((MethodInvoker)delegate
+                txtItemPrice1.Invoke((MethodInvoker)delegate
                 {
-                    textBox3.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
+                    txtItemPrice1.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
-                richTextBox1.Invoke((MethodInvoker)delegate
+                richItemRolls1.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox1.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
+                    richItemRolls1.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
-                richTextBox2.Invoke((MethodInvoker)delegate
+                richPossRolls1.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox2.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
+                    richPossRolls1.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
-                checkBox1.Invoke((MethodInvoker)delegate
+                chkRelic1.Invoke((MethodInvoker)delegate
                 {
-                    checkBox1.Checked = localslot.BaseItem.type == "9";
-                    if (checkBox1.Checked)
-                        checkBox1.ForeColor = Color.DarkGoldenrod;
+                    chkRelic1.Checked = localslot.BaseItem.type == "9";
+                    if (chkRelic1.Checked)
+                        chkRelic1.ForeColor = Color.DarkGoldenrod;
                     else
-                        checkBox1.ForeColor = Color.Black;
+                        chkRelic1.ForeColor = Color.Black;
                 });
-                checkBox4.Invoke((MethodInvoker)delegate
+                chkCorrupted1.Invoke((MethodInvoker)delegate
                 {
-                    checkBox4.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
-                    if (checkBox4.Checked)
-                        checkBox4.ForeColor = Color.Red;
+                    chkCorrupted1.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (chkCorrupted1.Checked)
+                        chkCorrupted1.ForeColor = Color.Red;
                     else
-                        checkBox4.ForeColor = Color.Black;
+                        chkCorrupted1.ForeColor = Color.Black;
                 });
-                button7.Invoke((MethodInvoker)delegate
+                btnMsg1.Invoke((MethodInvoker)delegate
                 {
 
                     if (localslot.is_mine)
                     {
-                        button7.Text = "Message";
-                        button7.ForeColor = Color.Green;
+                        btnMsg1.Text = "Message";
+                        btnMsg1.ForeColor = Color.Green;
                     }
                     else
                     {
-                        button7.Text = "Not Mine Msg";
-                        button7.ForeColor = Color.Red;
+                        btnMsg1.Text = "Not Mine Msg";
+                        btnMsg1.ForeColor = Color.Red;
                     }
                     //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
                 });
@@ -456,9 +455,9 @@ namespace ItemWatcher2
             if (Slots[1].BaseItem != null)
             {
                 Slot localslot = Slots[1];
-                textBox4.Invoke((MethodInvoker)delegate
+                txtItemName2.Invoke((MethodInvoker)delegate
                 {
-                    textBox4.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
+                    txtItemName2.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
                 });
                 lblSeller2.Invoke((MethodInvoker)delegate
                 {
@@ -468,46 +467,46 @@ namespace ItemWatcher2
                 {
                     lblTime2.Text = DateTime.Now.ToShortTimeString();
                 });
-                textBox5.Invoke((MethodInvoker)delegate
+                txtItemPrice2.Invoke((MethodInvoker)delegate
                 {
-                    textBox5.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
+                    txtItemPrice2.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
-                richTextBox3.Invoke((MethodInvoker)delegate
+                richItemRolls2.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox3.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
+                    richItemRolls2.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
-                richTextBox4.Invoke((MethodInvoker)delegate
+                richPossRolls2.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox4.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
+                    richPossRolls2.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
-                checkBox2.Invoke((MethodInvoker)delegate
+                chkRelic2.Invoke((MethodInvoker)delegate
                 {
-                    checkBox2.Checked = localslot.BaseItem.type == "9";
-                    if (checkBox2.Checked)
-                        checkBox2.ForeColor = Color.DarkGoldenrod;
+                    chkRelic2.Checked = localslot.BaseItem.type == "9";
+                    if (chkRelic2.Checked)
+                        chkRelic2.ForeColor = Color.DarkGoldenrod;
                     else
-                        checkBox2.ForeColor = Color.Black;
+                        chkRelic2.ForeColor = Color.Black;
                 });
-                checkBox5.Invoke((MethodInvoker)delegate
+                chkCorrupted2.Invoke((MethodInvoker)delegate
                 {
-                    checkBox5.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
-                    if (checkBox5.Checked)
-                        checkBox5.ForeColor = Color.Red;
+                    chkCorrupted2.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (chkCorrupted2.Checked)
+                        chkCorrupted2.ForeColor = Color.Red;
                     else
-                        checkBox5.ForeColor = Color.Black;
+                        chkCorrupted2.ForeColor = Color.Black;
                 });
-                button8.Invoke((MethodInvoker)delegate
+                btnMsg2.Invoke((MethodInvoker)delegate
                 {
 
                     if (localslot.is_mine)
                     {
-                        button8.Text = "Message";
-                        button8.ForeColor = Color.Green;
+                        btnMsg2.Text = "Message";
+                        btnMsg2.ForeColor = Color.Green;
                     }
                     else
                     {
-                        button8.Text = "Not Mine Msg";
-                        button8.ForeColor = Color.Red;
+                        btnMsg2.Text = "Not Mine Msg";
+                        btnMsg2.ForeColor = Color.Red;
                     }
 
                 });
@@ -515,9 +514,9 @@ namespace ItemWatcher2
             if (Slots[2].BaseItem != null)
             {
                 Slot localslot = Slots[2];
-                textBox6.Invoke((MethodInvoker)delegate
+                txtItemName3.Invoke((MethodInvoker)delegate
                 {
-                    textBox6.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
+                    txtItemName3.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
                 });
                 lblSeller3.Invoke((MethodInvoker)delegate
                 {
@@ -527,45 +526,45 @@ namespace ItemWatcher2
                 {
                     lblTime3.Text = DateTime.Now.ToShortTimeString();
                 });
-                textBox7.Invoke((MethodInvoker)delegate
+                txtItemPrice3.Invoke((MethodInvoker)delegate
                 {
-                    textBox7.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
+                    txtItemPrice3.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
-                richTextBox5.Invoke((MethodInvoker)delegate
+                richItemRolls3.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox5.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
+                    richItemRolls3.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
-                richTextBox6.Invoke((MethodInvoker)delegate
+                richPossRolls3.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox6.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
+                    richPossRolls3.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
-                checkBox3.Invoke((MethodInvoker)delegate
+                chkRelic3.Invoke((MethodInvoker)delegate
                 {
-                    checkBox3.Checked = localslot.BaseItem.type == "9";
-                    if (checkBox3.Checked)
-                        checkBox3.ForeColor = Color.DarkGoldenrod;
+                    chkRelic3.Checked = localslot.BaseItem.type == "9";
+                    if (chkRelic3.Checked)
+                        chkRelic3.ForeColor = Color.DarkGoldenrod;
                     else
-                        checkBox3.ForeColor = Color.Black;
+                        chkRelic3.ForeColor = Color.Black;
                 });
-                checkBox6.Invoke((MethodInvoker)delegate
+                chkCorrupted3.Invoke((MethodInvoker)delegate
                 {
-                    checkBox6.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
-                    if (checkBox6.Checked)
-                        checkBox6.ForeColor = Color.Red;
+                    chkCorrupted3.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (chkCorrupted3.Checked)
+                        chkCorrupted3.ForeColor = Color.Red;
                     else
-                        checkBox6.ForeColor = Color.Black;
+                        chkCorrupted3.ForeColor = Color.Black;
                 });
-                button13.Invoke((MethodInvoker)delegate
+                btnMsg3.Invoke((MethodInvoker)delegate
                 {
                     if (localslot.is_mine)
                     {
-                        button13.Text = "Message";
-                        button13.ForeColor = Color.Green;
+                        btnMsg3.Text = "Message";
+                        btnMsg3.ForeColor = Color.Green;
                     }
                     else
                     {
-                        button13.Text = "Not Mine Msg";
-                        button13.ForeColor = Color.Red;
+                        btnMsg3.Text = "Not Mine Msg";
+                        btnMsg3.ForeColor = Color.Red;
                     }
                 });
             }

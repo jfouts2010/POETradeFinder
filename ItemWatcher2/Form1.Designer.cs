@@ -37,45 +37,45 @@ namespace ItemWatcher2
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox4 = new System.Windows.Forms.RichTextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnMsg1 = new System.Windows.Forms.Button();
+            this.txtItemPrice1 = new System.Windows.Forms.TextBox();
+            this.richItemRolls1 = new System.Windows.Forms.RichTextBox();
+            this.richPossRolls1 = new System.Windows.Forms.RichTextBox();
+            this.richItemRolls2 = new System.Windows.Forms.RichTextBox();
+            this.richPossRolls2 = new System.Windows.Forms.RichTextBox();
+            this.txtItemName2 = new System.Windows.Forms.TextBox();
+            this.txtItemPrice2 = new System.Windows.Forms.TextBox();
+            this.btnMsg2 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
-            this.richTextBox5 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox6 = new System.Windows.Forms.RichTextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.button13 = new System.Windows.Forms.Button();
+            this.richItemRolls3 = new System.Windows.Forms.RichTextBox();
+            this.richPossRolls3 = new System.Windows.Forms.RichTextBox();
+            this.txtItemName3 = new System.Windows.Forms.TextBox();
+            this.txtItemPrice3 = new System.Windows.Forms.TextBox();
+            this.btnMsg3 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.button18 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
-            this.button20 = new System.Windows.Forms.Button();
+            this.chkRelic1 = new System.Windows.Forms.CheckBox();
+            this.chkRelic2 = new System.Windows.Forms.CheckBox();
+            this.chkRelic3 = new System.Windows.Forms.CheckBox();
+            this.chkCorrupted1 = new System.Windows.Forms.CheckBox();
+            this.chkCorrupted2 = new System.Windows.Forms.CheckBox();
+            this.chkCorrupted3 = new System.Windows.Forms.CheckBox();
+            this.txtSmallItem2 = new System.Windows.Forms.TextBox();
+            this.txtSmallItem3 = new System.Windows.Forms.TextBox();
+            this.msgSmall1 = new System.Windows.Forms.Button();
+            this.msgSmall2 = new System.Windows.Forms.Button();
+            this.msgSmall3 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-            this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
-            this.richTxtBox8Rep = new System.Windows.Forms.RichTextBox();
-            this.button22 = new System.Windows.Forms.Button();
-            this.button23 = new System.Windows.Forms.Button();
-            this.button24 = new System.Windows.Forms.Button();
+            this.txtItemName1 = new System.Windows.Forms.RichTextBox();
+            this.txtSmallItem1 = new System.Windows.Forms.RichTextBox();
+            this.btnPoeTrade1 = new System.Windows.Forms.Button();
+            this.btnPoeTrade2 = new System.Windows.Forms.Button();
+            this.btnPoeTrade3 = new System.Windows.Forms.Button();
             this.lblSeller1 = new System.Windows.Forms.Label();
             this.lblSeller2 = new System.Windows.Forms.Label();
             this.lblSeller3 = new System.Windows.Forms.Label();
@@ -149,89 +149,86 @@ namespace ItemWatcher2
             this.button6.Text = "Item Rolls";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnMsg1
             // 
-            this.button7.Location = new System.Drawing.Point(826, 158);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(87, 23);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Message";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            
-
+            this.btnMsg1.Location = new System.Drawing.Point(826, 158);
+            this.btnMsg1.Name = "btnMsg1";
+            this.btnMsg1.Size = new System.Drawing.Size(87, 23);
+            this.btnMsg1.TabIndex = 7;
+            this.btnMsg1.Text = "Message";
+            this.btnMsg1.UseVisualStyleBackColor = true;
+            this.btnMsg1.Click += new System.EventHandler(this.button7_Click);
             // 
-            // textBox3
+            // txtItemPrice1
             // 
-            this.textBox3.Location = new System.Drawing.Point(233, 136);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(87, 20);
-            this.textBox3.TabIndex = 9;
+            this.txtItemPrice1.Location = new System.Drawing.Point(233, 136);
+            this.txtItemPrice1.Name = "txtItemPrice1";
+            this.txtItemPrice1.ReadOnly = true;
+            this.txtItemPrice1.Size = new System.Drawing.Size(87, 20);
+            this.txtItemPrice1.TabIndex = 9;
             // 
-            // richTextBox1
+            // richItemRolls1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(328, 137);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(236, 96);
-            this.richTextBox1.TabIndex = 12;
-            this.richTextBox1.Text = "";
+            this.richItemRolls1.Location = new System.Drawing.Point(328, 137);
+            this.richItemRolls1.Name = "richItemRolls1";
+            this.richItemRolls1.ReadOnly = true;
+            this.richItemRolls1.Size = new System.Drawing.Size(236, 96);
+            this.richItemRolls1.TabIndex = 12;
+            this.richItemRolls1.Text = "";
             // 
-            // richTextBox2
+            // richPossRolls1
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(580, 138);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(240, 96);
-            this.richTextBox2.TabIndex = 13;
-            this.richTextBox2.Text = "";
+            this.richPossRolls1.Location = new System.Drawing.Point(580, 138);
+            this.richPossRolls1.Name = "richPossRolls1";
+            this.richPossRolls1.ReadOnly = true;
+            this.richPossRolls1.Size = new System.Drawing.Size(240, 96);
+            this.richPossRolls1.TabIndex = 13;
+            this.richPossRolls1.Text = "";
             // 
-            // richTextBox3
+            // richItemRolls2
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(328, 271);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(240, 96);
-            this.richTextBox3.TabIndex = 22;
-            this.richTextBox3.Text = "";
+            this.richItemRolls2.Location = new System.Drawing.Point(328, 271);
+            this.richItemRolls2.Name = "richItemRolls2";
+            this.richItemRolls2.ReadOnly = true;
+            this.richItemRolls2.Size = new System.Drawing.Size(240, 96);
+            this.richItemRolls2.TabIndex = 22;
+            this.richItemRolls2.Text = "";
             // 
-            // richTextBox4
+            // richPossRolls2
             // 
-            this.richTextBox4.Location = new System.Drawing.Point(580, 271);
-            this.richTextBox4.Name = "richTextBox4";
-            this.richTextBox4.ReadOnly = true;
-            this.richTextBox4.Size = new System.Drawing.Size(236, 96);
-            this.richTextBox4.TabIndex = 21;
-            this.richTextBox4.Text = "";
+            this.richPossRolls2.Location = new System.Drawing.Point(580, 271);
+            this.richPossRolls2.Name = "richPossRolls2";
+            this.richPossRolls2.ReadOnly = true;
+            this.richPossRolls2.Size = new System.Drawing.Size(236, 96);
+            this.richPossRolls2.TabIndex = 21;
+            this.richPossRolls2.Text = "";
             // 
-            // textBox4
+            // txtItemName2
             // 
-            this.textBox4.Location = new System.Drawing.Point(12, 270);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(211, 20);
-            this.textBox4.TabIndex = 20;
+            this.txtItemName2.Location = new System.Drawing.Point(12, 270);
+            this.txtItemName2.Name = "txtItemName2";
+            this.txtItemName2.ReadOnly = true;
+            this.txtItemName2.Size = new System.Drawing.Size(211, 20);
+            this.txtItemName2.TabIndex = 20;
             // 
-            // textBox5
+            // txtItemPrice2
             // 
-            this.textBox5.AcceptsReturn = true;
-            this.textBox5.Location = new System.Drawing.Point(233, 270);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(87, 20);
-            this.textBox5.TabIndex = 19;
+            this.txtItemPrice2.AcceptsReturn = true;
+            this.txtItemPrice2.Location = new System.Drawing.Point(233, 270);
+            this.txtItemPrice2.Name = "txtItemPrice2";
+            this.txtItemPrice2.ReadOnly = true;
+            this.txtItemPrice2.Size = new System.Drawing.Size(87, 20);
+            this.txtItemPrice2.TabIndex = 19;
             // 
-            // button8
+            // btnMsg2
             // 
-            this.button8.Location = new System.Drawing.Point(826, 292);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(87, 23);
-            this.button8.TabIndex = 18;
-            this.button8.Text = "Message";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            
+            this.btnMsg2.Location = new System.Drawing.Point(826, 292);
+            this.btnMsg2.Name = "btnMsg2";
+            this.btnMsg2.Size = new System.Drawing.Size(87, 23);
+            this.btnMsg2.TabIndex = 18;
+            this.btnMsg2.Text = "Message";
+            this.btnMsg2.UseVisualStyleBackColor = true;
+            this.btnMsg2.Click += new System.EventHandler(this.button8_Click);
             // 
             // button9
             // 
@@ -269,50 +266,49 @@ namespace ItemWatcher2
             this.button12.Text = "Name";
             this.button12.UseVisualStyleBackColor = true;
             // 
-            // richTextBox5
+            // richItemRolls3
             // 
-            this.richTextBox5.Location = new System.Drawing.Point(328, 407);
-            this.richTextBox5.Name = "richTextBox5";
-            this.richTextBox5.ReadOnly = true;
-            this.richTextBox5.Size = new System.Drawing.Size(240, 96);
-            this.richTextBox5.TabIndex = 31;
-            this.richTextBox5.Text = "";
+            this.richItemRolls3.Location = new System.Drawing.Point(328, 407);
+            this.richItemRolls3.Name = "richItemRolls3";
+            this.richItemRolls3.ReadOnly = true;
+            this.richItemRolls3.Size = new System.Drawing.Size(240, 96);
+            this.richItemRolls3.TabIndex = 31;
+            this.richItemRolls3.Text = "";
             // 
-            // richTextBox6
+            // richPossRolls3
             // 
-            this.richTextBox6.Location = new System.Drawing.Point(580, 407);
-            this.richTextBox6.Name = "richTextBox6";
-            this.richTextBox6.ReadOnly = true;
-            this.richTextBox6.Size = new System.Drawing.Size(236, 96);
-            this.richTextBox6.TabIndex = 30;
-            this.richTextBox6.Text = "";
+            this.richPossRolls3.Location = new System.Drawing.Point(580, 407);
+            this.richPossRolls3.Name = "richPossRolls3";
+            this.richPossRolls3.ReadOnly = true;
+            this.richPossRolls3.Size = new System.Drawing.Size(236, 96);
+            this.richPossRolls3.TabIndex = 30;
+            this.richPossRolls3.Text = "";
             // 
-            // textBox6
+            // txtItemName3
             // 
-            this.textBox6.Location = new System.Drawing.Point(12, 406);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(211, 20);
-            this.textBox6.TabIndex = 29;
+            this.txtItemName3.Location = new System.Drawing.Point(12, 406);
+            this.txtItemName3.Name = "txtItemName3";
+            this.txtItemName3.ReadOnly = true;
+            this.txtItemName3.Size = new System.Drawing.Size(211, 20);
+            this.txtItemName3.TabIndex = 29;
             // 
-            // textBox7
+            // txtItemPrice3
             // 
-            this.textBox7.Location = new System.Drawing.Point(233, 406);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(87, 20);
-            this.textBox7.TabIndex = 28;
+            this.txtItemPrice3.Location = new System.Drawing.Point(233, 406);
+            this.txtItemPrice3.Name = "txtItemPrice3";
+            this.txtItemPrice3.ReadOnly = true;
+            this.txtItemPrice3.Size = new System.Drawing.Size(87, 20);
+            this.txtItemPrice3.TabIndex = 28;
             // 
-            // button13
+            // btnMsg3
             // 
-            this.button13.Location = new System.Drawing.Point(826, 428);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(87, 23);
-            this.button13.TabIndex = 27;
-            this.button13.Text = "Message";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            
+            this.btnMsg3.Location = new System.Drawing.Point(826, 428);
+            this.btnMsg3.Name = "btnMsg3";
+            this.btnMsg3.Size = new System.Drawing.Size(87, 23);
+            this.btnMsg3.TabIndex = 27;
+            this.btnMsg3.Text = "Message";
+            this.btnMsg3.UseVisualStyleBackColor = true;
+            this.btnMsg3.Click += new System.EventHandler(this.button13_Click);
             // 
             // button14
             // 
@@ -350,114 +346,114 @@ namespace ItemWatcher2
             this.button17.Text = "Name";
             this.button17.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // chkRelic1
             // 
-            this.checkBox1.AutoCheck = false;
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 205);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(50, 17);
-            this.checkBox1.TabIndex = 32;
-            this.checkBox1.Text = "Relic";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkRelic1.AutoCheck = false;
+            this.chkRelic1.AutoSize = true;
+            this.chkRelic1.Location = new System.Drawing.Point(12, 205);
+            this.chkRelic1.Name = "chkRelic1";
+            this.chkRelic1.Size = new System.Drawing.Size(50, 17);
+            this.chkRelic1.TabIndex = 32;
+            this.chkRelic1.Text = "Relic";
+            this.chkRelic1.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // chkRelic2
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(12, 350);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(50, 17);
-            this.checkBox2.TabIndex = 33;
-            this.checkBox2.Text = "Relic";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.chkRelic2.AutoSize = true;
+            this.chkRelic2.Location = new System.Drawing.Point(12, 350);
+            this.chkRelic2.Name = "chkRelic2";
+            this.chkRelic2.Size = new System.Drawing.Size(50, 17);
+            this.chkRelic2.TabIndex = 33;
+            this.chkRelic2.Text = "Relic";
+            this.chkRelic2.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // chkRelic3
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(12, 486);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(50, 17);
-            this.checkBox3.TabIndex = 34;
-            this.checkBox3.Text = "Relic";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.chkRelic3.AutoSize = true;
+            this.chkRelic3.Location = new System.Drawing.Point(12, 486);
+            this.chkRelic3.Name = "chkRelic3";
+            this.chkRelic3.Size = new System.Drawing.Size(50, 17);
+            this.chkRelic3.TabIndex = 34;
+            this.chkRelic3.Text = "Relic";
+            this.chkRelic3.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // chkCorrupted1
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(105, 205);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(72, 17);
-            this.checkBox4.TabIndex = 35;
-            this.checkBox4.Text = "Corrupted";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.chkCorrupted1.AutoSize = true;
+            this.chkCorrupted1.Location = new System.Drawing.Point(105, 205);
+            this.chkCorrupted1.Name = "chkCorrupted1";
+            this.chkCorrupted1.Size = new System.Drawing.Size(72, 17);
+            this.chkCorrupted1.TabIndex = 35;
+            this.chkCorrupted1.Text = "Corrupted";
+            this.chkCorrupted1.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // chkCorrupted2
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(105, 350);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(72, 17);
-            this.checkBox5.TabIndex = 36;
-            this.checkBox5.Text = "Corrupted";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            this.chkCorrupted2.AutoSize = true;
+            this.chkCorrupted2.Location = new System.Drawing.Point(105, 350);
+            this.chkCorrupted2.Name = "chkCorrupted2";
+            this.chkCorrupted2.Size = new System.Drawing.Size(72, 17);
+            this.chkCorrupted2.TabIndex = 36;
+            this.chkCorrupted2.Text = "Corrupted";
+            this.chkCorrupted2.UseVisualStyleBackColor = true;
+            this.chkCorrupted2.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
-            // checkBox6
+            // chkCorrupted3
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(105, 486);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(72, 17);
-            this.checkBox6.TabIndex = 37;
-            this.checkBox6.Text = "Corrupted";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
+            this.chkCorrupted3.AutoSize = true;
+            this.chkCorrupted3.Location = new System.Drawing.Point(105, 486);
+            this.chkCorrupted3.Name = "chkCorrupted3";
+            this.chkCorrupted3.Size = new System.Drawing.Size(72, 17);
+            this.chkCorrupted3.TabIndex = 37;
+            this.chkCorrupted3.Text = "Corrupted";
+            this.chkCorrupted3.UseVisualStyleBackColor = true;
+            this.chkCorrupted3.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
             // 
-            // textBox9
+            // txtSmallItem2
             // 
-            this.textBox9.Location = new System.Drawing.Point(12, 588);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(697, 20);
-            this.textBox9.TabIndex = 39;
+            this.txtSmallItem2.Location = new System.Drawing.Point(12, 588);
+            this.txtSmallItem2.Name = "txtSmallItem2";
+            this.txtSmallItem2.ReadOnly = true;
+            this.txtSmallItem2.Size = new System.Drawing.Size(697, 20);
+            this.txtSmallItem2.TabIndex = 39;
             // 
-            // textBox10
+            // txtSmallItem3
             // 
-            this.textBox10.Location = new System.Drawing.Point(12, 624);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.ReadOnly = true;
-            this.textBox10.Size = new System.Drawing.Size(697, 20);
-            this.textBox10.TabIndex = 40;
+            this.txtSmallItem3.Location = new System.Drawing.Point(12, 624);
+            this.txtSmallItem3.Name = "txtSmallItem3";
+            this.txtSmallItem3.ReadOnly = true;
+            this.txtSmallItem3.Size = new System.Drawing.Size(697, 20);
+            this.txtSmallItem3.TabIndex = 40;
             // 
-            // button18
+            // msgSmall1
             // 
-            this.button18.Location = new System.Drawing.Point(750, 553);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(87, 23);
-            this.button18.TabIndex = 41;
-            this.button18.Text = "Message";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
+            this.msgSmall1.Location = new System.Drawing.Point(750, 553);
+            this.msgSmall1.Name = "msgSmall1";
+            this.msgSmall1.Size = new System.Drawing.Size(87, 23);
+            this.msgSmall1.TabIndex = 41;
+            this.msgSmall1.Text = "Message";
+            this.msgSmall1.UseVisualStyleBackColor = true;
+            this.msgSmall1.Click += new System.EventHandler(this.button18_Click);
             // 
-            // button19
+            // msgSmall2
             // 
-            this.button19.Location = new System.Drawing.Point(750, 589);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(87, 23);
-            this.button19.TabIndex = 42;
-            this.button19.Text = "Message";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
+            this.msgSmall2.Location = new System.Drawing.Point(750, 589);
+            this.msgSmall2.Name = "msgSmall2";
+            this.msgSmall2.Size = new System.Drawing.Size(87, 23);
+            this.msgSmall2.TabIndex = 42;
+            this.msgSmall2.Text = "Message";
+            this.msgSmall2.UseVisualStyleBackColor = true;
+            this.msgSmall2.Click += new System.EventHandler(this.button19_Click);
             // 
-            // button20
+            // msgSmall3
             // 
-            this.button20.Location = new System.Drawing.Point(750, 627);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(87, 23);
-            this.button20.TabIndex = 43;
-            this.button20.Text = "Message";
-            this.button20.UseVisualStyleBackColor = true;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
+            this.msgSmall3.Location = new System.Drawing.Point(750, 627);
+            this.msgSmall3.Name = "msgSmall3";
+            this.msgSmall3.Size = new System.Drawing.Size(87, 23);
+            this.msgSmall3.TabIndex = 43;
+            this.msgSmall3.Text = "Message";
+            this.msgSmall3.UseVisualStyleBackColor = true;
+            this.msgSmall3.Click += new System.EventHandler(this.button20_Click);
             // 
             // button21
             // 
@@ -468,53 +464,53 @@ namespace ItemWatcher2
             this.button21.Text = "Leaguestones";
             this.button21.UseVisualStyleBackColor = true;
             // 
-            // richtxtBox2Rep
+            // txtItemName1
             // 
-            this.richtxtBox2Rep.Location = new System.Drawing.Point(12, 136);
-            this.richtxtBox2Rep.Name = "richtxtBox2Rep";
-            this.richtxtBox2Rep.ReadOnly = true;
-            this.richtxtBox2Rep.Size = new System.Drawing.Size(211, 20);
-            this.richtxtBox2Rep.TabIndex = 0;
-            this.richtxtBox2Rep.Text = "";
+            this.txtItemName1.Location = new System.Drawing.Point(12, 136);
+            this.txtItemName1.Name = "txtItemName1";
+            this.txtItemName1.ReadOnly = true;
+            this.txtItemName1.Size = new System.Drawing.Size(211, 20);
+            this.txtItemName1.TabIndex = 0;
+            this.txtItemName1.Text = "";
             // 
-            // richTxtBox8Rep
+            // txtSmallItem1
             // 
-            this.richTxtBox8Rep.Location = new System.Drawing.Point(12, 553);
-            this.richTxtBox8Rep.Name = "richTxtBox8Rep";
-            this.richTxtBox8Rep.ReadOnly = true;
-            this.richTxtBox8Rep.Size = new System.Drawing.Size(697, 20);
-            this.richTxtBox8Rep.TabIndex = 45;
-            this.richTxtBox8Rep.Text = "";
+            this.txtSmallItem1.Location = new System.Drawing.Point(12, 553);
+            this.txtSmallItem1.Name = "txtSmallItem1";
+            this.txtSmallItem1.ReadOnly = true;
+            this.txtSmallItem1.Size = new System.Drawing.Size(697, 20);
+            this.txtSmallItem1.TabIndex = 45;
+            this.txtSmallItem1.Text = "";
             // 
-            // button22
+            // btnPoeTrade1
             // 
-            this.button22.Location = new System.Drawing.Point(826, 199);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(87, 23);
-            this.button22.TabIndex = 45;
-            this.button22.Text = "PoE.Trade";
-            this.button22.UseVisualStyleBackColor = true;
-            this.button22.Click += new System.EventHandler(this.button22_Click);
+            this.btnPoeTrade1.Location = new System.Drawing.Point(826, 199);
+            this.btnPoeTrade1.Name = "btnPoeTrade1";
+            this.btnPoeTrade1.Size = new System.Drawing.Size(87, 23);
+            this.btnPoeTrade1.TabIndex = 45;
+            this.btnPoeTrade1.Text = "PoE.Trade";
+            this.btnPoeTrade1.UseVisualStyleBackColor = true;
+            this.btnPoeTrade1.Click += new System.EventHandler(this.button22_Click);
             // 
-            // button23
+            // btnPoeTrade2
             // 
-            this.button23.Location = new System.Drawing.Point(826, 330);
-            this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(87, 23);
-            this.button23.TabIndex = 46;
-            this.button23.Text = "PoE.Trade";
-            this.button23.UseVisualStyleBackColor = true;
-            this.button23.Click += new System.EventHandler(this.button23_Click);
+            this.btnPoeTrade2.Location = new System.Drawing.Point(826, 330);
+            this.btnPoeTrade2.Name = "btnPoeTrade2";
+            this.btnPoeTrade2.Size = new System.Drawing.Size(87, 23);
+            this.btnPoeTrade2.TabIndex = 46;
+            this.btnPoeTrade2.Text = "PoE.Trade";
+            this.btnPoeTrade2.UseVisualStyleBackColor = true;
+            this.btnPoeTrade2.Click += new System.EventHandler(this.button23_Click);
             // 
-            // button24
+            // btnPoeTrade3
             // 
-            this.button24.Location = new System.Drawing.Point(826, 457);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(87, 23);
-            this.button24.TabIndex = 47;
-            this.button24.Text = "PoE.Trade";
-            this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
+            this.btnPoeTrade3.Location = new System.Drawing.Point(826, 457);
+            this.btnPoeTrade3.Name = "btnPoeTrade3";
+            this.btnPoeTrade3.Size = new System.Drawing.Size(87, 23);
+            this.btnPoeTrade3.TabIndex = 47;
+            this.btnPoeTrade3.Text = "PoE.Trade";
+            this.btnPoeTrade3.UseVisualStyleBackColor = true;
+            this.btnPoeTrade3.Click += new System.EventHandler(this.button24_Click);
             // 
             // lblSeller1
             // 
@@ -611,45 +607,45 @@ namespace ItemWatcher2
             this.Controls.Add(this.lblSeller3);
             this.Controls.Add(this.lblSeller2);
             this.Controls.Add(this.lblSeller1);
-            this.Controls.Add(this.richTxtBox8Rep);
-            this.Controls.Add(this.richtxtBox2Rep);
-            this.Controls.Add(this.button24);
-            this.Controls.Add(this.button23);
-            this.Controls.Add(this.button22);
+            this.Controls.Add(this.txtSmallItem1);
+            this.Controls.Add(this.txtItemName1);
+            this.Controls.Add(this.btnPoeTrade3);
+            this.Controls.Add(this.btnPoeTrade2);
+            this.Controls.Add(this.btnPoeTrade1);
             this.Controls.Add(this.button21);
-            this.Controls.Add(this.button20);
-            this.Controls.Add(this.button19);
-            this.Controls.Add(this.button18);
-            this.Controls.Add(this.textBox10);
-            this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.checkBox6);
-            this.Controls.Add(this.checkBox5);
-            this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.richTextBox5);
-            this.Controls.Add(this.richTextBox6);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.button13);
+            this.Controls.Add(this.msgSmall3);
+            this.Controls.Add(this.msgSmall2);
+            this.Controls.Add(this.msgSmall1);
+            this.Controls.Add(this.txtSmallItem3);
+            this.Controls.Add(this.txtSmallItem2);
+            this.Controls.Add(this.chkCorrupted3);
+            this.Controls.Add(this.chkCorrupted2);
+            this.Controls.Add(this.chkCorrupted1);
+            this.Controls.Add(this.chkRelic3);
+            this.Controls.Add(this.chkRelic2);
+            this.Controls.Add(this.chkRelic1);
+            this.Controls.Add(this.richItemRolls3);
+            this.Controls.Add(this.richPossRolls3);
+            this.Controls.Add(this.txtItemName3);
+            this.Controls.Add(this.txtItemPrice3);
+            this.Controls.Add(this.btnMsg3);
             this.Controls.Add(this.button14);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.button17);
-            this.Controls.Add(this.richTextBox3);
-            this.Controls.Add(this.richTextBox4);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.button8);
+            this.Controls.Add(this.richItemRolls2);
+            this.Controls.Add(this.richPossRolls2);
+            this.Controls.Add(this.txtItemName2);
+            this.Controls.Add(this.txtItemPrice2);
+            this.Controls.Add(this.btnMsg2);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button12);
-            this.Controls.Add(this.richTextBox2);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.richPossRolls1);
+            this.Controls.Add(this.richItemRolls1);
+            this.Controls.Add(this.txtItemPrice1);
+            this.Controls.Add(this.btnMsg1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -674,45 +670,45 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.RichTextBox richTextBox3;
-        private System.Windows.Forms.RichTextBox richTextBox4;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btnMsg1;
+        private System.Windows.Forms.TextBox txtItemPrice1;
+        private System.Windows.Forms.RichTextBox richItemRolls1;
+        private System.Windows.Forms.RichTextBox richPossRolls1;
+        private System.Windows.Forms.RichTextBox richItemRolls2;
+        private System.Windows.Forms.RichTextBox richPossRolls2;
+        private System.Windows.Forms.TextBox txtItemName2;
+        private System.Windows.Forms.TextBox txtItemPrice2;
+        private System.Windows.Forms.Button btnMsg2;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.RichTextBox richTextBox5;
-        private System.Windows.Forms.RichTextBox richTextBox6;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.RichTextBox richItemRolls3;
+        private System.Windows.Forms.RichTextBox richPossRolls3;
+        private System.Windows.Forms.TextBox txtItemName3;
+        private System.Windows.Forms.TextBox txtItemPrice3;
+        private System.Windows.Forms.Button btnMsg3;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.Button button18;
-        private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.CheckBox chkRelic1;
+        private System.Windows.Forms.CheckBox chkRelic2;
+        private System.Windows.Forms.CheckBox chkRelic3;
+        private System.Windows.Forms.CheckBox chkCorrupted1;
+        private System.Windows.Forms.CheckBox chkCorrupted2;
+        private System.Windows.Forms.CheckBox chkCorrupted3;
+        private System.Windows.Forms.TextBox txtSmallItem2;
+        private System.Windows.Forms.TextBox txtSmallItem3;
+        private System.Windows.Forms.Button msgSmall1;
+        private System.Windows.Forms.Button msgSmall2;
+        private System.Windows.Forms.Button msgSmall3;
         private System.Windows.Forms.Button button21;
-		private System.Windows.Forms.RichTextBox richtxtBox2Rep;
-        private System.Windows.Forms.RichTextBox richTxtBox8Rep;
-        private System.Windows.Forms.Button button22;
-        private System.Windows.Forms.Button button23;
-        private System.Windows.Forms.Button button24;
+		private System.Windows.Forms.RichTextBox txtItemName1;
+        private System.Windows.Forms.RichTextBox txtSmallItem1;
+        private System.Windows.Forms.Button btnPoeTrade1;
+        private System.Windows.Forms.Button btnPoeTrade2;
+        private System.Windows.Forms.Button btnPoeTrade3;
         private System.Windows.Forms.Label lblSeller1;
         private System.Windows.Forms.Label lblSeller2;
         private System.Windows.Forms.Label lblSeller3;
