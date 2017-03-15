@@ -17,8 +17,8 @@ namespace ItemWatcher2
         public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
-       
-        
+
+
         public StartupForm()
         {
             InitializeComponent();
@@ -33,43 +33,42 @@ namespace ItemWatcher2
         private void reload()
         {
             this.listBox1.Items.Clear();
-            foreach(NinjaItem item in allItems)
+            foreach (NinjaItem item in allItems)
             {
                 this.listBox1.Items.Add(item);
             }
-            
+
         }
 
-       
-        
+
+
         public void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
-            config = new ItemWatchConfig()
-            {
-                esh_value = Convert.ToDecimal(txtEsh.Text),
-                xoph_value = Convert.ToDecimal(txtXoph.Text),
+            
+            config.esh_value = Convert.ToDecimal(txtEsh.Text);
+            config.xoph_value = Convert.ToDecimal(txtXoph.Text);
 
-                tul_value = Convert.ToDecimal(txtTul.Text),
-                do_breachstones = this.chkDoBreach.Checked,
-                do_all_uniques = this.chkDoUniques.Checked,
-                do_all_uniques_with_ranges = this.chkUniqueRanges.Checked,
-                do_watch_list = this.chkDoWatchlist.Checked,
+                
+            config.tul_value = Convert.ToDecimal(txtTul.Text);
+            config.do_breachstones = this.chkDoBreach.Checked;
+            config.do_all_uniques = this.chkDoUniques.Checked;
+            config.do_all_uniques_with_ranges = this.chkUniqueRanges.Checked;
+            config.do_watch_list = this.chkDoWatchlist.Checked;
 
-                alch_ratio = Convert.ToDecimal(this.txtAlch.Text),
-                exalt_ratio = Convert.ToInt32(this.txtExalt.Text),
-                fusing_ratio = Convert.ToDecimal(this.txtFuse.Text),
+                
+            config.alch_ratio = Convert.ToDecimal(this.txtAlch.Text);
+            config.exalt_ratio = Convert.ToInt32(this.txtExalt.Text);
+            config.fusing_ratio = Convert.ToDecimal(this.txtFuse.Text);
 
-                profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text),
-                max_price = Convert.ToInt32(this.txtMaxPrice.Text),
-                min_profit_range = Convert.ToInt32(this.txtMinProfit.Text),
+            config.profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text);
+            config.max_price = Convert.ToInt32(this.txtMaxPrice.Text);
+            config.min_profit_range = Convert.ToInt32(this.txtMinProfit.Text);
 
-                my_number = Convert.ToInt32(this.txtYourNumber.Text),
-                number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text),
-            };
-            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+			config.my_number = Convert.ToInt32(this.txtYourNumber.Text);
+            config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
@@ -98,9 +97,9 @@ namespace ItemWatcher2
                     esh_value = 3,
                     tul_value = 16,
                     xoph_value = 6,
-                    exalt_ratio=68,
-                     alch_ratio=.333M,
-                      fusing_ratio=.444M
+                    exalt_ratio = 68,
+                    alch_ratio = .333M,
+                    fusing_ratio = .444M
                 };
             }
             this.txtEsh.Text = config.esh_value.ToString();
@@ -137,7 +136,7 @@ namespace ItemWatcher2
                 allItems.RemoveAt(listBox1.SelectedIndex);
                 reload();
             }
-            catch(Exception eeeee)
+            catch (Exception eeeee)
             {
 
             }
