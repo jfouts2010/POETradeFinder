@@ -313,9 +313,10 @@ namespace ItemWatcher2
             LeaguestoneSlots.Insert(0, s);
             if (LeaguestoneSlots[0].SellItem != null)
             {
+                
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                     richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
                     richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
@@ -498,6 +499,8 @@ namespace ItemWatcher2
         }
         public static int GetMultipleNumbers(string input)
         {
+            if (input == "")
+                return -1;
             char[] x = input.Where(c => char.IsDigit(c)).ToArray();
             string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
             return (int)(Convert.ToInt32(y));
@@ -562,11 +565,11 @@ namespace ItemWatcher2
                         NinjaItems.Add(newNinjaItem);
                 }
             }
-            /*
+
             foreach (NinjaItem nj in NinjaItems)
             {
                 //lets look for rolls
-                if (nj.Explicits.Count > 5)
+                if (nj.Explicits.Count > 5 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
                 {
                     List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
                     foreach (string explicitRoll in nj.Explicits)
@@ -631,14 +634,23 @@ namespace ItemWatcher2
                             }
 
                         }
-
+                    string rarity = "unique";
+                    if (nj.type == "9")
+                        rarity = "relic";
+                    string modsMinSearch = "";
+                    string modsMaxSearch = "";
+                    foreach (ExplicitField ef in explicitsToCheck)
+                    {
+                        modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                        modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                    }
                         string redirectUrl = "";
                         HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                         request23.Method = "POST";
                         request23.KeepAlive = true;
                         request23.ContentType = "application/x-www-form-urlencoded";
                         StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                        postwriter.Write("league=Legacy&type=&base=&name=Hand+of+Wisdom+and+Action+Imperial+Claw&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=%23%25+increased+Intelligence&mod_min=10&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                    postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(nj.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMinSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                         postwriter.Close();
                         using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                         {
@@ -646,19 +658,19 @@ namespace ItemWatcher2
                             using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                             {
                                 string s = reader.ReadToEnd();
-                                if (s.Contains("href="))
+                            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                            htmlDoc.LoadHtml(s);
+                            var inputs = htmlDoc.DocumentNode.Descendants("input");
+
+                            foreach (var input in inputs)
                                 {
-                                    int start = s.IndexOf(">", s.IndexOf("href="));
-                                    int end = s.IndexOf("<", start + 1);
-                                    redirectUrl = s.Substring(start + 1, end - start - 1);
-                                    string sasdf = WebUtility.UrlEncode("#% increased Dexterity");
+                                Console.WriteLine(input.Attributes["value"].Value);
+                                // John
                                 }
                             }
                         }
                     }
                 }
-                */
-
 
         }
         public static string SearchString(string explicitString)
@@ -877,6 +889,72 @@ namespace ItemWatcher2
             {
                 string s = LeaguestoneSlots[2].Message;
                 Clipboard.SetText(s);
+            }
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            if (Slots[0].BaseItem != null)
+            {
+                string rarity = "unique";
+                if (Slots[0].BaseItem.type == "9")
+                    rarity = "relic";
+                string redirectUrl = "";
+                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+                request23.Method = "POST";
+                request23.KeepAlive = true;
+                request23.ContentType = "application/x-www-form-urlencoded";
+                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Close();
+                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                {
+                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
+    }
+            }
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            if (Slots[1].BaseItem != null)
+            {
+                string rarity = "unique";
+                if (Slots[1].BaseItem.type == "9")
+                    rarity = "relic";
+                string redirectUrl = "";
+                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+                request23.Method = "POST";
+                request23.KeepAlive = true;
+                request23.ContentType = "application/x-www-form-urlencoded";
+                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Close();
+                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                {
+                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
+                }
+            }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            if (Slots[2].BaseItem != null)
+            {
+                string rarity = "unique";
+                if (Slots[2].BaseItem.type == "9")
+                    rarity = "relic";
+                string redirectUrl = "";
+                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+                request23.Method = "POST";
+                request23.KeepAlive = true;
+                request23.ContentType = "application/x-www-form-urlencoded";
+                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Close();
+                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                {
+                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
+                }
             }
         }
     }

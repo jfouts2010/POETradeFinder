@@ -69,9 +69,11 @@
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-            this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
+this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
             this.richTxtBox8Rep = new System.Windows.Forms.RichTextBox();
-            this.SuspendLayout();
+this.button22 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
+            this.button24 = new System.Windows.Forms.Button();            this.SuspendLayout();
             // 
             // textBox1
             // 
@@ -450,7 +452,7 @@
             this.button21.Text = "Leaguestones";
             this.button21.UseVisualStyleBackColor = true;
             // 
-            // richtxtBox2Rep
+// richtxtBox2Rep
             // 
             this.richtxtBox2Rep.Location = new System.Drawing.Point(12, 136);
             this.richtxtBox2Rep.Name = "richtxtBox2Rep";
@@ -466,16 +468,43 @@
             this.richTxtBox8Rep.ReadOnly = true;
             this.richTxtBox8Rep.Size = new System.Drawing.Size(697, 20);
             this.richTxtBox8Rep.TabIndex = 45;
-            this.richTxtBox8Rep.Text = "";
+            this.richTxtBox8Rep.Text = "";// button22
             // 
-            // Form1
+            this.button22.Location = new System.Drawing.Point(938, 203);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(87, 23);
+            this.button22.TabIndex = 45;
+            this.button22.Text = "PoE.Trade";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // button23
+            // 
+            this.button23.Location = new System.Drawing.Point(938, 334);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(87, 23);
+            this.button23.TabIndex = 46;
+            this.button23.Text = "PoE.Trade";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(938, 474);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(87, 23);
+            this.button24.TabIndex = 47;
+            this.button24.Text = "PoE.Trade";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1050, 656);
-            this.Controls.Add(this.richTxtBox8Rep);
-            this.Controls.Add(this.richtxtBox2Rep);
-            this.Controls.Add(this.button21);
+			this.Controls.Add(this.richTxtBox8Rep);
+            this.Controls.Add(this.richtxtBox2Rep);			this.Controls.Add(this.button24);
+            this.Controls.Add(this.button23);
+            this.Controls.Add(this.button22);            this.Controls.Add(this.button21);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
@@ -567,8 +596,9 @@
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.RichTextBox richtxtBox2Rep;
-        private System.Windows.Forms.RichTextBox richTxtBox8Rep;
-    }
+		private System.Windows.Forms.RichTextBox richtxtBox2Rep;
+        private System.Windows.Forms.RichTextBox richTxtBox8Rep;		private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button24;    }
 }
 
