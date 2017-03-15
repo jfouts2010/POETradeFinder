@@ -45,7 +45,7 @@ namespace ItemWatcher2
             LoadBasicInfo();
             while (true)
             {
-                if (config.LastSaved.AddHours(1) < DateTime.Now)
+                if (config.LastSaved.AddHours(1) < DateTime.Now && config.LastSaved.AddDays(1) >= DateTime.Now)
                 {
                     SetNinjaValues(new List<NinjaItem>());
                     LoadBasicInfo();
@@ -75,6 +75,8 @@ namespace ItemWatcher2
             });
             if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
+
+            NinjaItems = config.SavedItems;
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Poe.Ninja Items Converted";
@@ -160,9 +162,15 @@ namespace ItemWatcher2
                                     itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                     itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                     if (config.do_all_uniques)
-                                        if (NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0)
+                                    {
+                                        if ((NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && NinjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                                         {
-                                            NinjaItem NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                            NinjaItem NinjaItem = new NinjaItem(); ;
+                                            if (itemProp.frameType != 6)
+                                                NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                            else
+                                                NinjaItem = NinjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
+
                                             if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                             {
                                                 if (NinjaItem.chaos_value - itemValue > 50)
@@ -191,6 +199,7 @@ namespace ItemWatcher2
                                                 player.Play();
                                             }
                                         }
+                                    }
                                     if (config.do_watch_list)
                                         if (allItems.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
                                         {
@@ -320,6 +329,7 @@ namespace ItemWatcher2
                                                 }
                                             }
                                         }
+
                                     }
                                 }
                             }
@@ -333,7 +343,9 @@ namespace ItemWatcher2
                 catch (Exception eee)
                 {
                 }
+
             }
+
         }
 
         public void SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
@@ -480,7 +492,7 @@ namespace ItemWatcher2
                 });
                 slot0minandavrg.Invoke((MethodInvoker)delegate
                                {
-                                   slot0minandavrg.Lines = Slots[0].BaseItem.Top5Sells.ToArray();
+                                   slot0minandavrg.Lines = Slots[0].BaseItem.Top5Sells?.ToArray();
                                });
             }
             if (Slots[1].BaseItem != null)
@@ -543,7 +555,7 @@ namespace ItemWatcher2
                 });
                 slot1minandavrg.Invoke((MethodInvoker)delegate
                               {
-                                  slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells.ToArray();
+                                  slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells?.ToArray();
                               });
             }
             if (Slots[2].BaseItem != null)
@@ -604,7 +616,7 @@ namespace ItemWatcher2
                 });
                 slot2minandavrg.Invoke((MethodInvoker)delegate
                              {
-                                 slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells.ToArray();
+                                 slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells?.ToArray();
                              });
             }
         }
@@ -1028,6 +1040,7 @@ namespace ItemWatcher2
         }
         public static void LoadBasicInfo()
         {
+
             try
             {
                 allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
@@ -1052,8 +1065,33 @@ namespace ItemWatcher2
             {
                 othercurrencies = new List<NotChaosCurrencyConversion>();
             }
-        }
 
+        }
+        public static bool isFileOpen(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return false;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return true;
+        }
         public class Slot
         {
             public Slot()
