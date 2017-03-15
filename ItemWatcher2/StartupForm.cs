@@ -47,15 +47,18 @@ namespace ItemWatcher2
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
+            
             config.esh_value = Convert.ToDecimal(txtEsh.Text);
             config.xoph_value = Convert.ToDecimal(txtXoph.Text);
 
+                
             config.tul_value = Convert.ToDecimal(txtTul.Text);
             config.do_breachstones = this.chkDoBreach.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
             config.do_all_uniques_with_ranges = this.chkUniqueRanges.Checked;
             config.do_watch_list = this.chkDoWatchlist.Checked;
 
+                
             config.alch_ratio = Convert.ToDecimal(this.txtAlch.Text);
             config.exalt_ratio = Convert.ToInt32(this.txtExalt.Text);
             config.fusing_ratio = Convert.ToDecimal(this.txtFuse.Text);
@@ -63,7 +66,9 @@ namespace ItemWatcher2
             config.profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text);
             config.max_price = Convert.ToInt32(this.txtMaxPrice.Text);
             config.min_profit_range = Convert.ToInt32(this.txtMinProfit.Text);
-            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+
+			config.my_number = Convert.ToInt32(this.txtYourNumber.Text);
+            config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
@@ -110,6 +115,8 @@ namespace ItemWatcher2
             this.txtMaxPrice.Text = config.max_price.ToString();
             this.txtProfitPercent.Text = config.profit_percent.ToString();
             this.txtMinProfit.Text = config.min_profit_range.ToString();
+            this.txtNumberOfPeople.Text = config.number_of_people.ToString();
+            this.txtYourNumber.Text = config.my_number.ToString();
         }
 
         private void btnAddNewClick(object sender, EventArgs e)

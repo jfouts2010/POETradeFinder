@@ -57,10 +57,8 @@ namespace ItemWatcher2
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
-
-
-
             LoadBasicInfo();
+            DateTime lastTimeAPIcalled = DateTime.Now;
             Dictionary<string, Item> seenItems = new Dictionary<string, Item>();
             DateTime lastClearedSeen = DateTime.Now;
             DateTime refreshConfig = DateTime.Now;
@@ -108,6 +106,7 @@ namespace ItemWatcher2
                     {
                         seenItems.Clear();
                     }
+ 					SetTimeseconds(Slots);
                     if (DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
                     {
                         LoadBasicInfo();
@@ -123,7 +122,7 @@ namespace ItemWatcher2
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             // Console application output  
-                            System.Threading.Thread.Sleep(1000);
+                            lastTimeAPIcalled = DateTime.Now;
                             List<JToken> jo = JObject.Parse(reader.ReadToEnd()).Children().ToList();
                             changeID = jo[0].First.ToString();
                             List<JToken> stashes = jo[1].First.Children().ToList();
@@ -135,6 +134,7 @@ namespace ItemWatcher2
                                 foreach (JToken item in items)
                                 {
                                     Item itemProp = item.ToObject<Item>();
+
                                     if (itemProp.league != "Legacy")
                                         continue;
                                     if (string.IsNullOrEmpty(itemProp.note))
@@ -143,8 +143,12 @@ namespace ItemWatcher2
                                         continue;
                                     else
                                         seenItems.Add(itemProp.id, itemProp);
-
-
+                                    /*if (config.number_of_people > 1)
+                                    {
+                                        int whogot = findWhoGets(itemProp.id, config.number_of_people);
+                                        if (config.my_number != whogot)
+                                            continue;
+                                    }*/
                                     if (itemProp.implicitMods == null)
                                         itemProp.implicitMods = new string[] { "" };
                                     if (itemProp.explicitMods == null)
@@ -176,6 +180,7 @@ namespace ItemWatcher2
                                                 s.BaseItem = NinjaItem;
                                                 s.SellItem = itemProp;
                                                 s.name = name;
+                                                s.is_mine = findWhoGets(itemProp.id, config.number_of_people) == config.my_number;
                                                 s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
                                                 if (Slots.Count == 3)
                                                     Slots.RemoveAt(2);
@@ -319,6 +324,10 @@ namespace ItemWatcher2
                                 }
                             }
                         }
+                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < 1)
+                        {
+                            System.Threading.Thread.Sleep(1000);
+                        }
                     }
                 }
                 catch (Exception eee)
@@ -326,6 +335,7 @@ namespace ItemWatcher2
                 }
             }
         }
+
         public void SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
         {
             Slot s = new Slot();
@@ -365,13 +375,50 @@ namespace ItemWatcher2
                 });
             }
         }
+        public void SetTimeseconds(List<Slot> slots)
+        {
+            DateTime now = DateTime.Now;
+            lblSeconds1.Invoke((MethodInvoker)delegate
+            {
+                int seconds = (int)now.Subtract(Slots[0].timeset).TotalSeconds;
+                lblSeconds1.Text = seconds.ToString() + " s";
+                lblSeconds1.ForeColor = GetColor(seconds);
+            });
+            lblSeconds2.Invoke((MethodInvoker)delegate
+            {
+                int seconds = (int)now.Subtract(Slots[1].timeset).TotalSeconds;
+                lblSeconds2.Text = seconds.ToString() + " s";
+                lblSeconds2.ForeColor = GetColor(seconds);
+            });
+            lblSeconds3.Invoke((MethodInvoker)delegate
+            {
+                double seconds = (int)now.Subtract(Slots[2].timeset).TotalSeconds;
+                lblSeconds3.Text = seconds.ToString() + " s";
+                lblSeconds3.ForeColor = GetColor(seconds);
+            });
+        }
+
+        public Color GetColor(double seconds)
+        {
+            if (seconds < 10)
+            {
+                return Color.Green;
+            }
+            else if (seconds < 30)
+            {
+                return Color.Orange;
+            }
+            else return Color.Red;
+        }
         public void SetSlots(List<Slot> Slots)
         {
+
             if (Slots[0].BaseItem != null)
             {
+                Slot localslot = Slots[0];
                 richtxtBox2Rep.Invoke((MethodInvoker)delegate
                 {
-                    richtxtBox2Rep.Text = Slots[0].BaseItem.name + " " + Slots[0].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[0].name;
+                    richtxtBox2Rep.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
                     richtxtBox2Rep.ForeColor = Color.DarkGreen;
                 });
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
@@ -379,89 +426,183 @@ namespace ItemWatcher2
                     richTxtBox8Rep.ForeColor = Color.Black;
                 });
 
+                lblSeller1.Invoke((MethodInvoker)delegate
+                {
+                    lblSeller1.Text = localslot.name;
+                });
+                lblTime1.Invoke((MethodInvoker)delegate
+                {
+                    lblTime1.Text = DateTime.Now.ToShortTimeString();
+                });
+
                 textBox3.Invoke((MethodInvoker)delegate
                 {
-                    textBox3.Text = GetPriceInChaos(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value + " : " + ((Decimal)Slots[0].BaseItem.chaos_value - GetPriceInChaos(Slots[0].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[0].SellItem.note)) * 100 + "%";
+                    textBox3.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
                 richTextBox1.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox1.Lines = Slots[0].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[0].SellItem.explicitMods).ToArray();
+                    richTextBox1.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
                 richTextBox2.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox2.Lines = Slots[0].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[0].BaseItem.Explicits).ToArray();
+                    richTextBox2.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
                 checkBox1.Invoke((MethodInvoker)delegate
                 {
-                    checkBox1.Checked = Slots[0].BaseItem.type == "9";
+                    checkBox1.Checked = localslot.BaseItem.type == "9";
+                    if (checkBox1.Checked)
+                        checkBox1.ForeColor = Color.DarkGoldenrod;
+                    else
+                        checkBox1.ForeColor = Color.Black;
                 });
                 checkBox4.Invoke((MethodInvoker)delegate
                 {
-                    checkBox4.Checked = Slots[0].SellItem.corrupted.ToLower().Contains("true");
+                    checkBox4.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (checkBox4.Checked)
+                        checkBox4.ForeColor = Color.Red;
+                    else
+                        checkBox4.ForeColor = Color.Black;
                 });
-                slot0minandavrg.Invoke((MethodInvoker)delegate
+                button7.Invoke((MethodInvoker)delegate
+                {
+
+                    if (localslot.is_mine)
+                    {
+                        button7.Text = "Message";
+                        button7.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        button7.Text = "Not Mine Msg";
+                        button7.ForeColor = Color.Red;
+                    }
+                    //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
+                });
+ slot0minandavrg.Invoke((MethodInvoker)delegate
                 {
                     slot0minandavrg.Text = Slots[0].BaseItem.MinSell + ":" + Slots[0].BaseItem.MinAverage;
                 });
             }
             if (Slots[1].BaseItem != null)
             {
+                Slot localslot = Slots[1];
                 textBox4.Invoke((MethodInvoker)delegate
                 {
-                    textBox4.Text = Slots[1].BaseItem.name + " " + Slots[1].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[1].name;
+                    textBox4.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
+                });
+                lblSeller2.Invoke((MethodInvoker)delegate
+                {
+                    lblSeller2.Text = localslot.name;
+                });
+                lblTime2.Invoke((MethodInvoker)delegate
+                {
+                    lblTime2.Text = DateTime.Now.ToShortTimeString();
                 });
                 textBox5.Invoke((MethodInvoker)delegate
                 {
-                    textBox5.Text = GetPriceInChaos(Slots[1].SellItem.note) + " : " + Slots[1].BaseItem.chaos_value + " : " + ((Decimal)Slots[1].BaseItem.chaos_value - GetPriceInChaos(Slots[1].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[1].SellItem.note)) * 100 + "%";
+                    textBox5.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
                 richTextBox3.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox3.Lines = Slots[1].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[1].SellItem.explicitMods).ToArray();
+                    richTextBox3.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
                 richTextBox4.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox4.Lines = Slots[1].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[1].BaseItem.Explicits).ToArray();
+                    richTextBox4.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
                 checkBox2.Invoke((MethodInvoker)delegate
                 {
-                    checkBox2.Checked = Slots[1].BaseItem.type == "9";
+                    checkBox2.Checked = localslot.BaseItem.type == "9";
+                    if (checkBox2.Checked)
+                        checkBox2.ForeColor = Color.DarkGoldenrod;
+                    else
+                        checkBox2.ForeColor = Color.Black;
                 });
                 checkBox5.Invoke((MethodInvoker)delegate
                 {
-                    checkBox5.Checked = Slots[1].SellItem.corrupted.ToLower().Contains("true");
+                    checkBox5.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (checkBox5.Checked)
+                        checkBox5.ForeColor = Color.Red;
+                    else
+                        checkBox5.ForeColor = Color.Black;
                 });
-                slot1minandavrg.Invoke((MethodInvoker)delegate
+                button8.Invoke((MethodInvoker)delegate
+                {
+
+                    if (localslot.is_mine)
+                    {
+                        button8.Text = "Message";
+                        button8.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        button8.Text = "Not Mine Msg";
+                        button8.ForeColor = Color.Red;
+                    }
+
+                });
+  slot1minandavrg.Invoke((MethodInvoker)delegate
                 {
                     slot1minandavrg.Text = Slots[1].BaseItem.MinSell + ":" + Slots[1].BaseItem.MinAverage;
                 });
             }
             if (Slots[2].BaseItem != null)
             {
+                Slot localslot = Slots[2];
                 textBox6.Invoke((MethodInvoker)delegate
                 {
-                    textBox6.Text = Slots[2].BaseItem.name + " " + Slots[2].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[2].name;
+                    textBox6.Text = localslot.BaseItem.name + " " + localslot.SellItem.typeLine;
+                });
+                lblSeller3.Invoke((MethodInvoker)delegate
+                {
+                    lblSeller3.Text = localslot.name;
+                });
+                lblTime3.Invoke((MethodInvoker)delegate
+                {
+                    lblTime3.Text = DateTime.Now.ToShortTimeString();
                 });
                 textBox7.Invoke((MethodInvoker)delegate
                 {
-                    textBox7.Text = GetPriceInChaos(Slots[2].SellItem.note) + " : " + Slots[2].BaseItem.chaos_value + " : " + ((Decimal)Slots[2].BaseItem.chaos_value - GetPriceInChaos(Slots[2].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[2].SellItem.note)) * 100 + "%";
+                    textBox7.Text = GetPriceInChaos(localslot.SellItem.note) + " : " + localslot.BaseItem.chaos_value + " : " + ((Decimal)localslot.BaseItem.chaos_value - GetPriceInChaos(localslot.SellItem.note)) / ((Decimal)GetPriceInChaos(localslot.SellItem.note)) * 100 + "%";
                 });
                 richTextBox5.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox5.Lines = Slots[2].SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[2].SellItem.explicitMods).ToArray();
+                    richTextBox5.Lines = localslot.SellItem.implicitMods.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.SellItem.explicitMods).ToArray();
                 });
                 richTextBox6.Invoke((MethodInvoker)delegate
                 {
-                    richTextBox6.Lines = Slots[2].BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(Slots[2].BaseItem.Explicits).ToArray();
+                    richTextBox6.Lines = localslot.BaseItem.Implicits.Concat(new string[] { "__________________" }).ToArray().Concat(localslot.BaseItem.Explicits).ToArray();
                 });
                 checkBox3.Invoke((MethodInvoker)delegate
                 {
-                    checkBox3.Checked = Slots[2].BaseItem.type == "9";
+                    checkBox3.Checked = localslot.BaseItem.type == "9";
+                    if (checkBox3.Checked)
+                        checkBox3.ForeColor = Color.DarkGoldenrod;
+                    else
+                        checkBox3.ForeColor = Color.Black;
                 });
                 checkBox6.Invoke((MethodInvoker)delegate
                 {
-                    checkBox6.Checked = Slots[2].SellItem.corrupted.ToLower().Contains("true");
+                    checkBox6.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    if (checkBox6.Checked)
+                        checkBox6.ForeColor = Color.Red;
+                    else
+                        checkBox6.ForeColor = Color.Black;
                 });
-                slot2minandavrg.Invoke((MethodInvoker)delegate
+                button13.Invoke((MethodInvoker)delegate
+                {
+                    if (localslot.is_mine)
+                    {
+                        button13.Text = "Message";
+                        button13.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        button13.Text = "Not Mine Msg";
+                        button13.ForeColor = Color.Red;
+                    }
+                });
+   slot2minandavrg.Invoke((MethodInvoker)delegate
                 {
                     slot2minandavrg.Text = Slots[2].BaseItem.MinSell + ":" + Slots[2].BaseItem.MinAverage;
                 });
@@ -497,6 +638,13 @@ namespace ItemWatcher2
             {
                 return "";
             }
+        }
+        public int findWhoGets(string input, int number_of_people)
+        {
+            string final = string.Join("", input.Where(p => Char.IsDigit(p)));
+            double realnumber = Convert.ToDouble(final);
+            return (int)((realnumber % number_of_people) + 1);
+
         }
         public static decimal GetPriceInChaos(string input)
         {
@@ -608,29 +756,28 @@ namespace ItemWatcher2
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
-
-                foreach (NinjaItem nj in NinjaItems)
-                {
-                    //lets look for rolls
-                    if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15 && nj.base_type != "")
+                if (config.do_all_uniques_with_ranges)
+                    foreach (NinjaItem nj in NinjaItems)
                     {
-                        List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
-                        foreach (string explicitRoll in nj.Explicits)
+                        //lets look for rolls
+                        if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15 && nj.base_type != "")
                         {
-                            if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
+                            List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
+                            foreach (string explicitRoll in nj.Explicits)
                             {
-                                string s = SearchString(explicitRoll);
-                                // lets see if there are multi rolls in a explicit
-                                int countasdf = explicitRoll.Count(c => c == '(');
-                                if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
+                                if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
                                 {
-                                    if (explicitRoll.Contains(" to "))
+                                    string s = SearchString(explicitRoll);
+                                    // lets see if there are multi rolls in a explicit
+                                    int countasdf = explicitRoll.Count(c => c == '(');
+                                    if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
                                     {
-                                        List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
-                                        List<decimal> MinRolls = new List<decimal>();
-                                        List<decimal> MaxRolls = new List<decimal>();
-                                        foreach (string roll in Rolls)
+                                        if (explicitRoll.Contains(" to "))
                                         {
+                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                            List<decimal> MinRolls = new List<decimal>();
+                                            List<decimal> MaxRolls = new List<decimal>();
+                                            foreach (string roll in Rolls)
                                             decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
                                             decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
                                             if (MaxRollsTemp < MinRollsTemp)
@@ -653,29 +800,69 @@ namespace ItemWatcher2
                                         {
                                             if (roll.Contains("(") && roll.Contains(")"))
                                             {
-                                                MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                                MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
-                                                if (MaxRolls < MinRolls)
+                                                decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                                decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                                if (MaxRollsTemp < MinRollsTemp)
                                                     MaxRolls = MinRolls;
+                                                MinRolls.Add(MinRollsTemp);
+                                                MaxRolls.Add(MaxRollsTemp);
                                             }
-                                            else
-                                            {
-                                                SingularRoll = GetMultipleNumbers(roll);
-                                            }
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
                                         }
-                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
                                     }
                                     else
                                     {
-                                        decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
-                                        decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
-                                        if (MaxRoll < MinRoll)
-                                            MaxRoll = MinRoll;
-                                        explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                                        if (explicitRoll.Contains(" to ("))
+                                        {
+                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                            decimal MinRolls = 0;
+                                            decimal MaxRolls = 0;
+                                            decimal SingularRoll = 0;
+                                            foreach (string roll in Rolls)
+                                            {
+                                                if (roll.Contains("(") && roll.Contains(")"))
+                                                {
+                                                    MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                                    MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                                    if (MaxRolls < MinRolls)
+                                                        MaxRolls = MinRolls;
+                                                }
+                                                else
+                                                {
+                                                    SingularRoll = GetMultipleNumbers(roll);
+                                                }
+                                            }
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
+                                        }
+                                        else
+                                        {
+                                            decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
+                                            decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
+                                            if (MaxRoll < MinRoll)
+                                                MaxRoll = MinRoll;
+                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                                        }
                                     }
                                 }
                             }
-
+                            string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
+                            string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                            foreach (ExplicitField ef in explicitsToCheck)
+                            {
+                                modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                                modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                            }
+                            if (explicitsToCheck.Count == 0)
+                            {
+                                MinSearch(nj, modsMinSearch, explicitsToCheck);
+                                nj.HasRolls = false;
+                            }
+                            else
+                            {
+                                MinSearch(nj, modsMinSearch, explicitsToCheck);
+                                MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                                nj.HasRolls = true;
+                            }
                         }
 
                         string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
@@ -698,7 +885,6 @@ namespace ItemWatcher2
                         }
 
                     }
-                }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
                 string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
@@ -759,15 +945,17 @@ namespace ItemWatcher2
                         }
 
                     }
-                    if (count > 0)
-                        AvrgSellTop5 = AvrgSellTop5 / count;
                 }
+                if (count > 0)
+                    AvrgSellTop5 = AvrgSellTop5 / count;
             }
             nj.MinSell = MinSell;
             nj.MinAverage = AvrgSellTop5;
-
         }
-        public static void MaxSearch(NinjaItem nj, string modsMaxSearch, List<ExplicitField> explicitsToCheck)
+        
+
+        
+    public static void MaxSearch(NinjaItem nj, string modsMaxSearch, List<ExplicitField> explicitsToCheck)
         {
             string rarity = "unique";
             if (nj.type == "9")
@@ -850,6 +1038,7 @@ namespace ItemWatcher2
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
             public bool HasRolls;
+            public bool HasRolls { get; set; }
             public override string ToString()
             {
                 return name + " : " + chaos_value;
@@ -905,11 +1094,17 @@ namespace ItemWatcher2
 
         public class Slot
         {
+            public Slot()
+            {
+                timeset = DateTime.Now;
+            }
+            public DateTime timeset;
             public Item SellItem;
             public NinjaItem BaseItem;
             public string Message;
             public string name;
             public string worth;
+            public bool is_mine { get; set; }
         }
         public class Item
         {
@@ -965,7 +1160,8 @@ namespace ItemWatcher2
             public int max_price { get; set; }
             public decimal profit_percent { get; set; }
             public int min_profit_range { get; set; }
-
+            public int my_number { get; set; }
+            public int number_of_people { get; set; }
             public List<NinjaItem> SavedItems { get; set; }
             public DateTime LastSaved { get; set; }
         }
