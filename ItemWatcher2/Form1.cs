@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques) ;// && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
 
             NinjaItems = config.SavedItems;
