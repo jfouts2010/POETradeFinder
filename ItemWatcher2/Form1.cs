@@ -314,11 +314,17 @@ namespace ItemWatcher2
             LeaguestoneSlots.Insert(0, s);
             if (LeaguestoneSlots[0].SellItem != null)
             {
-                textBox8.Invoke((MethodInvoker)delegate
+                
+                richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                    textBox8.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                     richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                    richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
+            richtxtBox2Rep.Invoke((MethodInvoker)delegate
+            {
+                richtxtBox2Rep.ForeColor = Color.Black;
+            });
             if (LeaguestoneSlots[1].SellItem != null)
             {
                 textBox9.Invoke((MethodInvoker)delegate
@@ -338,10 +344,16 @@ namespace ItemWatcher2
         {
             if (Slots[0].BaseItem != null)
             {
-                textBox2.Invoke((MethodInvoker)delegate
+                richtxtBox2Rep.Invoke((MethodInvoker)delegate
                 {
-                    textBox2.Text = Slots[0].BaseItem.name + " " + Slots[0].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[0].name;
+                    richtxtBox2Rep.Text = Slots[0].BaseItem.name + " " + Slots[0].SellItem.typeLine + " : " + DateTime.Now.ToShortTimeString() + " " + Slots[0].name;
+                    richtxtBox2Rep.ForeColor = Color.DarkGreen;
                 });
+                richTxtBox8Rep.Invoke((MethodInvoker)delegate
+                {
+                    richTxtBox8Rep.ForeColor = Color.Black;
+                });
+                
                 textBox3.Invoke((MethodInvoker)delegate
                 {
                     textBox3.Text = GetPriceInChaos(Slots[0].SellItem.note) + " : " + Slots[0].BaseItem.chaos_value + " : " + ((Decimal)Slots[0].BaseItem.chaos_value - GetPriceInChaos(Slots[0].SellItem.note)) / ((Decimal)GetPriceInChaos(Slots[0].SellItem.note)) * 100 + "%";
@@ -591,7 +603,7 @@ namespace ItemWatcher2
                                             MaxRolls.Add(MaxRollsTemp);
                                         }
                                         explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
-                                    }
+        }
                                 }
                                 else
                                 {
@@ -703,6 +715,8 @@ namespace ItemWatcher2
                                 }
                                 count++;
                             }
+                            }
+
                         }
                     }
                     if (count > 0)
@@ -746,10 +760,11 @@ namespace ItemWatcher2
                         if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5)
                         {
                             if (first)
-                            {
+                                {
                                 HighRollMinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 HighRollMinSell += HighRollMinSell;
                                 first = false;
+                                }
                             }
                             else
                             {
@@ -761,7 +776,6 @@ namespace ItemWatcher2
                     if (count > 0)
                         HighRollMinSell = HighRollMinSell / count;
                 }
-            }
             nj.HighRollMinSell = HighRollMinSell;
             nj.HighRollAvrgSell = HighRollMinSell;
         }
@@ -1008,7 +1022,7 @@ namespace ItemWatcher2
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
                     System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
-                }
+    }
             }
         }
 

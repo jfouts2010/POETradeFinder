@@ -36,7 +36,6 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
@@ -64,17 +63,17 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.button18 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-            this.button22 = new System.Windows.Forms.Button();
+this.richtxtBox2Rep = new System.Windows.Forms.RichTextBox();
+            this.richTxtBox8Rep = new System.Windows.Forms.RichTextBox();
+this.button22 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
-            this.button24 = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            this.button24 = new System.Windows.Forms.Button();            this.SuspendLayout();
             // 
             // textBox1
             // 
@@ -147,14 +146,6 @@
             this.button7.Text = "Message";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(12, 136);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(292, 20);
-            this.textBox2.TabIndex = 8;
             // 
             // textBox3
             // 
@@ -406,14 +397,6 @@
             this.checkBox6.UseVisualStyleBackColor = true;
             this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
             // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(12, 550);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(697, 20);
-            this.textBox8.TabIndex = 38;
-            // 
             // textBox9
             // 
             this.textBox9.Location = new System.Drawing.Point(12, 588);
@@ -469,7 +452,23 @@
             this.button21.Text = "Leaguestones";
             this.button21.UseVisualStyleBackColor = true;
             // 
-            // button22
+// richtxtBox2Rep
+            // 
+            this.richtxtBox2Rep.Location = new System.Drawing.Point(12, 136);
+            this.richtxtBox2Rep.Name = "richtxtBox2Rep";
+            this.richtxtBox2Rep.ReadOnly = true;
+            this.richtxtBox2Rep.Size = new System.Drawing.Size(292, 20);
+            this.richtxtBox2Rep.TabIndex = 0;
+            this.richtxtBox2Rep.Text = "";
+            // 
+            // richTxtBox8Rep
+            // 
+            this.richTxtBox8Rep.Location = new System.Drawing.Point(12, 553);
+            this.richTxtBox8Rep.Name = "richTxtBox8Rep";
+            this.richTxtBox8Rep.ReadOnly = true;
+            this.richTxtBox8Rep.Size = new System.Drawing.Size(697, 20);
+            this.richTxtBox8Rep.TabIndex = 45;
+            this.richTxtBox8Rep.Text = "";// button22
             // 
             this.button22.Location = new System.Drawing.Point(938, 203);
             this.button22.Name = "button22";
@@ -497,23 +496,20 @@
             this.button24.TabIndex = 47;
             this.button24.Text = "PoE.Trade";
             this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
-            // 
-            // Form1
+            this.button24.Click += new System.EventHandler(this.button24_Click);            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1050, 656);
-            this.Controls.Add(this.button24);
+			this.Controls.Add(this.richTxtBox8Rep);
+            this.Controls.Add(this.richtxtBox2Rep);			this.Controls.Add(this.button24);
             this.Controls.Add(this.button23);
-            this.Controls.Add(this.button22);
-            this.Controls.Add(this.button21);
+            this.Controls.Add(this.button22);            this.Controls.Add(this.button21);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
             this.Controls.Add(this.textBox10);
             this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.textBox8);
             this.Controls.Add(this.checkBox6);
             this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox4);
@@ -541,7 +537,6 @@
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -568,7 +563,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
@@ -596,16 +590,15 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.Button button22;
+		private System.Windows.Forms.RichTextBox richtxtBox2Rep;
+        private System.Windows.Forms.RichTextBox richTxtBox8Rep;		private System.Windows.Forms.Button button22;
         private System.Windows.Forms.Button button23;
-        private System.Windows.Forms.Button button24;
-    }
+        private System.Windows.Forms.Button button24;    }
 }
 
