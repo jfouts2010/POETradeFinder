@@ -98,7 +98,7 @@ namespace ItemWatcher2
 
                             txtBoxUpdateThread.Text = "Updating Poe.Trade " + counter++ + "/" + NinjaItems.Count;
                         });
-                        ExplicitFieldSearch(nj);
+                        ItemExplicitFieldSearch(nj);
                     }
                 }
                 config.SavedItems = NinjaItems;
@@ -109,7 +109,7 @@ namespace ItemWatcher2
             return NinjaItems;
         }
 
-        public static void ExplicitFieldSearch(NinjaItem nj, bool manual = false)
+        public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
         {
             //lets look for rolls
             if (/*nj.Explicits.Count > 0 && !nj.base_type.Contains("Map")*/ nj.chaos_value > 15 || manual)
@@ -182,6 +182,7 @@ namespace ItemWatcher2
 
                 string modsMinSearch = "";
                 string modsMaxSearch = "";
+                string modsMidSearch = "";
                 nj.ExplicitFields = explicitsToCheck;
                 foreach (ExplicitField ef in explicitsToCheck)
                 {
@@ -189,7 +190,9 @@ namespace ItemWatcher2
                     {
                         modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
                         decimal HighRoll = ((ef.MaxRoll - ef.MinRoll) * 0.9M) + ef.MinRoll;
+                        decimal MidRoll = ((ef.MaxRoll - ef.MinRoll) * 0.5M) + ef.MinRoll;
                         modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode((HighRoll).ToString()) + "&mod_max=&";
+                        modsMidSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode((MidRoll).ToString()) + "&mod_max=&";
                     }
                 }
                 if (explicitsToCheck.Count == 0)
@@ -200,9 +203,19 @@ namespace ItemWatcher2
                 }
                 else
                 {
-                    MinSearch(nj, modsMinSearch, explicitsToCheck);
-                    MaxSearch(nj, modsMaxSearch, explicitsToCheck);
-                    nj.HasRolls = true;
+                    if (nj.chaos_value > 30)
+                    {
+                        MinSearch(nj, modsMinSearch, explicitsToCheck);
+                        MidSearch(nj, modsMidSearch, explicitsToCheck);
+                        MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                        nj.HasRolls = true;
+                    }
+                    else
+                    {
+                        MinSearch(nj, modsMinSearch, explicitsToCheck);
+                        MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                        nj.HasRolls = true;
+                    }
                 }
 
             }
@@ -321,27 +334,86 @@ namespace ItemWatcher2
 
                     foreach (var input in inputs)
                     {
-                        if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5)
+                        if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("chaos") || input.Attributes["data-buyout"].Value.Contains("exalted")))
                         {
                             if (first)
                             {
                                 HighRollMinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
-                                HighRollMinSell += HighRollMinSell;
+                                HighRollAvrgSell += HighRollMinSell;
                                 first = false;
                             }
+                            else
+                            {
+                                HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
+                            }
+                            count++;
                         }
-                        else
-                        {
-                            HighRollAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
-                        }
-                        count++;
+
                     }
                 }
                 if (count > 0)
-                    HighRollMinSell = HighRollMinSell / count;
+                    HighRollAvrgSell = HighRollAvrgSell / count;
             }
             nj.HighRollMinSell = HighRollMinSell;
-            nj.HighRollAvrgSell = HighRollMinSell;
+            nj.HighRollAvrgSell = HighRollAvrgSell;
+        }
+        public static void MidSearch(NinjaItem nj, string modsMidSearch, List<ExplicitField> explicitsToCheck)
+        {
+            string rarity = "unique";
+            if (nj.type == "9")
+                rarity = "relic";
+            else if (nj.item_class == 6 || nj.type == "6")
+                rarity = "";
+            //max search
+            decimal MidLowSell = 0;
+            decimal MidAvrgSell = 0;
+            int count = 0;
+            bool first = true;
+            string redirectUrl = "";
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+            request23.Method = "POST";
+            request23.KeepAlive = true;
+            request23.ContentType = "application/x-www-form-urlencoded";
+            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+            string name = nj.name;
+            if (!string.IsNullOrEmpty(nj.base_type))
+                name += " " + nj.base_type;
+            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMidSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            postwriter.Close();
+            using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    string s = reader.ReadToEnd();
+                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    htmlDoc.LoadHtml(s);
+                    var inputs = htmlDoc.DocumentNode.Descendants("tbody");
+
+                    foreach (var input in inputs)
+                    {
+                        if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("chaos") || input.Attributes["data-buyout"].Value.Contains("exalted")))
+                        {
+                            if (first)
+                            {
+                                MidLowSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
+                                MidAvrgSell += MidLowSell;
+                                first = false;
+                            }
+                            else
+                            {
+                                MidAvrgSell += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
+                            }
+                            count++;
+                        }
+
+                    }
+                }
+                if (count > 0)
+                    MidAvrgSell = MidAvrgSell / count;
+            }
+            nj.MidLowSell = MidLowSell;
+            nj.MidAvrgSell = MidAvrgSell;
         }
         public static List<string> FindPoETradeExplicits()
         {

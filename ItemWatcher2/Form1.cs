@@ -51,7 +51,7 @@ namespace ItemWatcher2
                     txtBoxUpdateThread.Text = "Doing Nothing";
                 });
 
-                if (config.LastSaved.AddHours(1) < DateTime.Now)
+                if (config.LastSaved.AddHours(1) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
                 {
                     txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                     {
@@ -825,6 +825,8 @@ namespace ItemWatcher2
             public decimal MinAverage { get; set; }
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
+            public decimal MidLowSell { get; set; }
+            public decimal MidAvrgSell { get; set; }
             public List<decimal> Top5Sells { get; set; }
             public bool HasRolls { get; set; }
             public bool UseNinjaPrice = true;
@@ -853,11 +855,11 @@ namespace ItemWatcher2
         public static void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
-            JObject jo = JObject.Parse(serialized);
-            serialized = jo.ToString();
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            JObject jo2 = JObject.Parse(serialized);
+            serialized = jo2.ToString();
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
@@ -1148,19 +1150,19 @@ namespace ItemWatcher2
 
         private void btnRefreshPoe1_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ExplicitFieldSearch(Slots[0].BaseItem, true);
+            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[0].BaseItem, true);
             SetSlots(Slots);
         }
 
         private void btnRefreshPoe2_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ExplicitFieldSearch(Slots[1].BaseItem,true);
+            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[1].BaseItem,true);
             SetSlots(Slots);
         }
 
         private void btnRefreshPoe3_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ExplicitFieldSearch(Slots[2].BaseItem, true);
+            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[2].BaseItem, true);
             SetSlots(Slots);
         }
 
