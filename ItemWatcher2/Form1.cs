@@ -28,6 +28,7 @@ namespace ItemWatcher2
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Form1.Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
+        public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
             InitializeComponent();
@@ -45,8 +46,16 @@ namespace ItemWatcher2
             LoadBasicInfo();
             while (true)
             {
+                txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                {
+                    txtBoxUpdateThread.Text = "Doing Nothing";
+                });
                 if (config.LastSaved.AddHours(1) < DateTime.Now && config.LastSaved.AddDays(1) >= DateTime.Now)
                 {
+                    txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxUpdateThread.Text = "Starting Ninja Update";
+                    });
                     SetNinjaValues(new List<NinjaItem>());
                     LoadBasicInfo();
                 }
@@ -109,7 +118,7 @@ namespace ItemWatcher2
                         seenItems.Clear();
                     }
                     SetTimeseconds(Slots);
-                    if (config.do_all_uniques_with_ranges &&  DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    if (config.do_all_uniques_with_ranges && DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
                     {
                         LoadBasicInfo();
                         NinjaItems = config.SavedItems;
@@ -127,7 +136,7 @@ namespace ItemWatcher2
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             // Console application output  
-                            
+
                             lastTimeAPIcalled = DateTime.Now;
                             List<JToken> jo = JObject.Parse(reader.ReadToEnd()).Children().ToList();
                             changeID = jo[0].First.ToString();
@@ -198,13 +207,13 @@ namespace ItemWatcher2
                                                 s.name = name;
                                                 s.is_mine = findWhoGets(itemProp.id, config.number_of_people) == config.my_number;
                                                 s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-                                                
+
                                                 if (Slots.Count == 3)
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
-                                                
-                                               
+
+
 
                                             }
                                         }
@@ -224,8 +233,8 @@ namespace ItemWatcher2
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
-                                                
-                                                
+
+
                                             }
                                         }
                                     if (config.do_breachstones)
@@ -265,7 +274,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 31c");
-                                                        
+
                                                     }
                                                 }
                                                 //2.1 per breach * 5 * 2 = 21c
@@ -274,7 +283,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 21c");
-                                                        
+
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 3 = 19c
@@ -283,7 +292,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 19c");
-                                                        
+
                                                     }
                                                 }
                                                 //2.1 per breach * 5 = 10c
@@ -292,7 +301,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 5)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 10c");
-                                                        
+
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 2 = 12c
@@ -301,7 +310,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 12c");
-                                                        
+
                                                     }
                                                 }
                                                 //1c per splinter * 10 * 5 = 50c
@@ -310,7 +319,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 35)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 50c");
-                                                       
+
                                                     }
                                                 }
                                                 //1c per splinter * 6 * 5 = 30c
@@ -319,7 +328,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 30c");
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -349,13 +358,13 @@ namespace ItemWatcher2
             s.SellItem = itemProp;
             s.name = name;
             s.worth = value;
-            
+
             s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-            
+
             SoundPlayer player = new SoundPlayer();
             player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
             player.Play();
-           
+
 
             if (LeaguestoneSlots.Count == 3)
                 LeaguestoneSlots.RemoveAt(2);
@@ -432,6 +441,7 @@ namespace ItemWatcher2
             player.Play();
             if (Slots[0].BaseItem != null)
             {
+
                 Slot localslot = Slots[0];
                 richtxtBox2Rep.Invoke((MethodInvoker)delegate
                 {
@@ -480,11 +490,14 @@ namespace ItemWatcher2
                     else
                         checkBox4.ForeColor = Color.Black;
                 });
+
                 button7.Invoke((MethodInvoker)delegate
                 {
 
                     if (localslot.is_mine)
                     {
+                        if (DateTime.Now.Subtract(last_time_clicked).TotalSeconds > 20)
+                            button7.PerformClick();
                         button7.Text = "Message";
                         button7.ForeColor = Color.Green;
                     }
@@ -711,7 +724,7 @@ namespace ItemWatcher2
             double dub = Convert.ToDouble(y);
             return (decimal)(dub);
         }
-        public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems)
+        public List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems)
         {
             {
                 List<JObject> Jsons = new List<JObject>();
@@ -724,6 +737,10 @@ namespace ItemWatcher2
                 APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
                 APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
                 APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
+                txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                {
+                    txtBoxUpdateThread.Text = "Doing Ninja Update";
+                });
                 foreach (string s in APIURLS)
                 {
                     HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
@@ -773,9 +790,16 @@ namespace ItemWatcher2
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
+                
                 if (config.do_all_uniques_with_ranges)
+                {
+                    int counter = 0;
                     foreach (NinjaItem nj in NinjaItems)
                     {
+                        txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                        {
+                            txtBoxUpdateThread.Text = "Updating Poe.Trade "+counter++ +"/"+NinjaItems.Count;
+                        });
                         //lets look for rolls
                         if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
                         {
@@ -871,6 +895,7 @@ namespace ItemWatcher2
                             }
                         }
                     }
+                }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
                 string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
@@ -1214,6 +1239,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(Slots[0].Message))
             {
                 string s = Slots[0].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
@@ -1223,6 +1249,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(Slots[1].Message))
             {
                 string s = Slots[1].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
@@ -1232,6 +1259,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(Slots[2].Message))
             {
                 string s = Slots[2].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
@@ -1241,6 +1269,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(LeaguestoneSlots[0].Message))
             {
                 string s = LeaguestoneSlots[0].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
@@ -1250,6 +1279,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(LeaguestoneSlots[1].Message))
             {
                 string s = LeaguestoneSlots[1].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
@@ -1259,6 +1289,7 @@ namespace ItemWatcher2
             if (!string.IsNullOrEmpty(LeaguestoneSlots[2].Message))
             {
                 string s = LeaguestoneSlots[2].Message;
+                last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
         }
