@@ -88,6 +88,14 @@ namespace ItemWatcher2
             this.slot0minandavrg = new System.Windows.Forms.RichTextBox();
             this.slot1minandavrg = new System.Windows.Forms.RichTextBox();
             this.slot2minandavrg = new System.Windows.Forms.RichTextBox();
+            this.txtBoxUpdateThread = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblUpdatedTime1 = new System.Windows.Forms.Label();
+            this.lblUpdatedTime2 = new System.Windows.Forms.Label();
+            this.lblUpdatedTime3 = new System.Windows.Forms.Label();
+            this.btnRefreshPoe1 = new System.Windows.Forms.Button();
+            this.btnRefreshPoe2 = new System.Windows.Forms.Button();
+            this.btnRefreshPoe3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -600,7 +608,7 @@ namespace ItemWatcher2
             // 
             this.slot0minandavrg.Location = new System.Drawing.Point(233, 162);
             this.slot0minandavrg.Name = "slot0minandavrg";
-            this.slot0minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot0minandavrg.Size = new System.Drawing.Size(28, 71);
             this.slot0minandavrg.TabIndex = 57;
             this.slot0minandavrg.Text = "";
             // 
@@ -608,7 +616,7 @@ namespace ItemWatcher2
             // 
             this.slot1minandavrg.Location = new System.Drawing.Point(233, 296);
             this.slot1minandavrg.Name = "slot1minandavrg";
-            this.slot1minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot1minandavrg.Size = new System.Drawing.Size(28, 71);
             this.slot1minandavrg.TabIndex = 58;
             this.slot1minandavrg.Text = "";
             // 
@@ -616,15 +624,94 @@ namespace ItemWatcher2
             // 
             this.slot2minandavrg.Location = new System.Drawing.Point(233, 433);
             this.slot2minandavrg.Name = "slot2minandavrg";
-            this.slot2minandavrg.Size = new System.Drawing.Size(87, 71);
+            this.slot2minandavrg.Size = new System.Drawing.Size(28, 71);
             this.slot2minandavrg.TabIndex = 59;
             this.slot2minandavrg.Text = "";
+            // 
+            // txtBoxUpdateThread
+            // 
+            this.txtBoxUpdateThread.Location = new System.Drawing.Point(223, 33);
+            this.txtBoxUpdateThread.Name = "txtBoxUpdateThread";
+            this.txtBoxUpdateThread.ReadOnly = true;
+            this.txtBoxUpdateThread.Size = new System.Drawing.Size(190, 20);
+            this.txtBoxUpdateThread.TabIndex = 60;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(230, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(106, 13);
+            this.label1.TabIndex = 61;
+            this.label1.Text = "UpdateThreadStatus";
+            // 
+            // lblUpdatedTime1
+            // 
+            this.lblUpdatedTime1.AutoSize = true;
+            this.lblUpdatedTime1.Location = new System.Drawing.Point(267, 163);
+            this.lblUpdatedTime1.Name = "lblUpdatedTime1";
+            this.lblUpdatedTime1.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime1.TabIndex = 62;
+            this.lblUpdatedTime1.Text = "Seller1";
+            // 
+            // lblUpdatedTime2
+            // 
+            this.lblUpdatedTime2.AutoSize = true;
+            this.lblUpdatedTime2.Location = new System.Drawing.Point(267, 296);
+            this.lblUpdatedTime2.Name = "lblUpdatedTime2";
+            this.lblUpdatedTime2.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime2.TabIndex = 63;
+            this.lblUpdatedTime2.Text = "Seller1";
+            // 
+            // lblUpdatedTime3
+            // 
+            this.lblUpdatedTime3.AutoSize = true;
+            this.lblUpdatedTime3.Location = new System.Drawing.Point(267, 433);
+            this.lblUpdatedTime3.Name = "lblUpdatedTime3";
+            this.lblUpdatedTime3.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime3.TabIndex = 64;
+            this.lblUpdatedTime3.Text = "Seller1";
+            // 
+            // btnRefreshPoe1
+            // 
+            this.btnRefreshPoe1.Location = new System.Drawing.Point(267, 199);
+            this.btnRefreshPoe1.Name = "btnRefreshPoe1";
+            this.btnRefreshPoe1.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe1.TabIndex = 65;
+            this.btnRefreshPoe1.Text = "Sell / Actual Value";
+            this.btnRefreshPoe1.UseVisualStyleBackColor = true;
+            // 
+            // btnRefreshPoe2
+            // 
+            this.btnRefreshPoe2.Location = new System.Drawing.Point(270, 330);
+            this.btnRefreshPoe2.Name = "btnRefreshPoe2";
+            this.btnRefreshPoe2.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe2.TabIndex = 66;
+            this.btnRefreshPoe2.Text = "Sell / Actual Value";
+            this.btnRefreshPoe2.UseVisualStyleBackColor = true;
+            // 
+            // btnRefreshPoe3
+            // 
+            this.btnRefreshPoe3.Location = new System.Drawing.Point(270, 457);
+            this.btnRefreshPoe3.Name = "btnRefreshPoe3";
+            this.btnRefreshPoe3.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe3.TabIndex = 67;
+            this.btnRefreshPoe3.Text = "Sell / Actual Value";
+            this.btnRefreshPoe3.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.btnRefreshPoe3);
+            this.Controls.Add(this.btnRefreshPoe2);
+            this.Controls.Add(this.btnRefreshPoe1);
+            this.Controls.Add(this.lblUpdatedTime3);
+            this.Controls.Add(this.lblUpdatedTime2);
+            this.Controls.Add(this.lblUpdatedTime1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtBoxUpdateThread);
             this.Controls.Add(this.slot2minandavrg);
             this.Controls.Add(this.slot1minandavrg);
             this.Controls.Add(this.slot0minandavrg);
@@ -751,6 +838,14 @@ namespace ItemWatcher2
         private System.Windows.Forms.RichTextBox slot0minandavrg;
         private System.Windows.Forms.RichTextBox slot1minandavrg;
         private System.Windows.Forms.RichTextBox slot2minandavrg;
+        private System.Windows.Forms.TextBox txtBoxUpdateThread;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblUpdatedTime1;
+        private System.Windows.Forms.Label lblUpdatedTime2;
+        private System.Windows.Forms.Label lblUpdatedTime3;
+        private System.Windows.Forms.Button btnRefreshPoe1;
+        private System.Windows.Forms.Button btnRefreshPoe2;
+        private System.Windows.Forms.Button btnRefreshPoe3;
     }
 }
 
