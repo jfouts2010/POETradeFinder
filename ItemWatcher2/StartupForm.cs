@@ -70,6 +70,7 @@ namespace ItemWatcher2
 
 			config.my_number = Convert.ToInt32(this.txtYourNumber.Text);
             config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);
+            config.refresh_hours = Convert.ToInt32(this.txtRefreshHours.Text);
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             JObject jo = JObject.Parse(serialized);
             serialized = jo.ToString();
@@ -103,7 +104,13 @@ namespace ItemWatcher2
                     xoph_value = 6,
                     exalt_ratio = 68,
                     alch_ratio = .333M,
-                    fusing_ratio = .444M
+                    fusing_ratio = .444M,
+                    refresh_hours=1,
+                     LastSaved=DateTime.Now,
+                      number_of_people=1,
+                       my_number=1,
+                        max_price=100,
+                         profit_percent=.9M,
                 };
             }
             this.txtEsh.Text = config.esh_value.ToString();
@@ -121,6 +128,7 @@ namespace ItemWatcher2
             this.txtMinProfit.Text = config.min_profit_range.ToString();
             this.txtNumberOfPeople.Text = config.number_of_people.ToString();
             this.txtYourNumber.Text = config.my_number.ToString();
+            this.txtRefreshHours.Text = config.refresh_hours.ToString();
         }
 
         private void btnAddNewClick(object sender, EventArgs e)

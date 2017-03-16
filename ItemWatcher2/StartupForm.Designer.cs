@@ -69,6 +69,8 @@
             this.txtYourNumber = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtRefreshHours = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -422,11 +424,29 @@
             this.label17.TabIndex = 40;
             this.label17.Text = "Your Number";
             // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(312, 199);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(75, 13);
+            this.label18.TabIndex = 42;
+            this.label18.Text = "Refresh Hours";
+            // 
+            // txtRefreshHours
+            // 
+            this.txtRefreshHours.Location = new System.Drawing.Point(315, 215);
+            this.txtRefreshHours.Name = "txtRefreshHours";
+            this.txtRefreshHours.Size = new System.Drawing.Size(100, 20);
+            this.txtRefreshHours.TabIndex = 41;
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.txtRefreshHours);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.txtYourNumber);
@@ -519,5 +539,7 @@
         private System.Windows.Forms.TextBox txtYourNumber;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtRefreshHours;
     }
 }

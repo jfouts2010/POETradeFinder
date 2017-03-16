@@ -57,11 +57,11 @@ namespace ItemWatcher2
                     {
                         txtBoxUpdateThread.Text = "Starting Ninja Update";
                     });
-                    NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread);
+                    NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread,true);
                     
                 }
                 else
-                    System.Threading.Thread.Sleep(60000);
+                    System.Threading.Thread.Sleep(1000);
                 LoadBasicInfo();
             }
         }
@@ -120,7 +120,7 @@ namespace ItemWatcher2
                         seenItems.Clear();
                     }
                     SetTimeseconds(Slots);
-                    if (config.do_all_uniques_with_ranges && DateTime.Now.Subtract(refreshConfig).TotalSeconds > 600)
+                    if (config.do_all_uniques_with_ranges && DateTime.Now.Subtract(refreshConfig).TotalSeconds > 50)
                     {
                         LoadBasicInfo();
                         NinjaItems = config.SavedItems;
@@ -855,11 +855,13 @@ namespace ItemWatcher2
         public static void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
-            JObject jo2 = JObject.Parse(serialized);
-            serialized = jo2.ToString();
+            JObject jo = JObject.Parse(serialized);
+            serialized = jo.ToString();
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
@@ -991,6 +993,7 @@ namespace ItemWatcher2
             public List<NinjaItem> SavedItems { get; set; }
             public List<string> avaliableExplicits { get; set; }
             public DateTime LastSaved { get; set; }
+            public int refresh_hours { get; set; }
             public bool refresh_items { get; set; }
             public bool update_ninja_when_manul_refresh { get; set; }
         }
@@ -1170,6 +1173,30 @@ namespace ItemWatcher2
         {
             config.LastSaved = DateTime.Now.AddDays(-2);
             SaveNames();
+        }
+
+        private void btnOverride1_Click(object sender, EventArgs e)
+        {
+            Slot localslot = Slots[0];
+            decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
+            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            SetSlots(Slots);
+        }
+
+        private void btnOverride2_Click(object sender, EventArgs e)
+        {
+            Slot localslot = Slots[1];
+            decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
+            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            SetSlots(Slots);
+        }
+
+        private void btnOverride3_Click(object sender, EventArgs e)
+        {
+            Slot localslot = Slots[2];
+            decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
+            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            SetSlots(Slots);
         }
     }
 }
