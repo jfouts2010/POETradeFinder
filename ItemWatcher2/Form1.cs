@@ -740,6 +740,7 @@ namespace ItemWatcher2
                         newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
                         newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
                         newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
+                        newNinjaItem.item_class = Convert.ToInt32(jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString());
                         List<string> implicits = new List<string>();
                         foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
                         {
@@ -771,7 +772,7 @@ namespace ItemWatcher2
                     foreach (NinjaItem nj in NinjaItems)
                     {
                         //lets look for rolls
-                        if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15 && nj.base_type != "")
+                        if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
                         {
                             List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
                             foreach (string explicitRoll in nj.Explicits)
@@ -857,6 +858,13 @@ namespace ItemWatcher2
                             }
 
                         }
+                        else
+                        {
+                            if (nj.type == "6" && nj.base_type.Contains("Map"))
+                            {
+                                MinSearch(nj, "", new List<ExplicitField>());
+                            }
+                        }
                     }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
@@ -871,6 +879,8 @@ namespace ItemWatcher2
             string rarity = "unique";
             if (nj.type == "9")
                 rarity = "relic";
+            else if (nj.item_class == 6 || nj.type == "6")
+                rarity = "";
             //min search
             decimal MinSell = 0;
             decimal AvrgSellTop5 = 0;
@@ -883,7 +893,10 @@ namespace ItemWatcher2
             request23.KeepAlive = true;
             request23.ContentType = "application/x-www-form-urlencoded";
             StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(nj.name + " " + nj.base_type) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMinSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            string name = nj.name;
+            if (!string.IsNullOrEmpty(nj.base_type))
+                name += " " + nj.base_type;
+            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMinSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
@@ -934,6 +947,8 @@ namespace ItemWatcher2
             string rarity = "unique";
             if (nj.type == "9")
                 rarity = "relic";
+            else if (nj.item_class == 6 || nj.type == "6")
+                rarity = "";
             //max search
             decimal HighRollMinSell = 0;
             decimal HighRollAvrgSell = 0;
@@ -1000,7 +1015,7 @@ namespace ItemWatcher2
                 Implicits = new List<string>();
                 Explicits = new List<string>();
             }
-
+            public int item_class { get; set; }
             public string name { get; set; }
             public decimal chaos_value { get; set; }
             public string type { get; set; }
@@ -1250,6 +1265,8 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[0].BaseItem.type == "9")
                     rarity = "relic";
+                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6")
+                    rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                 request23.Method = "POST";
@@ -1272,6 +1289,8 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[1].BaseItem.type == "9")
                     rarity = "relic";
+                else if (Slots[1].BaseItem.item_class == 6 || Slots[1].BaseItem.type == "6")
+                    rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                 request23.Method = "POST";
@@ -1294,6 +1313,8 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[2].BaseItem.type == "9")
                     rarity = "relic";
+                else if (Slots[2].BaseItem.item_class == 6 || Slots[2].BaseItem.type == "6")
+                    rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                 request23.Method = "POST";
