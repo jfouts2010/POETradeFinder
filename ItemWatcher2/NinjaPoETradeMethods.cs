@@ -19,7 +19,7 @@ namespace ItemWatcher2
 {
     public class NinjaPoETradeMethods
     {
-        public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread)
+        public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
         {
             {
                 List<JObject> Jsons = new List<JObject>();
@@ -86,7 +86,7 @@ namespace ItemWatcher2
                     }
                 }
 
-                if (config.do_all_uniques_with_ranges)
+                if (config.do_all_uniques_with_ranges && do_poetrade_lookup)
                 {
                     avaliableExplicits = FindPoETradeExplicits();
                     config.avaliableExplicits = avaliableExplicits;

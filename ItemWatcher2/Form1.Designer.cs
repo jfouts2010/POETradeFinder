@@ -97,6 +97,9 @@ namespace ItemWatcher2
             this.btnRefreshPoe2 = new System.Windows.Forms.Button();
             this.btnRefreshPoe3 = new System.Windows.Forms.Button();
             this.btnRefreshPoe = new System.Windows.Forms.Button();
+            this.btnOverride1 = new System.Windows.Forms.Button();
+            this.btnOverride2 = new System.Windows.Forms.Button();
+            this.btnOverride3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -713,11 +716,44 @@ namespace ItemWatcher2
             this.btnRefreshPoe.UseVisualStyleBackColor = true;
             this.btnRefreshPoe.Click += new System.EventHandler(this.btnRefreshPoe_Click);
             // 
+            // btnOverride1
+            // 
+            this.btnOverride1.Location = new System.Drawing.Point(278, 208);
+            this.btnOverride1.Name = "btnOverride1";
+            this.btnOverride1.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride1.TabIndex = 69;
+            this.btnOverride1.Text = "Override";
+            this.btnOverride1.UseVisualStyleBackColor = true;
+            this.btnOverride1.Click += new System.EventHandler(this.btnOverride1_Click);
+            // 
+            // btnOverride2
+            // 
+            this.btnOverride2.Location = new System.Drawing.Point(276, 342);
+            this.btnOverride2.Name = "btnOverride2";
+            this.btnOverride2.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride2.TabIndex = 70;
+            this.btnOverride2.Text = "Override";
+            this.btnOverride2.UseVisualStyleBackColor = true;
+            this.btnOverride2.Click += new System.EventHandler(this.btnOverride2_Click);
+            // 
+            // btnOverride3
+            // 
+            this.btnOverride3.Location = new System.Drawing.Point(276, 478);
+            this.btnOverride3.Name = "btnOverride3";
+            this.btnOverride3.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride3.TabIndex = 71;
+            this.btnOverride3.Text = "Override";
+            this.btnOverride3.UseVisualStyleBackColor = true;
+            this.btnOverride3.Click += new System.EventHandler(this.btnOverride3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.btnOverride3);
+            this.Controls.Add(this.btnOverride2);
+            this.Controls.Add(this.btnOverride1);
             this.Controls.Add(this.btnRefreshPoe);
             this.Controls.Add(this.btnRefreshPoe3);
             this.Controls.Add(this.btnRefreshPoe2);
@@ -862,6 +898,9 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnRefreshPoe2;
         private System.Windows.Forms.Button btnRefreshPoe3;
         private System.Windows.Forms.Button btnRefreshPoe;
+        private System.Windows.Forms.Button btnOverride1;
+        private System.Windows.Forms.Button btnOverride2;
+        private System.Windows.Forms.Button btnOverride3;
     }
 }
 
