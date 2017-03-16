@@ -24,6 +24,7 @@ namespace ItemWatcher2
         public static string currencyfilename = "SavedCurrencies.json";
         public static string configfile = "Config.json";
         public static List<string> avaliableExplicits = new List<string>();
+        public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Form1.Slot>();
@@ -57,7 +58,7 @@ namespace ItemWatcher2
                     {
                         txtBoxUpdateThread.Text = "Starting Ninja Update";
                     });
-                    NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread,true);
+                    ninjaItems =  NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread,true);
                     
                 }
                 else
@@ -79,15 +80,17 @@ namespace ItemWatcher2
             LeaguestoneSlots.Add(new Slot());
             LeaguestoneSlots.Add(new Slot());
             LeaguestoneSlots.Add(new Slot());
-            List<NinjaItem> NinjaItems = new List<NinjaItem>();
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
-                NinjaItems = NinjaPoETradeMethods.SetNinjaValues(NinjaItems, txtBoxUpdateThread);
+            //why even do this when we overwrite
+            /*if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
+                ninjaItems = NinjaPoETradeMethods.SetNinjaValues(ninjaItems, txtBoxUpdateThread);
+                */
+            ninjaItems = config.SavedItems;
 
-            NinjaItems = config.SavedItems;
+
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Poe.Ninja Items Converted";
@@ -120,12 +123,14 @@ namespace ItemWatcher2
                         seenItems.Clear();
                     }
                     SetTimeseconds(Slots);
+                    /* shouldnt need this anymore
                     if (config.do_all_uniques_with_ranges && DateTime.Now.Subtract(refreshConfig).TotalSeconds > 50)
                     {
                         LoadBasicInfo();
-                        NinjaItems = config.SavedItems;
+                        ninjaItems = config.SavedItems;
                         refreshConfig = DateTime.Now;
                     }
+                    */
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
                     textBox1.Invoke((MethodInvoker)delegate
                     {
@@ -182,13 +187,13 @@ namespace ItemWatcher2
                                     itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                     if (config.do_all_uniques)
                                     {
-                                        if ((NinjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && NinjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
+                                        if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                                         {
                                             NinjaItem NinjaItem = new NinjaItem(); ;
                                             if (itemProp.frameType != 6)
-                                                NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                                NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
                                             else
-                                                NinjaItem = NinjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
+                                                NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
                                             
                                             if (NinjaItem.chaos_value > 15)
                                                 GetExplicitFields(NinjaItem, itemProp);
@@ -833,6 +838,7 @@ namespace ItemWatcher2
             public DateTime? last_updated_poetrade { get; set; }
             public decimal poetrade_chaos_value { get; set; }
             public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
+
             public override string ToString()
             {
                 return name + " : " + chaos_value;
@@ -1178,24 +1184,36 @@ namespace ItemWatcher2
         private void btnOverride1_Click(object sender, EventArgs e)
         {
             Slot localslot = Slots[0];
+            NinjaItem real = ninjaItems.FirstOrDefault(p => p.type==localslot.BaseItem.type && p.name==localslot.BaseItem.name && p.base_type==localslot.BaseItem.base_type);
+            
             decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
-            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            int avg = (int)(total / localslot.BaseItem.Top5Sells.Count);
+            localslot.BaseItem.chaos_value = avg;
+            real.chaos_value = avg;
             SetSlots(Slots);
         }
 
         private void btnOverride2_Click(object sender, EventArgs e)
         {
             Slot localslot = Slots[1];
+            NinjaItem real = ninjaItems.FirstOrDefault(p => p.type == localslot.BaseItem.type && p.name == localslot.BaseItem.name && p.base_type == localslot.BaseItem.base_type);
+
             decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
-            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            int avg = (int)(total / localslot.BaseItem.Top5Sells.Count);
+            localslot.BaseItem.chaos_value = avg;
+            real.chaos_value = avg;
             SetSlots(Slots);
         }
 
         private void btnOverride3_Click(object sender, EventArgs e)
         {
             Slot localslot = Slots[2];
+            NinjaItem real = ninjaItems.FirstOrDefault(p => p.type == localslot.BaseItem.type && p.name == localslot.BaseItem.name && p.base_type == localslot.BaseItem.base_type);
+
             decimal total = localslot.BaseItem.Top5Sells.Sum(p => p);
-            localslot.BaseItem.chaos_value = total / localslot.BaseItem.Top5Sells.Count;
+            int avg = (int)(total / localslot.BaseItem.Top5Sells.Count);
+            localslot.BaseItem.chaos_value = avg;
+            real.chaos_value = avg;
             SetSlots(Slots);
         }
     }
