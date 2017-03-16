@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques)// && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
 
             NinjaItems = config.SavedItems;
@@ -198,13 +198,14 @@ namespace ItemWatcher2
                                                 s.name = name;
                                                 s.is_mine = findWhoGets(itemProp.id, config.number_of_people) == config.my_number;
                                                 s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+                                                
                                                 if (Slots.Count == 3)
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
-                                                SoundPlayer player = new SoundPlayer();
-                                                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                player.Play();
+                                                
+                                               
+
                                             }
                                         }
                                     }
@@ -223,6 +224,8 @@ namespace ItemWatcher2
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
+                                                
+                                                
                                             }
                                         }
                                     if (config.do_breachstones)
@@ -234,15 +237,14 @@ namespace ItemWatcher2
                                             string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
                                             if (what == "5")
                                             {
+                                                /*
                                                 if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
 
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 60c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                       
 
                                                     }
                                                 }
@@ -252,11 +254,10 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 7)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 7c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
+                                                */
                                                 //2.1 per breach * 5 * 3 = 31c
                                                 if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
@@ -264,9 +265,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 31c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                                 //2.1 per breach * 5 * 2 = 21c
@@ -275,9 +274,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 21c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 3 = 19c
@@ -286,9 +283,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 19c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                                 //2.1 per breach * 5 = 10c
@@ -297,9 +292,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 5)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 10c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 2 = 12c
@@ -308,9 +301,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 12c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                                 //1c per splinter * 10 * 5 = 50c
@@ -319,9 +310,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 35)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 50c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                       
                                                     }
                                                 }
                                                 //1c per splinter * 6 * 5 = 30c
@@ -330,9 +319,7 @@ namespace ItemWatcher2
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 30c");
-                                                        SoundPlayer player = new SoundPlayer();
-                                                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                        player.Play();
+                                                        
                                                     }
                                                 }
                                             }
@@ -355,15 +342,21 @@ namespace ItemWatcher2
             }
 
         }
-
-        public void SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
+        [STAThread]
+        private string SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
         {
             Slot s = new Slot();
             s.SellItem = itemProp;
             s.name = name;
             s.worth = value;
-
+            
             s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+            
+            SoundPlayer player = new SoundPlayer();
+            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+            player.Play();
+           
+
             if (LeaguestoneSlots.Count == 3)
                 LeaguestoneSlots.RemoveAt(2);
             LeaguestoneSlots.Insert(0, s);
@@ -394,6 +387,7 @@ namespace ItemWatcher2
                     textBox10.Text = LeaguestoneSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[2].SellItem.note) + " chaos:" + LeaguestoneSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[2].name;
                 });
             }
+            return s.Message;
         }
         public void SetTimeseconds(List<Slot> slots)
         {
@@ -430,9 +424,12 @@ namespace ItemWatcher2
             }
             else return Color.Red;
         }
+        [STAThread]
         public void SetSlots(List<Slot> Slots)
         {
-
+            SoundPlayer player = new SoundPlayer();
+            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+            player.Play();
             if (Slots[0].BaseItem != null)
             {
                 Slot localslot = Slots[0];
