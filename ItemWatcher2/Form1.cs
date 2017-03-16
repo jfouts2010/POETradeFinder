@@ -23,7 +23,7 @@ namespace ItemWatcher2
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
         public static string configfile = "Config.json";
-
+        public static List<string> avaliableExplicits = new List<string>();
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Form1.Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Form1.Slot>();
@@ -50,7 +50,7 @@ namespace ItemWatcher2
                 {
                     txtBoxUpdateThread.Text = "Doing Nothing";
                 });
-                if (config.LastSaved.AddHours(1) < DateTime.Now && config.LastSaved.AddDays(1) >= DateTime.Now)
+                if (config.LastSaved.AddHours(1) < DateTime.Now && config.LastSaved.AddDays(1) >= DateTime.Now && !textBox1.Text.Contains("Converting Poe.Ninja Items"))
                 {
                     txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                     {
@@ -187,8 +187,8 @@ namespace ItemWatcher2
                                                 NinjaItem = NinjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
                                             else
                                                 NinjaItem = NinjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
-
-                                            GetExplicitFields(NinjaItem, itemProp);
+                                            if (NinjaItem.chaos_value > 15)
+                                                GetExplicitFields(NinjaItem, itemProp);
                                             if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                             {
                                                 if (NinjaItem.chaos_value - itemValue > 50)
@@ -355,9 +355,16 @@ namespace ItemWatcher2
         public static List<ExplicitField> GetExplicitFields(NinjaItem nj, Item sellItem)
         {
             List<ExplicitField> Explicits = new List<ExplicitField>();
-            foreach(string s in sellItem.explicitMods)
+            foreach (ExplicitField ef in nj.ExplicitFields)
             {
-
+                //alright its a rollable field, lets compare
+                Regex rgx = new Regex("[^a-zA-Z -]");
+                string LettersOnly = rgx.Replace(ef.SearchField, "");
+                string ItemRoll = sellItem.explicitMods.First(p => rgx.Replace(p, "") == LettersOnly);
+                ExplicitField sellItemEF = new ExplicitField();
+                sellItemEF.SearchField = ef.SearchField;
+                sellItemEF.MinRoll = GetMultipleNumbers(ItemRoll);
+                Explicits.Add(sellItemEF);
             }
             return Explicits;
         }
@@ -800,15 +807,17 @@ namespace ItemWatcher2
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
-                
+
                 if (config.do_all_uniques_with_ranges)
                 {
+                    avaliableExplicits = FindPoETradeExplicits();
+                    config.avaliableExplicits = avaliableExplicits;
                     int counter = 0;
                     foreach (NinjaItem nj in NinjaItems)
                     {
                         txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                         {
-                            txtBoxUpdateThread.Text = "Updating Poe.Trade "+counter++ +"/"+NinjaItems.Count;
+                            txtBoxUpdateThread.Text = "Updating Poe.Trade " + counter++ + "/" + NinjaItems.Count;
                         });
                         ExplicitFieldSearch(nj);
                     }
@@ -832,6 +841,8 @@ namespace ItemWatcher2
                     if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
                     {
                         string s = SearchString(explicitRoll);
+                        if (!avaliableExplicits.Contains(s))
+                            continue;
                         // lets see if there are multi rolls in a explicit
                         int countasdf = explicitRoll.Count(c => c == '(');
                         if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
@@ -844,7 +855,7 @@ namespace ItemWatcher2
                                 foreach (string roll in Rolls)
                                 {
                                     decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                    decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                    decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))));
                                     if (MaxRollsTemp < MinRollsTemp)
                                         MaxRolls = MinRolls;
                                     MinRolls.Add(MinRollsTemp);
@@ -866,7 +877,7 @@ namespace ItemWatcher2
                                     if (roll.Contains("(") && roll.Contains(")"))
                                     {
                                         MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                        MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                        MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))));
                                         if (MaxRolls < MinRolls)
                                             MaxRolls = MinRolls;
                                     }
@@ -880,7 +891,7 @@ namespace ItemWatcher2
                             else
                             {
                                 decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
-                                decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
+                                decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))));
                                 if (MaxRoll < MinRoll)
                                     MaxRoll = MinRoll;
                                 explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
@@ -890,16 +901,21 @@ namespace ItemWatcher2
 
                 }
 
-                string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
-                string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                string modsMinSearch = "";
+                string modsMaxSearch = "";
                 nj.ExplicitFields = explicitsToCheck;
                 foreach (ExplicitField ef in explicitsToCheck)
                 {
-                    modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
-                    modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                    if (avaliableExplicits.Contains(ef.SearchField))
+                    {
+                        modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                        decimal HighRoll = ((ef.MaxRoll - ef.MinRoll) * 0.9M)+ef.MinRoll;
+                        modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode((HighRoll).ToString()) + "&mod_max=&";
+                    }
                 }
                 if (explicitsToCheck.Count == 0)
                 {
+                    modsMinSearch = "mod_name=&mod_min=&mod_max=&";
                     MinSearch(nj, modsMinSearch, explicitsToCheck);
                     nj.HasRolls = false;
                 }
@@ -1005,7 +1021,10 @@ namespace ItemWatcher2
             request23.KeepAlive = true;
             request23.ContentType = "application/x-www-form-urlencoded";
             StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(nj.name + nj.base_type) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMaxSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            string name = nj.name;
+            if (!string.IsNullOrEmpty(nj.base_type))
+                name += " " + nj.base_type;
+            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMaxSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
@@ -1040,6 +1059,40 @@ namespace ItemWatcher2
             }
             nj.HighRollMinSell = HighRollMinSell;
             nj.HighRollAvrgSell = HighRollMinSell;
+        }
+        public static List<string> FindPoETradeExplicits()
+        {
+            List<string> avaliableExplicits = new List<string>();
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/");
+            using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    string s = reader.ReadToEnd();
+                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    htmlDoc.LoadHtml(s);
+                    var inputs = htmlDoc.DocumentNode.Descendants("div");
+
+                    foreach (var input in inputs)
+                    {
+                        if (input.Attributes.Contains("class") && input.Attributes["class"].Value == "row explicit")
+                        {
+                            List<string> Explicits = input.InnerText.Split(new string[] { "  " }, StringSplitOptions.None).ToList();
+                           
+                            foreach (string explicitString in Explicits)
+                            {
+                                if (!explicitString.Contains("(enchant)") && !explicitString.Contains("(implicit)") && !explicitString.Contains("(total)"))
+                                {
+                                    avaliableExplicits.Add(explicitString.Replace("(crafted)", ""));
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            return avaliableExplicits;
         }
         public static string SearchString(string explicitString)
         {
@@ -1097,6 +1150,8 @@ namespace ItemWatcher2
         public static void SaveNames()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
+            JObject jo = JObject.Parse(serialized);
+            serialized = jo.ToString();
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
         }
@@ -1226,6 +1281,7 @@ namespace ItemWatcher2
             public int number_of_people { get; set; }
 
             public List<NinjaItem> SavedItems { get; set; }
+            public List<string> avaliableExplicits { get; set; }
             public DateTime LastSaved { get; set; }
             public bool refresh_items { get; set; }
         }

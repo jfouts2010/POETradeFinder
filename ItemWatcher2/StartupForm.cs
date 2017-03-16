@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -70,6 +71,8 @@ namespace ItemWatcher2
 			config.my_number = Convert.ToInt32(this.txtYourNumber.Text);
             config.number_of_people = Convert.ToInt32(this.txtNumberOfPeople.Text);
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            JObject jo = JObject.Parse(serialized);
+            serialized = jo.ToString();
             System.IO.File.Delete(configfile);
             System.IO.File.WriteAllText(configfile, serialized);
         }
