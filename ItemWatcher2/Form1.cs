@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
 
             NinjaItems = config.SavedItems;
@@ -179,6 +179,7 @@ namespace ItemWatcher2
                                             else
                                                 NinjaItem = NinjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
 
+                                            GetExplicitFields(NinjaItem, itemProp);
                                             if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                             {
                                                 if (NinjaItem.chaos_value - itemValue > 50)
@@ -341,6 +342,15 @@ namespace ItemWatcher2
 
             }
 
+        }
+        public static List<ExplicitField> GetExplicitFields(NinjaItem nj, Item sellItem)
+        {
+            List<ExplicitField> Explicits = new List<ExplicitField>();
+            foreach(string s in sellItem.explicitMods)
+            {
+
+            }
+            return Explicits;
         }
         [STAThread]
         private string SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
@@ -845,6 +855,7 @@ namespace ItemWatcher2
 
                             string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
                             string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                            nj.ExplicitFields = explicitsToCheck;
                             foreach (ExplicitField ef in explicitsToCheck)
                             {
                                 modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
@@ -1033,6 +1044,7 @@ namespace ItemWatcher2
             public decimal HighRollAvrgSell { get; set; }
             public List<string> Top5Sells { get; set; }
             public bool HasRolls { get; set; }
+            public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
             public override string ToString()
             {
                 return name + " : " + chaos_value;
