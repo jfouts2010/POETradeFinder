@@ -810,101 +810,7 @@ namespace ItemWatcher2
                         {
                             txtBoxUpdateThread.Text = "Updating Poe.Trade "+counter++ +"/"+NinjaItems.Count;
                         });
-                        //lets look for rolls
-                        if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
-                        {
-                            List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
-                            foreach (string explicitRoll in nj.Explicits)
-                            {
-                                if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
-                                {
-                                    string s = SearchString(explicitRoll);
-                                    // lets see if there are multi rolls in a explicit
-                                    int countasdf = explicitRoll.Count(c => c == '(');
-                                    if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
-                                    {
-                                        if (explicitRoll.Contains(" to "))
-                                        {
-                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
-                                            List<decimal> MinRolls = new List<decimal>();
-                                            List<decimal> MaxRolls = new List<decimal>();
-                                            foreach (string roll in Rolls)
-                                            {
-                                                decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                                decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
-                                                if (MaxRollsTemp < MinRollsTemp)
-                                                    MaxRolls = MinRolls;
-                                                MinRolls.Add(MinRollsTemp);
-                                                MaxRolls.Add(MaxRollsTemp);
-                                            }
-                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (explicitRoll.Contains(" to ("))
-                                        {
-                                            List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
-                                            decimal MinRolls = 0;
-                                            decimal MaxRolls = 0;
-                                            decimal SingularRoll = 0;
-                                            foreach (string roll in Rolls)
-                                            {
-                                                if (roll.Contains("(") && roll.Contains(")"))
-                                                {
-                                                    MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
-                                                    MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
-                                                    if (MaxRolls < MinRolls)
-                                                        MaxRolls = MinRolls;
-                                                }
-                                                else
-                                                {
-                                                    SingularRoll = GetMultipleNumbers(roll);
-                                                }
-                                            }
-                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
-                                        }
-                                        else
-                                        {
-                                            decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
-                                            decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
-                                            if (MaxRoll < MinRoll)
-                                                MaxRoll = MinRoll;
-                                            explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
-                                        }
-                                    }
-                                }
-
-                            }
-
-                            string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
-                            string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
-                            nj.ExplicitFields = explicitsToCheck;
-                            foreach (ExplicitField ef in explicitsToCheck)
-                            {
-                                modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
-                                modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
-                            }
-                            if (explicitsToCheck.Count == 0)
-                            {
-                                MinSearch(nj, modsMinSearch, explicitsToCheck);
-                                nj.HasRolls = false;
-                            }
-                            else
-                            {
-                                MinSearch(nj, modsMinSearch, explicitsToCheck);
-                                MaxSearch(nj, modsMaxSearch, explicitsToCheck);
-                                nj.HasRolls = true;
-                            }
-
-                        }
-                        else
-                        {
-                            if (nj.type == "6" && nj.base_type.Contains("Map"))
-                            {
-                                MinSearch(nj, "", new List<ExplicitField>());
-                            }
-                        }
+                        ExplicitFieldSearch(nj);
                     }
                 }
                 config.SavedItems = NinjaItems;
@@ -914,6 +820,104 @@ namespace ItemWatcher2
                 System.IO.File.WriteAllText(configfile, serialized);
             }
             return NinjaItems;
+        }
+        public static void ExplicitFieldSearch(NinjaItem nj)
+        {
+            //lets look for rolls
+            if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
+            {
+                List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
+                foreach (string explicitRoll in nj.Explicits)
+                {
+                    if (explicitRoll.Contains("(") && explicitRoll.Contains("-") && explicitRoll.Contains(")"))
+                    {
+                        string s = SearchString(explicitRoll);
+                        // lets see if there are multi rolls in a explicit
+                        int countasdf = explicitRoll.Count(c => c == '(');
+                        if (explicitRoll.Count(c => c == '(') > 1 && explicitRoll.Count(c => c == ')') > 1)
+                        {
+                            if (explicitRoll.Contains(" to "))
+                            {
+                                List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                List<decimal> MinRolls = new List<decimal>();
+                                List<decimal> MaxRolls = new List<decimal>();
+                                foreach (string roll in Rolls)
+                                {
+                                    decimal MinRollsTemp = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                    decimal MaxRollsTemp = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                    if (MaxRollsTemp < MinRollsTemp)
+                                        MaxRolls = MinRolls;
+                                    MinRolls.Add(MinRollsTemp);
+                                    MaxRolls.Add(MaxRollsTemp);
+                                }
+                                explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls[0] + MinRolls[1]) / 2, MaxRoll = (MaxRolls[0] + MaxRolls[1]) / 2 });
+                            }
+                        }
+                        else
+                        {
+                            if (explicitRoll.Contains(" to ("))
+                            {
+                                List<string> Rolls = explicitRoll.Split(new string[] { " to " }, StringSplitOptions.None).ToList();
+                                decimal MinRolls = 0;
+                                decimal MaxRolls = 0;
+                                decimal SingularRoll = 0;
+                                foreach (string roll in Rolls)
+                                {
+                                    if (roll.Contains("(") && roll.Contains(")"))
+                                    {
+                                        MinRolls = GetMultipleNumbers(roll.Substring(roll.IndexOf("(") + 1, roll.IndexOf("-") - roll.IndexOf("(")));
+                                        MaxRolls = (decimal)(GetMultipleNumbers(roll.Substring(roll.IndexOf("-") + 1, roll.IndexOf(")") - roll.IndexOf("-"))) * 0.9M);
+                                        if (MaxRolls < MinRolls)
+                                            MaxRolls = MinRolls;
+                                    }
+                                    else
+                                    {
+                                        SingularRoll = GetMultipleNumbers(roll);
+                                    }
+                                }
+                                explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = (MinRolls + SingularRoll) / 2, MaxRoll = (MaxRolls + SingularRoll) / 2 });
+                            }
+                            else
+                            {
+                                decimal MinRoll = GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("(") + 1, explicitRoll.IndexOf("-") - explicitRoll.IndexOf("(")));
+                                decimal MaxRoll = (int)(GetMultipleNumbers(explicitRoll.Substring(explicitRoll.IndexOf("-") + 1, explicitRoll.IndexOf(")") - explicitRoll.IndexOf("-"))) * 0.9M);
+                                if (MaxRoll < MinRoll)
+                                    MaxRoll = MinRoll;
+                                explicitsToCheck.Add(new ExplicitField() { SearchField = s, MinRoll = MinRoll, MaxRoll = MaxRoll });
+                            }
+                        }
+                    }
+
+                }
+
+                string modsMinSearch = "mod_name=&mod_min=&mod_max=&";
+                string modsMaxSearch = "mod_name=&mod_min=&mod_max=&";
+                nj.ExplicitFields = explicitsToCheck;
+                foreach (ExplicitField ef in explicitsToCheck)
+                {
+                    modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
+                    modsMaxSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MaxRoll.ToString()) + "&mod_max=&";
+                }
+                if (explicitsToCheck.Count == 0)
+                {
+                    MinSearch(nj, modsMinSearch, explicitsToCheck);
+                    nj.HasRolls = false;
+                }
+                else
+                {
+                    MinSearch(nj, modsMinSearch, explicitsToCheck);
+                    MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                    nj.HasRolls = true;
+                }
+
+            }
+            else
+            {
+                if (nj.type == "6" && nj.base_type.Contains("Map"))
+                {
+                    MinSearch(nj, "", new List<ExplicitField>());
+                }
+            }
         }
         public static void MinSearch(NinjaItem nj, string modsMinSearch, List<ExplicitField> explicitsToCheck)
         {
@@ -937,7 +941,7 @@ namespace ItemWatcher2
             string name = nj.name;
             if (!string.IsNullOrEmpty(nj.base_type))
                 name += " " + nj.base_type;
-            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMinSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=0&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
@@ -1069,6 +1073,7 @@ namespace ItemWatcher2
             public decimal HighRollAvrgSell { get; set; }
             public List<string> Top5Sells { get; set; }
             public bool HasRolls { get; set; }
+            public bool UseNinjaPrice = true;
             public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
             public override string ToString()
             {
