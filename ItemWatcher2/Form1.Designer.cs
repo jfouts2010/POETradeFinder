@@ -100,6 +100,8 @@ namespace ItemWatcher2
             this.btnOverride1 = new System.Windows.Forms.Button();
             this.btnOverride2 = new System.Windows.Forms.Button();
             this.btnOverride3 = new System.Windows.Forms.Button();
+            this.btnFakeFirstMsg = new System.Windows.Forms.Button();
+            this.lblCopyLock = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -179,7 +181,7 @@ namespace ItemWatcher2
             this.textBox3.Location = new System.Drawing.Point(233, 136);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(87, 20);
+            this.textBox3.Size = new System.Drawing.Size(107, 20);
             this.textBox3.TabIndex = 9;
             // 
             // richTextBox1
@@ -232,7 +234,7 @@ namespace ItemWatcher2
             this.textBox5.Location = new System.Drawing.Point(233, 270);
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(87, 20);
+            this.textBox5.Size = new System.Drawing.Size(107, 20);
             this.textBox5.TabIndex = 19;
             // 
             // button8
@@ -256,7 +258,7 @@ namespace ItemWatcher2
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(326, 241);
+            this.button10.Location = new System.Drawing.Point(344, 242);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(87, 23);
             this.button10.TabIndex = 16;
@@ -312,7 +314,7 @@ namespace ItemWatcher2
             this.textBox7.Location = new System.Drawing.Point(233, 406);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(87, 20);
+            this.textBox7.Size = new System.Drawing.Size(107, 20);
             this.textBox7.TabIndex = 28;
             // 
             // button13
@@ -327,7 +329,7 @@ namespace ItemWatcher2
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(675, 373);
+            this.button14.Location = new System.Drawing.Point(598, 373);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(87, 23);
             this.button14.TabIndex = 26;
@@ -336,7 +338,7 @@ namespace ItemWatcher2
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(421, 377);
+            this.button15.Location = new System.Drawing.Point(344, 373);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(87, 23);
             this.button15.TabIndex = 25;
@@ -678,9 +680,9 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe1
             // 
-            this.btnRefreshPoe1.Location = new System.Drawing.Point(279, 179);
+            this.btnRefreshPoe1.Location = new System.Drawing.Point(278, 179);
             this.btnRefreshPoe1.Name = "btnRefreshPoe1";
-            this.btnRefreshPoe1.Size = new System.Drawing.Size(58, 23);
+            this.btnRefreshPoe1.Size = new System.Drawing.Size(62, 23);
             this.btnRefreshPoe1.TabIndex = 65;
             this.btnRefreshPoe1.Text = "Refresh";
             this.btnRefreshPoe1.UseVisualStyleBackColor = true;
@@ -690,7 +692,7 @@ namespace ItemWatcher2
             // 
             this.btnRefreshPoe2.Location = new System.Drawing.Point(276, 313);
             this.btnRefreshPoe2.Name = "btnRefreshPoe2";
-            this.btnRefreshPoe2.Size = new System.Drawing.Size(58, 23);
+            this.btnRefreshPoe2.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe2.TabIndex = 66;
             this.btnRefreshPoe2.Text = "Refresh";
             this.btnRefreshPoe2.UseVisualStyleBackColor = true;
@@ -700,7 +702,7 @@ namespace ItemWatcher2
             // 
             this.btnRefreshPoe3.Location = new System.Drawing.Point(276, 449);
             this.btnRefreshPoe3.Name = "btnRefreshPoe3";
-            this.btnRefreshPoe3.Size = new System.Drawing.Size(58, 23);
+            this.btnRefreshPoe3.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe3.TabIndex = 67;
             this.btnRefreshPoe3.Text = "Refresh";
             this.btnRefreshPoe3.UseVisualStyleBackColor = true;
@@ -720,7 +722,7 @@ namespace ItemWatcher2
             // 
             this.btnOverride1.Location = new System.Drawing.Point(278, 208);
             this.btnOverride1.Name = "btnOverride1";
-            this.btnOverride1.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride1.Size = new System.Drawing.Size(62, 23);
             this.btnOverride1.TabIndex = 69;
             this.btnOverride1.Text = "Override";
             this.btnOverride1.UseVisualStyleBackColor = true;
@@ -730,7 +732,7 @@ namespace ItemWatcher2
             // 
             this.btnOverride2.Location = new System.Drawing.Point(276, 342);
             this.btnOverride2.Name = "btnOverride2";
-            this.btnOverride2.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride2.Size = new System.Drawing.Size(64, 23);
             this.btnOverride2.TabIndex = 70;
             this.btnOverride2.Text = "Override";
             this.btnOverride2.UseVisualStyleBackColor = true;
@@ -740,17 +742,39 @@ namespace ItemWatcher2
             // 
             this.btnOverride3.Location = new System.Drawing.Point(276, 478);
             this.btnOverride3.Name = "btnOverride3";
-            this.btnOverride3.Size = new System.Drawing.Size(58, 23);
+            this.btnOverride3.Size = new System.Drawing.Size(64, 23);
             this.btnOverride3.TabIndex = 71;
             this.btnOverride3.Text = "Override";
             this.btnOverride3.UseVisualStyleBackColor = true;
             this.btnOverride3.Click += new System.EventHandler(this.btnOverride3_Click);
+            // 
+            // btnFakeFirstMsg
+            // 
+            this.btnFakeFirstMsg.Location = new System.Drawing.Point(844, 129);
+            this.btnFakeFirstMsg.Name = "btnFakeFirstMsg";
+            this.btnFakeFirstMsg.Size = new System.Drawing.Size(10, 10);
+            this.btnFakeFirstMsg.TabIndex = 72;
+            this.btnFakeFirstMsg.Text = "Message";
+            this.btnFakeFirstMsg.UseVisualStyleBackColor = true;
+            this.btnFakeFirstMsg.Click += new System.EventHandler(this.btnFakeFirstMsg_Click);
+            // 
+            // lblCopyLock
+            // 
+            this.lblCopyLock.AutoSize = true;
+            this.lblCopyLock.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCopyLock.Location = new System.Drawing.Point(593, 30);
+            this.lblCopyLock.Name = "lblCopyLock";
+            this.lblCopyLock.Size = new System.Drawing.Size(70, 26);
+            this.lblCopyLock.TabIndex = 73;
+            this.lblCopyLock.Text = "label2";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.lblCopyLock);
+            this.Controls.Add(this.btnFakeFirstMsg);
             this.Controls.Add(this.btnOverride3);
             this.Controls.Add(this.btnOverride2);
             this.Controls.Add(this.btnOverride1);
@@ -901,6 +925,8 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnOverride1;
         private System.Windows.Forms.Button btnOverride2;
         private System.Windows.Forms.Button btnOverride3;
+        private System.Windows.Forms.Button btnFakeFirstMsg;
+        private System.Windows.Forms.Label lblCopyLock;
     }
 }
 
