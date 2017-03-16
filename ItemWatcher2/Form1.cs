@@ -73,7 +73,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            if (config.do_all_uniques && config.LastSaved.AddDays(1) < DateTime.Now)
+            if (config.do_all_uniques)// && config.LastSaved.AddDays(1) < DateTime.Now)
                 NinjaItems = SetNinjaValues(NinjaItems);
 
             NinjaItems = config.SavedItems;
@@ -116,7 +116,10 @@ namespace ItemWatcher2
                         refreshConfig = DateTime.Now;
                     }
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
-
+                    textBox1.Invoke((MethodInvoker)delegate
+                    {
+                        textBox1.Text = "Waiting for POE Change Response";
+                    });
                     // Get response  
                     using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
@@ -124,10 +127,15 @@ namespace ItemWatcher2
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             // Console application output  
+                            
                             lastTimeAPIcalled = DateTime.Now;
                             List<JToken> jo = JObject.Parse(reader.ReadToEnd()).Children().ToList();
                             changeID = jo[0].First.ToString();
                             List<JToken> stashes = jo[1].First.Children().ToList();
+                            textBox1.Invoke((MethodInvoker)delegate
+                            {
+                                textBox1.Text = "Parsing " + stashes.Count + " stashes";
+                            });
                             foreach (JToken jt in stashes)
                             {
                                 List<JToken> stash = jt.Children().ToList();
