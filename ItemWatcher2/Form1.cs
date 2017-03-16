@@ -42,7 +42,7 @@ namespace ItemWatcher2
         }
         private void SyncNinja(object sender, DoWorkEventArgs e)
         {
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(15000);
             LoadBasicInfo();
             while (true)
             {
@@ -50,17 +50,18 @@ namespace ItemWatcher2
                 {
                     txtBoxUpdateThread.Text = "Doing Nothing";
                 });
-                if (config.LastSaved.AddHours(1) < DateTime.Now && config.LastSaved.AddDays(1) >= DateTime.Now)
+                if (config.LastSaved.AddHours(1) < DateTime.Now)
                 {
                     txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                     {
                         txtBoxUpdateThread.Text = "Starting Ninja Update";
                     });
                     SetNinjaValues(new List<NinjaItem>());
-                    LoadBasicInfo();
+                    
                 }
                 else
                     System.Threading.Thread.Sleep(60000);
+                LoadBasicInfo();
             }
         }
         [STAThread]
@@ -355,7 +356,7 @@ namespace ItemWatcher2
         public static List<ExplicitField> GetExplicitFields(NinjaItem nj, Item sellItem)
         {
             List<ExplicitField> Explicits = new List<ExplicitField>();
-            foreach(string s in sellItem.explicitMods)
+            foreach (string s in sellItem.explicitMods)
             {
 
             }
@@ -519,9 +520,28 @@ namespace ItemWatcher2
                     //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
                 });
                 slot0minandavrg.Invoke((MethodInvoker)delegate
-                               {
-                                   slot0minandavrg.Lines = Slots[0].BaseItem.Top5Sells?.ToArray();
-                               });
+                {
+                    slot0minandavrg.Lines = localslot.BaseItem.Top5Sells?.ConvertAll(p => p.ToString()).ToArray();
+                });
+
+                lblUpdatedTime1.Invoke((MethodInvoker)delegate
+                {
+                    if (localslot.BaseItem.last_updated_poetrade.HasValue)
+                    {
+                        int minutes = (int)DateTime.Now.Subtract(localslot.BaseItem.last_updated_poetrade.Value).TotalMinutes;
+                        if (minutes < 1000)
+                        {
+                            if (minutes > 60)
+                                lblUpdatedTime1.Text = (int)(minutes / 60) + "hours";
+                            else
+                                lblUpdatedTime1.Text = minutes + " min";
+                        }
+                        else
+                            lblUpdatedTime1.Text = "";
+                    }
+                    else
+                        lblUpdatedTime1.Text = "";
+                });
             }
             if (Slots[1].BaseItem != null)
             {
@@ -582,9 +602,27 @@ namespace ItemWatcher2
 
                 });
                 slot1minandavrg.Invoke((MethodInvoker)delegate
-                              {
-                                  slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells?.ToArray();
-                              });
+                {
+                    slot1minandavrg.Lines = Slots[1].BaseItem.Top5Sells?.ConvertAll(p => p.ToString()).ToArray();
+                });
+                lblUpdatedTime2.Invoke((MethodInvoker)delegate
+                {
+                    if (localslot.BaseItem.last_updated_poetrade.HasValue)
+                    {
+                        int minutes = (int)DateTime.Now.Subtract(localslot.BaseItem.last_updated_poetrade.Value).TotalMinutes;
+                        if (minutes < 1000)
+                        {
+                            if (minutes > 60)
+                                lblUpdatedTime2.Text = (int)(minutes / 60) + "hours";
+                            else
+                                lblUpdatedTime2.Text = minutes + " min";
+                        }
+                        else
+                            lblUpdatedTime2.Text = "";
+                    }
+                    else
+                        lblUpdatedTime2.Text = "";
+                });
             }
             if (Slots[2].BaseItem != null)
             {
@@ -643,9 +681,27 @@ namespace ItemWatcher2
                     }
                 });
                 slot2minandavrg.Invoke((MethodInvoker)delegate
-                             {
-                                 slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells?.ToArray();
-                             });
+                {
+                    slot2minandavrg.Lines = Slots[2].BaseItem.Top5Sells?.ConvertAll(p => p.ToString()).ToArray();
+                });
+                lblUpdatedTime3.Invoke((MethodInvoker)delegate
+                {
+                    if (localslot.BaseItem.last_updated_poetrade.HasValue)
+                    {
+                        int minutes = (int)DateTime.Now.Subtract(localslot.BaseItem.last_updated_poetrade.Value).TotalMinutes;
+                        if (minutes < 1000)
+                        {
+                            if (minutes > 60)
+                                lblUpdatedTime3.Text = (int)(minutes / 60) + "hours";
+                            else
+                                lblUpdatedTime3.Text = minutes + " min";
+                        }
+                        else
+                            lblUpdatedTime3.Text = "";
+                    }
+                    else
+                        lblUpdatedTime3.Text = "";
+                });
             }
         }
         public static string GetOriginalPrice(string input)
@@ -800,7 +856,7 @@ namespace ItemWatcher2
                             NinjaItems.Add(newNinjaItem);
                     }
                 }
-                
+
                 if (config.do_all_uniques_with_ranges)
                 {
                     int counter = 0;
@@ -808,23 +864,21 @@ namespace ItemWatcher2
                     {
                         txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                         {
-                            txtBoxUpdateThread.Text = "Updating Poe.Trade "+counter++ +"/"+NinjaItems.Count;
+                            txtBoxUpdateThread.Text = "Updating Poe.Trade " + counter++ + "/" + NinjaItems.Count;
                         });
                         ExplicitFieldSearch(nj);
                     }
                 }
                 config.SavedItems = NinjaItems;
                 config.LastSaved = DateTime.Now;
-                string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
-                System.IO.File.Delete(configfile);
-                System.IO.File.WriteAllText(configfile, serialized);
+                SaveNames();
             }
             return NinjaItems;
         }
-        public static void ExplicitFieldSearch(NinjaItem nj)
+        public static void ExplicitFieldSearch(NinjaItem nj, bool manual = false)
         {
             //lets look for rolls
-            if (nj.Explicits.Count > 0 && !nj.base_type.Contains("Map") && nj.chaos_value > 15)
+            if (/*nj.Explicits.Count > 0 && !nj.base_type.Contains("Map")*/ nj.chaos_value > 15 || manual)
             {
                 List<ExplicitField> explicitsToCheck = new List<ExplicitField>();
                 foreach (string explicitRoll in nj.Explicits)
@@ -918,6 +972,7 @@ namespace ItemWatcher2
                     MinSearch(nj, "", new List<ExplicitField>());
                 }
             }
+            nj.last_updated_poetrade = DateTime.Now;
         }
         public static void MinSearch(NinjaItem nj, string modsMinSearch, List<ExplicitField> explicitsToCheck)
         {
@@ -929,7 +984,7 @@ namespace ItemWatcher2
             //min search
             decimal MinSell = 0;
             decimal AvrgSellTop5 = 0;
-            List<string> Top5Prices = new List<string>();
+            List<decimal> Top5Prices = new List<decimal>();
             int count = 0;
             bool first = true;
             string redirectUrl = "";
@@ -963,12 +1018,12 @@ namespace ItemWatcher2
                                 {
                                     MinSell = input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                     AvrgSellTop5 += MinSell;
-                                    Top5Prices.Add(MinSell.ToString());
+                                    Top5Prices.Add(MinSell);
                                     first = false;
                                 }
                                 else
                                 {
-                                    Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio).ToString() : GetMultipleNumbers(input.Attributes["data-buyout"].Value).ToString());
+                                    Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio) : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
                                     AvrgSellTop5 += input.Attributes["data-buyout"].Value.Contains("exalted") ? GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio : GetMultipleNumbers(input.Attributes["data-buyout"].Value);
                                 }
                                 count++;
@@ -982,7 +1037,7 @@ namespace ItemWatcher2
             }
             nj.MinSell = MinSell;
             nj.MinAverage = AvrgSellTop5;
-            nj.Top5Sells = Top5Prices;
+            nj.Top5Sells = Top5Prices.OrderBy(p => p).ToList();
         }
 
 
@@ -1071,9 +1126,11 @@ namespace ItemWatcher2
             public decimal MinAverage { get; set; }
             public decimal HighRollMinSell { get; set; }
             public decimal HighRollAvrgSell { get; set; }
-            public List<string> Top5Sells { get; set; }
+            public List<decimal> Top5Sells { get; set; }
             public bool HasRolls { get; set; }
             public bool UseNinjaPrice = true;
+            public DateTime? last_updated_poetrade { get; set; }
+            public decimal poetrade_chaos_value { get; set; }
             public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
             public override string ToString()
             {
@@ -1099,6 +1156,9 @@ namespace ItemWatcher2
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
+            serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
+            System.IO.File.Delete(configfile);
+            System.IO.File.WriteAllText(configfile, serialized);
         }
         public static void LoadBasicInfo()
         {
@@ -1228,6 +1288,7 @@ namespace ItemWatcher2
             public List<NinjaItem> SavedItems { get; set; }
             public DateTime LastSaved { get; set; }
             public bool refresh_items { get; set; }
+            public bool update_ninja_when_manul_refresh { get; set; }
         }
 
         public class NotChaosCurrencyConversion
@@ -1381,6 +1442,30 @@ namespace ItemWatcher2
                     System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
                 }
             }
+        }
+
+        private void btnRefreshPoe1_Click(object sender, EventArgs e)
+        {
+            ExplicitFieldSearch(Slots[0].BaseItem, true);
+            SetSlots(Slots);
+        }
+
+        private void btnRefreshPoe2_Click(object sender, EventArgs e)
+        {
+            ExplicitFieldSearch(Slots[1].BaseItem,true);
+            SetSlots(Slots);
+        }
+
+        private void btnRefreshPoe3_Click(object sender, EventArgs e)
+        {
+            ExplicitFieldSearch(Slots[2].BaseItem, true);
+            SetSlots(Slots);
+        }
+
+        private void btnRefreshPoe_Click(object sender, EventArgs e)
+        {
+            config.LastSaved = DateTime.Now.AddDays(-2);
+            SaveNames();
         }
     }
 }

@@ -96,6 +96,7 @@ namespace ItemWatcher2
             this.btnRefreshPoe1 = new System.Windows.Forms.Button();
             this.btnRefreshPoe2 = new System.Windows.Forms.Button();
             this.btnRefreshPoe3 = new System.Windows.Forms.Button();
+            this.btnRefreshPoe = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -144,7 +145,7 @@ namespace ItemWatcher2
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(326, 107);
+            this.button5.Location = new System.Drawing.Point(344, 107);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(87, 23);
             this.button5.TabIndex = 5;
@@ -153,7 +154,7 @@ namespace ItemWatcher2
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(580, 103);
+            this.button6.Location = new System.Drawing.Point(598, 103);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(87, 23);
             this.button6.TabIndex = 6;
@@ -162,7 +163,7 @@ namespace ItemWatcher2
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(826, 158);
+            this.button7.Location = new System.Drawing.Point(844, 158);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(87, 23);
             this.button7.TabIndex = 7;
@@ -180,7 +181,7 @@ namespace ItemWatcher2
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(328, 137);
+            this.richTextBox1.Location = new System.Drawing.Point(346, 137);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(236, 96);
@@ -189,7 +190,7 @@ namespace ItemWatcher2
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(580, 138);
+            this.richTextBox2.Location = new System.Drawing.Point(598, 138);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
             this.richTextBox2.Size = new System.Drawing.Size(240, 96);
@@ -198,7 +199,7 @@ namespace ItemWatcher2
             // 
             // richTextBox3
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(328, 271);
+            this.richTextBox3.Location = new System.Drawing.Point(346, 271);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
             this.richTextBox3.Size = new System.Drawing.Size(240, 96);
@@ -207,7 +208,7 @@ namespace ItemWatcher2
             // 
             // richTextBox4
             // 
-            this.richTextBox4.Location = new System.Drawing.Point(580, 271);
+            this.richTextBox4.Location = new System.Drawing.Point(598, 271);
             this.richTextBox4.Name = "richTextBox4";
             this.richTextBox4.ReadOnly = true;
             this.richTextBox4.Size = new System.Drawing.Size(236, 96);
@@ -233,7 +234,7 @@ namespace ItemWatcher2
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(826, 292);
+            this.button8.Location = new System.Drawing.Point(844, 292);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(87, 23);
             this.button8.TabIndex = 18;
@@ -243,7 +244,7 @@ namespace ItemWatcher2
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(580, 237);
+            this.button9.Location = new System.Drawing.Point(598, 237);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(87, 23);
             this.button9.TabIndex = 17;
@@ -279,7 +280,7 @@ namespace ItemWatcher2
             // 
             // richTextBox5
             // 
-            this.richTextBox5.Location = new System.Drawing.Point(328, 407);
+            this.richTextBox5.Location = new System.Drawing.Point(346, 407);
             this.richTextBox5.Name = "richTextBox5";
             this.richTextBox5.ReadOnly = true;
             this.richTextBox5.Size = new System.Drawing.Size(240, 96);
@@ -288,7 +289,7 @@ namespace ItemWatcher2
             // 
             // richTextBox6
             // 
-            this.richTextBox6.Location = new System.Drawing.Point(580, 407);
+            this.richTextBox6.Location = new System.Drawing.Point(598, 407);
             this.richTextBox6.Name = "richTextBox6";
             this.richTextBox6.ReadOnly = true;
             this.richTextBox6.Size = new System.Drawing.Size(236, 96);
@@ -313,7 +314,7 @@ namespace ItemWatcher2
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(826, 428);
+            this.button13.Location = new System.Drawing.Point(844, 428);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(87, 23);
             this.button13.TabIndex = 27;
@@ -323,7 +324,7 @@ namespace ItemWatcher2
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(657, 373);
+            this.button14.Location = new System.Drawing.Point(675, 373);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(87, 23);
             this.button14.TabIndex = 26;
@@ -332,7 +333,7 @@ namespace ItemWatcher2
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(403, 377);
+            this.button15.Location = new System.Drawing.Point(421, 377);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(87, 23);
             this.button15.TabIndex = 25;
@@ -495,7 +496,7 @@ namespace ItemWatcher2
             // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(826, 199);
+            this.button22.Location = new System.Drawing.Point(844, 199);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(87, 23);
             this.button22.TabIndex = 45;
@@ -505,7 +506,7 @@ namespace ItemWatcher2
             // 
             // button23
             // 
-            this.button23.Location = new System.Drawing.Point(826, 330);
+            this.button23.Location = new System.Drawing.Point(844, 330);
             this.button23.Name = "button23";
             this.button23.Size = new System.Drawing.Size(87, 23);
             this.button23.TabIndex = 46;
@@ -515,7 +516,7 @@ namespace ItemWatcher2
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(826, 457);
+            this.button24.Location = new System.Drawing.Point(844, 457);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(87, 23);
             this.button24.TabIndex = 47;
@@ -608,7 +609,7 @@ namespace ItemWatcher2
             // 
             this.slot0minandavrg.Location = new System.Drawing.Point(233, 162);
             this.slot0minandavrg.Name = "slot0minandavrg";
-            this.slot0minandavrg.Size = new System.Drawing.Size(28, 71);
+            this.slot0minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot0minandavrg.TabIndex = 57;
             this.slot0minandavrg.Text = "";
             // 
@@ -616,7 +617,7 @@ namespace ItemWatcher2
             // 
             this.slot1minandavrg.Location = new System.Drawing.Point(233, 296);
             this.slot1minandavrg.Name = "slot1minandavrg";
-            this.slot1minandavrg.Size = new System.Drawing.Size(28, 71);
+            this.slot1minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot1minandavrg.TabIndex = 58;
             this.slot1minandavrg.Text = "";
             // 
@@ -624,7 +625,7 @@ namespace ItemWatcher2
             // 
             this.slot2minandavrg.Location = new System.Drawing.Point(233, 433);
             this.slot2minandavrg.Name = "slot2minandavrg";
-            this.slot2minandavrg.Size = new System.Drawing.Size(28, 71);
+            this.slot2minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot2minandavrg.TabIndex = 59;
             this.slot2minandavrg.Text = "";
             // 
@@ -648,62 +649,76 @@ namespace ItemWatcher2
             // lblUpdatedTime1
             // 
             this.lblUpdatedTime1.AutoSize = true;
-            this.lblUpdatedTime1.Location = new System.Drawing.Point(267, 163);
+            this.lblUpdatedTime1.Location = new System.Drawing.Point(281, 162);
             this.lblUpdatedTime1.Name = "lblUpdatedTime1";
-            this.lblUpdatedTime1.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime1.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime1.TabIndex = 62;
-            this.lblUpdatedTime1.Text = "Seller1";
+            this.lblUpdatedTime1.Text = "updated";
             // 
             // lblUpdatedTime2
             // 
             this.lblUpdatedTime2.AutoSize = true;
-            this.lblUpdatedTime2.Location = new System.Drawing.Point(267, 296);
+            this.lblUpdatedTime2.Location = new System.Drawing.Point(281, 297);
             this.lblUpdatedTime2.Name = "lblUpdatedTime2";
-            this.lblUpdatedTime2.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime2.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime2.TabIndex = 63;
-            this.lblUpdatedTime2.Text = "Seller1";
+            this.lblUpdatedTime2.Text = "updated";
             // 
             // lblUpdatedTime3
             // 
             this.lblUpdatedTime3.AutoSize = true;
-            this.lblUpdatedTime3.Location = new System.Drawing.Point(267, 433);
+            this.lblUpdatedTime3.Location = new System.Drawing.Point(281, 433);
             this.lblUpdatedTime3.Name = "lblUpdatedTime3";
-            this.lblUpdatedTime3.Size = new System.Drawing.Size(39, 13);
+            this.lblUpdatedTime3.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime3.TabIndex = 64;
-            this.lblUpdatedTime3.Text = "Seller1";
+            this.lblUpdatedTime3.Text = "updated";
             // 
             // btnRefreshPoe1
             // 
-            this.btnRefreshPoe1.Location = new System.Drawing.Point(267, 199);
+            this.btnRefreshPoe1.Location = new System.Drawing.Point(279, 179);
             this.btnRefreshPoe1.Name = "btnRefreshPoe1";
-            this.btnRefreshPoe1.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe1.Size = new System.Drawing.Size(58, 23);
             this.btnRefreshPoe1.TabIndex = 65;
-            this.btnRefreshPoe1.Text = "Sell / Actual Value";
+            this.btnRefreshPoe1.Text = "Refresh";
             this.btnRefreshPoe1.UseVisualStyleBackColor = true;
+            this.btnRefreshPoe1.Click += new System.EventHandler(this.btnRefreshPoe1_Click);
             // 
             // btnRefreshPoe2
             // 
-            this.btnRefreshPoe2.Location = new System.Drawing.Point(270, 330);
+            this.btnRefreshPoe2.Location = new System.Drawing.Point(276, 313);
             this.btnRefreshPoe2.Name = "btnRefreshPoe2";
-            this.btnRefreshPoe2.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe2.Size = new System.Drawing.Size(58, 23);
             this.btnRefreshPoe2.TabIndex = 66;
-            this.btnRefreshPoe2.Text = "Sell / Actual Value";
+            this.btnRefreshPoe2.Text = "Refresh";
             this.btnRefreshPoe2.UseVisualStyleBackColor = true;
+            this.btnRefreshPoe2.Click += new System.EventHandler(this.btnRefreshPoe2_Click);
             // 
             // btnRefreshPoe3
             // 
-            this.btnRefreshPoe3.Location = new System.Drawing.Point(270, 457);
+            this.btnRefreshPoe3.Location = new System.Drawing.Point(276, 449);
             this.btnRefreshPoe3.Name = "btnRefreshPoe3";
-            this.btnRefreshPoe3.Size = new System.Drawing.Size(39, 23);
+            this.btnRefreshPoe3.Size = new System.Drawing.Size(58, 23);
             this.btnRefreshPoe3.TabIndex = 67;
-            this.btnRefreshPoe3.Text = "Sell / Actual Value";
+            this.btnRefreshPoe3.Text = "Refresh";
             this.btnRefreshPoe3.UseVisualStyleBackColor = true;
+            this.btnRefreshPoe3.Click += new System.EventHandler(this.btnRefreshPoe3_Click);
+            // 
+            // btnRefreshPoe
+            // 
+            this.btnRefreshPoe.Location = new System.Drawing.Point(421, 33);
+            this.btnRefreshPoe.Name = "btnRefreshPoe";
+            this.btnRefreshPoe.Size = new System.Drawing.Size(87, 23);
+            this.btnRefreshPoe.TabIndex = 68;
+            this.btnRefreshPoe.Text = "Refresh Poe";
+            this.btnRefreshPoe.UseVisualStyleBackColor = true;
+            this.btnRefreshPoe.Click += new System.EventHandler(this.btnRefreshPoe_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.btnRefreshPoe);
             this.Controls.Add(this.btnRefreshPoe3);
             this.Controls.Add(this.btnRefreshPoe2);
             this.Controls.Add(this.btnRefreshPoe1);
@@ -846,6 +861,7 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnRefreshPoe1;
         private System.Windows.Forms.Button btnRefreshPoe2;
         private System.Windows.Forms.Button btnRefreshPoe3;
+        private System.Windows.Forms.Button btnRefreshPoe;
     }
 }
 
