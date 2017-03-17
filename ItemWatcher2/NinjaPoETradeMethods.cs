@@ -22,6 +22,7 @@ namespace ItemWatcher2
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
         {
             {
+                
                 List<JObject> Jsons = new List<JObject>();
                 List<string> APIURLS = new List<string>();
                 APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
@@ -84,6 +85,7 @@ namespace ItemWatcher2
                         if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && NinjaItems.Where(p => p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
                             NinjaItems.Add(newNinjaItem);
                     }
+                    
                 }
 
                 if (config.do_all_uniques_with_ranges && do_poetrade_lookup)
@@ -108,7 +110,57 @@ namespace ItemWatcher2
             }
             return NinjaItems;
         }
+        public static WeaponBaseItem FindBaseOnHitAndAttackSpeed(string itemName)
+        {
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+            request23.Method = "POST";
+            request23.KeepAlive = true;
+            request23.ContentType = "application/x-www-form-urlencoded";
+            string rarity = "normal";
+            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
 
+
+            postwriter.Write("league=Legacy&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity+"&q_max=0");
+            postwriter.Close();
+
+            using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    string s = reader.ReadToEnd();
+                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    htmlDoc.LoadHtml(s);
+                    var inputs = htmlDoc.DocumentNode.Descendants("tbody");
+
+                    foreach (var input in inputs)
+                    {
+                        if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-"))
+                        {
+                            var tds = input.Descendants("td");
+                            WeaponBaseItem wep = new WeaponBaseItem();
+                            wep.base_name = itemName;
+                            foreach (var td in tds)
+                            {
+                                if (td.Attributes.Contains("data-name"))
+                                {
+                                    if (td.Attributes["data-name"].Value.Equals("aps"))
+                                    {
+                                        wep.aps = Convert.ToDecimal(td.Attributes["data-value"].Value);
+                                    }
+                                    if (td.Attributes["data-name"].Value.Equals("pd"))
+                                    {
+                                        wep.pd = Convert.ToDecimal(td.Attributes["data-value"].Value);
+                                    }
+                                }
+                            }
+                            return wep;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
         public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
         {
             //lets look for rolls
@@ -415,6 +467,19 @@ namespace ItemWatcher2
             nj.MidLowSell = MidLowSell;
             nj.MidAvrgSell = MidAvrgSell;
         }
+        public static List<string> LoadAllBaseWeaponTypes()
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(System.IO.File.ReadAllText("allBaseTypes.json"));
+        }
+        public static void SaveAllBaseWeaponTypes(List<string> allWepBases)
+        {
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allWepBases);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete(itemfilename);
+            System.IO.File.WriteAllText("allBaseTypes.json", serialized);
+        }
+
         public static List<string> FindPoETradeExplicits()
         {
             List<string> avaliableExplicits = new List<string>();
