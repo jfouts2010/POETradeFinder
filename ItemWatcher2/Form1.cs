@@ -223,11 +223,13 @@ namespace ItemWatcher2
                                                 NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
                                             else
                                                 NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
-
+                                           
                                             if (NinjaItem.chaos_value > 15)
                                                 GetExplicitFields(NinjaItem, itemProp);
                                             if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                             {
+                                                if (NinjaItem.is_weapon)
+                                                    itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
                                                 if (NinjaItem.chaos_value - itemValue > 50)
                                                 {
                                                     SoundPlayer player2 = new SoundPlayer();
@@ -605,6 +607,34 @@ namespace ItemWatcher2
                     else
                         lblUpdatedTime1.Text = "";
                 });
+                if (localslot.SellItem.pdps != 0)
+                {
+                    lblLocalDps1.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps1.Text = localslot.SellItem.pdps.ToString();
+                    });
+
+                    lblDpsRange1.Invoke((MethodInvoker)delegate
+                    {
+                        if (localslot.BaseItem.minPdps != 0)
+                        {
+                            lblDpsRange1.Text = ((int)localslot.BaseItem.minPdps) + "-" + ((int)localslot.BaseItem.maxPdps);
+                        }
+                        else
+                            lblDpsRange1.Text = "???";
+                    });
+                }
+                else
+                {
+                    lblLocalDps1.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps1.Text = "";
+                    });
+                    lblDpsRange1.Invoke((MethodInvoker)delegate
+                    {
+                        lblDpsRange1.Text = "";
+                    });
+                }
             }
             if (Slots[1].BaseItem != null)
             {
@@ -686,6 +716,34 @@ namespace ItemWatcher2
                     else
                         lblUpdatedTime2.Text = "";
                 });
+                if (localslot.SellItem.pdps != 0)
+                {
+                    lblLocalDps2.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps2.Text = localslot.SellItem.pdps.ToString();
+                    });
+
+                    lblDpsRange2.Invoke((MethodInvoker)delegate
+                    {
+                        if (localslot.BaseItem.minPdps != 0)
+                        {
+                            lblDpsRange2.Text = ((int)localslot.BaseItem.minPdps) + "-" + ((int)localslot.BaseItem.maxPdps);
+                        }
+                        else
+                            lblDpsRange2.Text = "???";
+                    });
+                }
+                else
+                {
+                    lblLocalDps2.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps2.Text = "";
+                    });
+                    lblDpsRange2.Invoke((MethodInvoker)delegate
+                    {
+                        lblDpsRange2.Text = "";
+                    });
+                }
             }
             if (Slots[2].BaseItem != null)
             {
@@ -765,6 +823,34 @@ namespace ItemWatcher2
                     else
                         lblUpdatedTime3.Text = "";
                 });
+                if (localslot.SellItem.pdps != 0)
+                {
+                    lblLocalDps3.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps3.Text = localslot.SellItem.pdps.ToString();
+                    });
+
+                    lblDpsRange3.Invoke((MethodInvoker)delegate
+                    {
+                        if (localslot.BaseItem.minPdps != 0)
+                        {
+                            lblDpsRange3.Text = ((int)localslot.BaseItem.minPdps) + "-" + ((int)localslot.BaseItem.maxPdps);
+                        }
+                        else
+                            lblDpsRange3.Text = "???";
+                    });
+                }
+                else
+                {
+                    lblLocalDps3.Invoke((MethodInvoker)delegate
+                    {
+                        lblLocalDps3.Text = "";
+                    });
+                    lblDpsRange3.Invoke((MethodInvoker)delegate
+                    {
+                        lblDpsRange3.Text = "";
+                    });
+                }
             }
         }
         public static string GetOriginalPrice(string input)
@@ -830,7 +916,6 @@ namespace ItemWatcher2
                     return 1000000000;
 
 
-                char[] x = input.Where(c => char.IsDigit(c)).ToArray();
                 string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
                 decimal value = Convert.ToInt32(y) * multiplier;
                 if (value == 0)
@@ -852,6 +937,33 @@ namespace ItemWatcher2
                 y += ".0";
             double dub = Convert.ToDouble(y);
             return (decimal)(dub);
+        }
+        public static decimal? GetMultipleNumbersNullable(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return null;
+            string[] parts = input.Split((" to ".ToCharArray()));
+            decimal total = 0;
+            foreach(string s in parts)
+            {
+                try
+                {
+                    total += Convert.ToInt32(s);
+                }
+                catch(Exception easdf)
+                {
+
+                }
+            }
+
+            return total / 2;
+        }
+        public static decimal? GetSingleNumber(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return null;
+            string y = new string(input.Where(c => char.IsDigit(c)).ToArray());
+            return Convert.ToDecimal(y);
         }
 
         public class ExplicitField
@@ -1034,7 +1146,7 @@ namespace ItemWatcher2
             //public string requirements { get; set; }
             public string[] implicitMods { get; set; }
             public string[] explicitMods { get; set; }
-
+            public int pdps { get; set; }
 
             public override bool Equals(object obj)
             {

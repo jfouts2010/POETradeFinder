@@ -102,6 +102,18 @@ namespace ItemWatcher2
             this.btnOverride3 = new System.Windows.Forms.Button();
             this.btnFakeFirstMsg = new System.Windows.Forms.Button();
             this.lblCopyLock = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblLocalDps1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblDpsRange1 = new System.Windows.Forms.Label();
+            this.lblLocalDps2 = new System.Windows.Forms.Label();
+            this.lblLocalDps3 = new System.Windows.Forms.Label();
+            this.lblDpsRange2 = new System.Windows.Forms.Label();
+            this.lblDpsRange3 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -189,7 +201,7 @@ namespace ItemWatcher2
             this.richTextBox1.Location = new System.Drawing.Point(346, 137);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(236, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(240, 96);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
@@ -768,11 +780,131 @@ namespace ItemWatcher2
             this.lblCopyLock.TabIndex = 73;
             this.lblCopyLock.Text = "label2";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(437, 112);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.TabIndex = 74;
+            this.label2.Text = "Pdps";
+            // 
+            // lblLocalDps1
+            // 
+            this.lblLocalDps1.AutoSize = true;
+            this.lblLocalDps1.Location = new System.Drawing.Point(465, 113);
+            this.lblLocalDps1.Name = "lblLocalDps1";
+            this.lblLocalDps1.Size = new System.Drawing.Size(25, 13);
+            this.lblLocalDps1.TabIndex = 77;
+            this.lblLocalDps1.Text = "150";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(437, 247);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 13);
+            this.label6.TabIndex = 78;
+            this.label6.Text = "Pdps";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(437, 378);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(31, 13);
+            this.label7.TabIndex = 79;
+            this.label7.Text = "Pdps";
+            // 
+            // lblDpsRange1
+            // 
+            this.lblDpsRange1.AutoSize = true;
+            this.lblDpsRange1.Location = new System.Drawing.Point(537, 113);
+            this.lblDpsRange1.Name = "lblDpsRange1";
+            this.lblDpsRange1.Size = new System.Drawing.Size(46, 13);
+            this.lblDpsRange1.TabIndex = 80;
+            this.lblDpsRange1.Text = "120-190";
+            // 
+            // lblLocalDps2
+            // 
+            this.lblLocalDps2.AutoSize = true;
+            this.lblLocalDps2.Location = new System.Drawing.Point(465, 248);
+            this.lblLocalDps2.Name = "lblLocalDps2";
+            this.lblLocalDps2.Size = new System.Drawing.Size(25, 13);
+            this.lblLocalDps2.TabIndex = 81;
+            this.lblLocalDps2.Text = "150";
+            // 
+            // lblLocalDps3
+            // 
+            this.lblLocalDps3.AutoSize = true;
+            this.lblLocalDps3.Location = new System.Drawing.Point(465, 379);
+            this.lblLocalDps3.Name = "lblLocalDps3";
+            this.lblLocalDps3.Size = new System.Drawing.Size(25, 13);
+            this.lblLocalDps3.TabIndex = 82;
+            this.lblLocalDps3.Text = "150";
+            // 
+            // lblDpsRange2
+            // 
+            this.lblDpsRange2.AutoSize = true;
+            this.lblDpsRange2.Location = new System.Drawing.Point(537, 247);
+            this.lblDpsRange2.Name = "lblDpsRange2";
+            this.lblDpsRange2.Size = new System.Drawing.Size(46, 13);
+            this.lblDpsRange2.TabIndex = 83;
+            this.lblDpsRange2.Text = "120-190";
+            // 
+            // lblDpsRange3
+            // 
+            this.lblDpsRange3.AutoSize = true;
+            this.lblDpsRange3.Location = new System.Drawing.Point(537, 379);
+            this.lblDpsRange3.Name = "lblDpsRange3";
+            this.lblDpsRange3.Size = new System.Drawing.Size(46, 13);
+            this.lblDpsRange3.TabIndex = 84;
+            this.lblDpsRange3.Text = "120-190";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(496, 378);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(39, 13);
+            this.label11.TabIndex = 87;
+            this.label11.Text = "Range";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(496, 247);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(39, 13);
+            this.label12.TabIndex = 86;
+            this.label12.Text = "Range";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(496, 112);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 13);
+            this.label13.TabIndex = 85;
+            this.label13.Text = "Range";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 656);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.lblDpsRange3);
+            this.Controls.Add(this.lblDpsRange2);
+            this.Controls.Add(this.lblLocalDps3);
+            this.Controls.Add(this.lblLocalDps2);
+            this.Controls.Add(this.lblDpsRange1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblLocalDps1);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblCopyLock);
             this.Controls.Add(this.btnFakeFirstMsg);
             this.Controls.Add(this.btnOverride3);
@@ -927,6 +1059,18 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnOverride3;
         private System.Windows.Forms.Button btnFakeFirstMsg;
         private System.Windows.Forms.Label lblCopyLock;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblLocalDps1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblDpsRange1;
+        private System.Windows.Forms.Label lblLocalDps2;
+        private System.Windows.Forms.Label lblLocalDps3;
+        private System.Windows.Forms.Label lblDpsRange2;
+        private System.Windows.Forms.Label lblDpsRange3;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
     }
 }
 

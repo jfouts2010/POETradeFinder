@@ -96,6 +96,22 @@ namespace ItemWatcher2
             return NinjaItems;
         }
 
+        public static int GetDdpsOfLocalWeapon(Item item)//godamn "items"
+        {
+            WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.typeLine);
+            if (baseItem == null)
+                return 0 ;
+            string phys = item.explicitMods.FirstOrDefault(p => p.Contains("increased Physical Damage"));
+            string flatPhys = item.explicitMods.FirstOrDefault(p => p.Contains("Adds") && p.Contains("Physical Damage"));
+            string ias = item.explicitMods.FirstOrDefault(p => p.Contains("increased Attack Speed"));
+
+            decimal physD = (GetSingleNumber(phys) ?? 0);
+            decimal flatPhysD = (GetMultipleNumbersNullable(flatPhys) ?? 0);
+            decimal iasD = (GetSingleNumber(ias) ?? 0);
+            decimal TotalDps = (baseItem.pd + flatPhysD) * (1.2M + physD / 100) * (baseItem.aps * (1 + iasD / 100));
+            return (int) TotalDps;
+        }
+
         public static void CalcDPSOfAllWeps()
         {
             LoadBasicInfo();
