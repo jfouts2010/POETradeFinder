@@ -18,11 +18,12 @@ namespace ItemWatcher2
 {
     public partial class Form1 : Form
     {
-        public static List<NinjaItem> allItems;
+        public static List<NinjaItem> watched_items;
         public static List<WeaponBaseItem> allBaseTypes;
         public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
+        public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
         public static List<string> avaliableExplicits = new List<string>();
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
@@ -33,8 +34,8 @@ namespace ItemWatcher2
         public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
-
-            //oneOffThread();
+            //GenerateAllBaseWepsFromString();
+            //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
@@ -44,6 +45,8 @@ namespace ItemWatcher2
             bgw2.RunWorkerAsync();
 
         }
+
+
         private void SyncNinja(object sender, DoWorkEventArgs e)
         {
 
@@ -70,14 +73,15 @@ namespace ItemWatcher2
             }
         }
         [STAThread]
-        private void oneOffThread()
+        private void GenerateAllBaseWepsFromString()
         {
             allBaseTypes = new List<WeaponBaseItem>();
             List<string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
             foreach (string s in allbasetypesstring)
             {
                 WeaponBaseItem wep = NinjaPoETradeMethods.FindBaseOnHitAndAttackSpeed(s);
-                allBaseTypes.Add(wep);
+                if (wep != null)
+                    allBaseTypes.Add(wep);
             }
             int x = 0;
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allBaseTypes);
@@ -86,6 +90,8 @@ namespace ItemWatcher2
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText("allBaseTypes.json", serialized);
         }
+
+
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
@@ -105,9 +111,11 @@ namespace ItemWatcher2
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
             //why even do this when we overwrite
-            /*if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
+            /*
+            if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
                 ninjaItems = NinjaPoETradeMethods.SetNinjaValues(ninjaItems, txtBoxUpdateThread);
                 */
+
             ninjaItems = config.SavedItems;
 
 
@@ -249,9 +257,9 @@ namespace ItemWatcher2
                                         }
                                     }
                                     if (config.do_watch_list)
-                                        if (allItems.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
+                                        if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
                                         {
-                                            NinjaItem localitem = allItems.Where(p => itemProp.
+                                            NinjaItem localitem = watched_items.Where(p => itemProp.
                                             name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
                                             if (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue)
                                             {
@@ -852,24 +860,29 @@ namespace ItemWatcher2
             public decimal MinRoll { get; set; }
             public decimal MaxRoll { get; set; }
         }
-        public class WeaponBaseItem 
+        public class WeaponBaseItem
         {
             public string base_name { get; set; }
             public decimal pd { get; set; }
             public decimal aps { get; set; }
+            public override string ToString()
+            {
+                return this.base_name;
+            }
         }
 
 
         [Serializable]
         public class NinjaItem
         {
+            public string name { get; set; }
             public NinjaItem()
             {
                 Implicits = new List<string>();
                 Explicits = new List<string>();
             }
             public int item_class { get; set; }
-            public string name { get; set; }
+
             public decimal chaos_value { get; set; }
             public string type { get; set; }
             public string base_type { get; set; }
@@ -887,6 +900,9 @@ namespace ItemWatcher2
             public DateTime? last_updated_poetrade { get; set; }
             public decimal poetrade_chaos_value { get; set; }
             public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
+            public bool is_weapon { get; set; }
+            public decimal minPdps { get; set; }
+            public decimal maxPdps { get; set; }
 
             public override string ToString()
             {
@@ -895,7 +911,7 @@ namespace ItemWatcher2
         }
         public static void AddNewName(string name, string value)
         {
-            allItems.Add(new NinjaItem()
+            watched_items.Add(new NinjaItem()
             {
                 name = name,
                 chaos_value = Convert.ToDecimal(value),
@@ -904,12 +920,12 @@ namespace ItemWatcher2
 
         public static void RemoveName(int index)
         {
-            allItems.RemoveAt(index);
+            watched_items.RemoveAt(index);
         }
 
         public static void SaveNames()
         {
-            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allItems);
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(watched_items);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
             System.IO.File.Delete(itemfilename);
@@ -925,11 +941,11 @@ namespace ItemWatcher2
 
             try
             {
-                allItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
+                watched_items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
             }
             catch (Exception e)
             {
-                allItems = new List<NinjaItem>();
+                watched_items = new List<NinjaItem>();
             }
             try
             {
@@ -947,6 +963,15 @@ namespace ItemWatcher2
             {
                 othercurrencies = new List<NotChaosCurrencyConversion>();
             }
+            try
+            {
+                allBaseTypes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WeaponBaseItem>>(System.IO.File.ReadAllText(wepBaseTypesFile));
+            }
+            catch (Exception e)
+            {
+                allBaseTypes = new List<WeaponBaseItem>();
+            }
+
 
         }
         public static bool isFileOpen(FileInfo file)

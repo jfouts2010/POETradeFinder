@@ -19,97 +19,147 @@ namespace ItemWatcher2
 {
     public class NinjaPoETradeMethods
     {
+        public static List<string> all_base_types = new List<string>();
+
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
         {
+            List<JObject> Jsons = new List<JObject>();
+            List<JObject> Jweps = new List<JObject>();
+            Dictionary<string, bool> APIURLS = new Dictionary<string, bool>();
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), true);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            txtBoxUpdateThread.Invoke((MethodInvoker)delegate
             {
-                
-                List<JObject> Jsons = new List<JObject>();
-                List<string> APIURLS = new List<string>();
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"));
-                txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                txtBoxUpdateThread.Text = "Doing Ninja Update";
+            });
+            foreach (string s in APIURLS.Keys)
+            {
+                HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
+                // Get response  
+                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
                 {
-                    txtBoxUpdateThread.Text = "Doing Ninja Update";
-                });
-                foreach (string s in APIURLS)
-                {
-                    HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
-                    // Get response  
-                    using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+                    // Get the response stream  
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                     {
-                        // Get the response stream  
-                        using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
-                        {
+                        if (APIURLS[s])
+                            Jweps.Add(JObject.Parse(reader.ReadToEnd()));
+                        else
                             Jsons.Add(JObject.Parse(reader.ReadToEnd()));
-                        }
                     }
                 }
-                foreach (JObject jo in Jsons)
-                {
-                    foreach (JObject jo2 in jo.First.First.Children().ToList())
-                    {
-                        NinjaItem newNinjaItem = new NinjaItem();
-                        newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
-                        newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
-                        newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
-                        newNinjaItem.item_class = Convert.ToInt32(jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString());
-                        List<string> implicits = new List<string>();
-                        foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
-                        {
-                            foreach (JObject implicitRoll in j)
-                            {
-                                implicits.Add(implicitRoll.First.First.ToString());
-                            }
-                        }
-                        if (implicits.Count == 0)
-                            implicits.Add("");
-                        List<string> explicits = new List<string>();
-                        foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
-                        {
-                            foreach (JObject explicitRoll in j)
-                            {
-                                explicits.Add(explicitRoll.First.First.ToString());
-                            }
-                        }
-                        if (explicits.Count == 0)
-                            explicits.Add("");
-                        newNinjaItem.Explicits = explicits;
-                        newNinjaItem.Implicits = implicits;
-                        newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                        if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && NinjaItems.Where(p => p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
-                            NinjaItems.Add(newNinjaItem);
-                    }
-                    
-                }
-
-                if (config.do_all_uniques_with_ranges && do_poetrade_lookup)
-                {
-                    avaliableExplicits = FindPoETradeExplicits();
-                    config.avaliableExplicits = avaliableExplicits;
-                    int counter = 0;
-                    foreach (NinjaItem nj in NinjaItems)
-                    {
-                        txtBoxUpdateThread.Invoke((MethodInvoker)delegate
-                        {
-
-                            txtBoxUpdateThread.Text = "Updating Poe.Trade " + counter++ + "/" + NinjaItems.Count;
-                        });
-                        ItemExplicitFieldSearch(nj);
-                    }
-                }
-                config.SavedItems = NinjaItems;
-                config.LastSaved = DateTime.Now;
-
-                SaveNames();
             }
+            foreach (JObject jo in Jsons)
+                NinjaItems.AddRange(DoNinjaParsing(jo));
+            foreach (JObject jo in Jweps)
+                NinjaItems.AddRange(DoNinjaParsing(jo, true));
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(all_base_types);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete("AllBaseTypesStrings.json");
+            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
+            if (config.do_all_uniques_with_ranges && do_poetrade_lookup)
+            {
+                avaliableExplicits = FindPoETradeExplicits();
+                config.avaliableExplicits = avaliableExplicits;
+                int counter = 0;
+                foreach (NinjaItem nj in NinjaItems)
+                {
+                    txtBoxUpdateThread.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxUpdateThread.Text = "Updating Poe.Trade " + counter++ + "/" + NinjaItems.Count;
+                    });
+                    ItemExplicitFieldSearch(nj);
+
+                    if (nj.is_weapon && allBaseTypes.Count(p => p.base_name==nj.base_type)>0)
+                    {
+                        if(nj.name.Contains("Soul Taker"))
+                        {
+                            int x = 5;
+                        }
+                        decimal[] minmax = GetMinMaxPdps(nj);
+                        nj.minPdps = minmax[0];
+                        nj.maxPdps = minmax[1];
+                    }
+                }
+            }
+            config.SavedItems = NinjaItems;
+            config.LastSaved = DateTime.Now;
+
+            SaveNames();
+
             return NinjaItems;
         }
+
+        public static void CalcDPSOfAllWeps()
+        {
+            LoadBasicInfo();
+            ninjaItems = config.SavedItems;
+            foreach (NinjaItem item in ninjaItems)
+            {
+                if (item.is_weapon && item.ExplicitFields.Count > 0)
+                {
+                    decimal[] minmax = GetMinMaxPdps(item);
+                    item.minPdps = minmax[0];
+                    item.maxPdps = minmax[1];
+                }
+                else
+                {
+                    item.minPdps = 0;
+                    item.maxPdps = 0;
+                }
+            }
+
+            SaveNames();
+        }
+        public static List<NinjaItem> DoNinjaParsing(JObject jo, bool is_wep = false)
+        {
+            List<NinjaItem> localNinjaItems = new List<NinjaItem>();
+            foreach (JObject jo2 in jo.First.First.Children().ToList())
+            {
+                NinjaItem newNinjaItem = new NinjaItem();
+                newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
+                newNinjaItem.is_weapon = is_wep;
+                newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
+                newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
+                if (!all_base_types.Contains(newNinjaItem.base_type) && newNinjaItem.is_weapon)
+                    all_base_types.Add(newNinjaItem.base_type);
+
+                newNinjaItem.item_class = Convert.ToInt32(jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString());
+                List<string> implicits = new List<string>();
+                foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".implicitModifiers")))
+                {
+                    foreach (JObject implicitRoll in j)
+                    {
+                        implicits.Add(implicitRoll.First.First.ToString());
+                    }
+                }
+                if (implicits.Count == 0)
+                    implicits.Add("");
+                List<string> explicits = new List<string>();
+                foreach (JArray j in jo2.Children().ToList().First(p => p.Path.EndsWith(".explicitModifiers")))
+                {
+                    foreach (JObject explicitRoll in j)
+                    {
+                        explicits.Add(explicitRoll.First.First.ToString());
+                    }
+                }
+                if (explicits.Count == 0)
+                    explicits.Add("");
+                newNinjaItem.Explicits = explicits;
+                newNinjaItem.Implicits = implicits;
+                newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
+                if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && localNinjaItems.Where(p => p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
+                    localNinjaItems.Add(newNinjaItem);
+            }
+            return localNinjaItems;
+        }
+
         public static WeaponBaseItem FindBaseOnHitAndAttackSpeed(string itemName)
         {
             HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
@@ -120,7 +170,7 @@ namespace ItemWatcher2
             StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
 
 
-            postwriter.Write("league=Legacy&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity+"&q_max=0");
+            postwriter.Write("league=Legacy&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity + "&q_max=0");
             postwriter.Close();
 
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
@@ -163,6 +213,7 @@ namespace ItemWatcher2
         }
         public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
         {
+
             //lets look for rolls
             if (/*nj.Explicits.Count > 0 && !nj.base_type.Contains("Map")*/ nj.chaos_value > 15 || manual)
             {
@@ -349,6 +400,28 @@ namespace ItemWatcher2
             nj.Top5Sells = Top5Prices.OrderBy(p => p).ToList();
         }
 
+        public static decimal[] GetMinMaxPdps(NinjaItem item)
+        {
+            if(item.name.Contains("Bino"))
+            {
+                int x = 5;
+            }
+            ExplicitField phys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Physical Damage");
+            ExplicitField flatPhys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "Adds # to # Physical Damage");
+            ExplicitField ias = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Attack Speed");
+            decimal minPhysPRoll = (phys?.MinRoll ?? 0);
+            decimal maxPhysPRoll = (phys?.MaxRoll ?? 0);
+            decimal minPhysARoll = (flatPhys?.MinRoll ?? 0);
+            decimal maxPhysARoll = (flatPhys?.MaxRoll ?? 0);
+            decimal minIASRoll = (ias?.MinRoll ?? 0);
+            decimal maxIASRoll = (ias?.MaxRoll ?? 0);
+            WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.base_type);
+            if (baseItem == null)
+                return new decimal[] { 0, 0 };
+            decimal minTotalDps = (baseItem.pd + minPhysARoll) * (1.2M + minPhysPRoll / 100) * (baseItem.aps * (1 + minIASRoll / 100));
+            decimal maxTotalDps = (baseItem.pd + maxPhysARoll) * (1.2M + maxPhysPRoll / 100) * (baseItem.aps * (1 + maxIASRoll / 100));
+            return new decimal[] { minTotalDps, maxTotalDps };
+        }
 
 
         public static void MaxSearch(NinjaItem nj, string modsMaxSearch, List<ExplicitField> explicitsToCheck)
@@ -469,7 +542,7 @@ namespace ItemWatcher2
         }
         public static List<string> LoadAllBaseWeaponTypes()
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(System.IO.File.ReadAllText("allBaseTypes.json"));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(System.IO.File.ReadAllText("AllBaseTypesStrings.json"));
         }
         public static void SaveAllBaseWeaponTypes(List<string> allWepBases)
         {
@@ -477,7 +550,7 @@ namespace ItemWatcher2
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
             System.IO.File.Delete(itemfilename);
-            System.IO.File.WriteAllText("allBaseTypes.json", serialized);
+            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
         }
 
         public static List<string> FindPoETradeExplicits()
