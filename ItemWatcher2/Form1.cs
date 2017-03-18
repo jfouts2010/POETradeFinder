@@ -35,7 +35,7 @@ namespace ItemWatcher2
         public Form1()
         {
             //GenerateAllBaseWepsFromString();
-            //NinjaPoETradeMethods.CalcDPSOfAllWeps();
+            NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
@@ -1379,6 +1379,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(Slots);
+            SaveNames();
         }
 
         private void btnOverride2_Click(object sender, EventArgs e)
@@ -1391,6 +1392,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(Slots);
+            SaveNames();
         }
 
         private void btnOverride3_Click(object sender, EventArgs e)
@@ -1403,6 +1405,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(Slots);
+            SaveNames();
         }
         [STAThread]
         private void btnFakeFirstMsg_Click(object sender, EventArgs e)
