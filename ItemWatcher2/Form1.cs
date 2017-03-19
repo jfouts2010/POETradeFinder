@@ -230,22 +230,13 @@ namespace ItemWatcher2
                                             {
                                                 if (NinjaItem.is_weapon)
                                                     itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
-                                                if (NinjaItem.chaos_value - itemValue > 50)
-                                                {
-                                                    SoundPlayer player2 = new SoundPlayer();
-                                                    player2.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                                                    player2.Play();
-                                                    System.Threading.Thread.Sleep(50);
-                                                    player2.Play();
-                                                    System.Threading.Thread.Sleep(50);
-                                                    player2.Play();
-                                                    System.Threading.Thread.Sleep(50);
-                                                }
+                                                
                                                 Slot s = new Slot();
                                                 s.BaseItem = NinjaItem;
                                                 s.SellItem = itemProp;
                                                 s.name = name;
-                                                s.is_mine = findWhoGets(itemProp.id, config.number_of_people) == config.my_number;
+                                                int x = findWhoGets(itemProp.id, config.number_of_people);
+                                                s.is_mine = x == config.my_number;
                                                 s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
                                                 if (Slots.Count == 3)
@@ -284,7 +275,7 @@ namespace ItemWatcher2
                                         if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && (itemProp.typeLine.Contains("Breach Leaguestone") || itemProp.typeLine.Contains("Talisman Leaguestone")))
                                         {
                                             string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
-                                            if (what == "5")
+                                            if (what == "5" && !itemProp.typeLine.Contains("Unburdened"))
                                             {
                                                 /*
                                                 if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
@@ -329,7 +320,7 @@ namespace ItemWatcher2
                                                 //1.26 per breach * 5 * 3 = 19c
                                                 else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
-                                                    if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
+                                                    if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 19c");
 
@@ -338,21 +329,21 @@ namespace ItemWatcher2
                                                 //2.1 per breach * 5 = 10c
                                                 else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
-                                                    if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 5)
+                                                    if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 8)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 10c");
 
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 2 = 12c
-                                                else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
                                                         SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 12c");
 
                                                     }
-                                                }
+                                                }*/
                                                 //1c per splinter * 10 * 5 = 50c
                                                 if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
@@ -887,7 +878,12 @@ namespace ItemWatcher2
         public int findWhoGets(string input, int number_of_people)
         {
             string final = string.Join("", input.Where(p => Char.IsDigit(p)));
-            double realnumber = Convert.ToDouble(final);
+            int realnumber = 0;
+            foreach (char c in final)
+            {
+                realnumber += Convert.ToInt32(c);
+            }
+            
             return (int)((realnumber % number_of_people) + 1);
 
         }
