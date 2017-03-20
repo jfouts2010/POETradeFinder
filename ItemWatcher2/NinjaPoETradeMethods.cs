@@ -418,7 +418,7 @@ namespace ItemWatcher2
 
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
-            if(item.name.Contains("Bino"))
+            if(item.name.Contains("Opus"))
             {
                 int x = 5;
             }
@@ -431,11 +431,31 @@ namespace ItemWatcher2
             decimal maxPhysARoll = (flatPhys?.MaxRoll ?? 0);
             decimal minIASRoll = (ias?.MinRoll ?? 0);
             decimal maxIASRoll = (ias?.MaxRoll ?? 0);
+            if (phys==null)
+            {
+                string physString = item.Explicits.FirstOrDefault(p => p.Contains("increased Physical Damage"));
+                minPhysPRoll = maxPhysPRoll = (GetSingleNumber(physString) ?? 0);
+            }
+            if (flatPhys == null)
+            {
+                
+                string flatPhysString = item.Explicits.FirstOrDefault(p => p.Contains("Adds") && p.Contains("Physical Damage"));
+             if(!string.IsNullOrEmpty(flatPhysString))
+                 minPhysARoll = maxPhysARoll = (GetMultipleNumbersNullable(flatPhysString) ?? 0);
+
+            }
+            if (ias == null)
+            {
+                string iasString = item.Explicits.FirstOrDefault(p => p.Contains("increased Attack Speed"));
+                if(!string.IsNullOrEmpty(iasString))
+                    minIASRoll = maxIASRoll = (GetSingleNumber(iasString) ?? 0);
+            }
+            
             WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.base_type);
             if (baseItem == null)
                 return new decimal[] { 0, 0 };
-            decimal minTotalDps = (baseItem.pd + minPhysARoll) * (1.2M + minPhysPRoll / 100) * (baseItem.aps * (1 + minIASRoll / 100));
-            decimal maxTotalDps = (baseItem.pd + maxPhysARoll) * (1.2M + maxPhysPRoll / 100) * (baseItem.aps * (1 + maxIASRoll / 100));
+            decimal minTotalDps = (baseItem.pd + minPhysARoll) * (1.2M + minPhysPRoll / 100) * (baseItem.aps) * (1 + minIASRoll / 100);
+            decimal maxTotalDps = (baseItem.pd + maxPhysARoll) * (1.2M + maxPhysPRoll / 100) * (baseItem.aps) * (1 + maxIASRoll / 100);
             return new decimal[] { minTotalDps, maxTotalDps };
         }
 
