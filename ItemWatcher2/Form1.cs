@@ -25,15 +25,16 @@ namespace ItemWatcher2
         public static string currencyfilename = "SavedCurrencies.json";
         public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
-        public static List<string> avaliableExplicits = new List<string>();
+       
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
-        public static List<Slot> Slots = new List<Form1.Slot>();
-        public static List<Slot> LeaguestoneSlots = new List<Form1.Slot>();
+        public static List<Slot> Slots = new List<Slot>();
+        public static List<Slot> LeaguestoneSlots = new List<Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
         public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
+            TestPoeTradeConfig();
             //GenerateAllBaseWepsFromString();
             NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
@@ -89,6 +90,17 @@ namespace ItemWatcher2
             serialized = ja.ToString();
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText("allBaseTypes.json", serialized);
+        }
+        [STAThread]
+        private void TestPoeTradeConfig()
+        {
+            POETradeConfig conf = new POETradeConfig()
+            {
+                type = POETradeConfig.BaseType.Boots
+            };
+            conf.mods.Add(POETradeConfig.MovementSpeed, "30");
+            conf.mods.Add(POETradeConfig.TotalResString, "120");
+            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(conf);
         }
 
 
@@ -971,61 +983,10 @@ namespace ItemWatcher2
             return Convert.ToDecimal(y);
         }
 
-        public class ExplicitField
-        {
-            public string SearchField { get; set; }
-            public decimal MinRoll { get; set; }
-            public decimal MaxRoll { get; set; }
-        }
-        public class WeaponBaseItem
-        {
-            public string base_name { get; set; }
-            public decimal pd { get; set; }
-            public decimal aps { get; set; }
-            public override string ToString()
-            {
-                return this.base_name;
-            }
-        }
+        
 
 
-        [Serializable]
-        public class NinjaItem
-        {
-            public string name { get; set; }
-            public NinjaItem()
-            {
-                Implicits = new List<string>();
-                Explicits = new List<string>();
-            }
-            public int item_class { get; set; }
-
-            public decimal chaos_value { get; set; }
-            public string type { get; set; }
-            public string base_type { get; set; }
-            public List<string> Implicits { get; set; }
-            public List<string> Explicits { get; set; }
-            public decimal MinSell { get; set; }
-            public decimal MinAverage { get; set; }
-            public decimal HighRollMinSell { get; set; }
-            public decimal HighRollAvrgSell { get; set; }
-            public decimal MidLowSell { get; set; }
-            public decimal MidAvrgSell { get; set; }
-            public List<decimal> Top5Sells { get; set; }
-            public bool HasRolls { get; set; }
-            public bool UseNinjaPrice = true;
-            public DateTime? last_updated_poetrade { get; set; }
-            public decimal poetrade_chaos_value { get; set; }
-            public List<ExplicitField> ExplicitFields = new List<ExplicitField>();
-            public bool is_weapon { get; set; }
-            public decimal minPdps { get; set; }
-            public decimal maxPdps { get; set; }
-
-            public override string ToString()
-            {
-                return name + " : " + chaos_value;
-            }
-        }
+        
         public static void AddNewName(string name, string value)
         {
             watched_items.Add(new NinjaItem()
@@ -1116,90 +1077,7 @@ namespace ItemWatcher2
             //file is not locked
             return true;
         }
-        public class Slot
-        {
-            public Slot()
-            {
-                timeset = DateTime.Now;
-            }
-            public DateTime timeset;
-            public Item SellItem;
-            public NinjaItem BaseItem;
-            public string Message;
-            public string name;
-            public string worth;
-            public bool is_mine { get; set; }
-        }
-        public class Item
-        {
-            public string verified { get; set; }
-            public string w { get; set; }
-            public string h { get; set; }
-            public string ilvl { get; set; }
-            public string league { get; set; }
-            public string id { get; set; }
-            //public string[] sockets { get; set; }
-            public string name { get; set; }
-            public string typeLine { get; set; }
-            public string identified { get; set; }
-            public string corrupted { get; set; }
-            public string note { get; set; }
-            public int frameType { get; set; }
-            public string inventoryId { get; set; }
-            public int x { get; set; }
-            public int y { get; set; }
-            //public string requirements { get; set; }
-            public string[] implicitMods { get; set; }
-            public string[] explicitMods { get; set; }
-            public int pdps { get; set; }
-
-            public override bool Equals(object obj)
-            {
-                Item input = (Item)obj;
-                return input.note == this.note && input.w == this.w && input.h == this.h && input.id == this.id && input.name == this.name && input.typeLine == this.typeLine && input.ilvl == this.ilvl;
-            }
-        }
-        [Serializable]
-        public class WatchedItem
-        {
-            public string name { get; set; }
-            public double value { get; set; }
-        }
-        [Serializable]
-        public class ItemWatchConfig
-        {
-            public decimal esh_value { get; set; }
-            public decimal xoph_value { get; set; }
-            public decimal tul_value { get; set; }
-
-            public bool do_breachstones { get; set; }
-            public bool do_watch_list { get; set; }
-            public bool do_all_uniques { get; set; }
-            public bool do_all_uniques_with_ranges { get; set; }
-
-            public decimal exalt_ratio { get; set; }
-            public decimal fusing_ratio { get; set; }
-            public decimal alch_ratio { get; set; }
-
-            public int max_price { get; set; }
-            public decimal profit_percent { get; set; }
-            public int min_profit_range { get; set; }
-            public int my_number { get; set; }
-            public int number_of_people { get; set; }
-
-            public List<NinjaItem> SavedItems { get; set; }
-            public List<string> avaliableExplicits { get; set; }
-            public DateTime LastSaved { get; set; }
-            public double refresh_minutes { get; set; }
-            public bool refresh_items { get; set; }
-            public bool update_ninja_when_manul_refresh { get; set; }
-        }
-
-        public class NotChaosCurrencyConversion
-        {
-            public string name { get; set; }
-            public decimal valueInChaos { get; set; }
-        }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {

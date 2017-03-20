@@ -35381,7 +35381,7 @@
     ""
   ],
   "LastSaved": "2017-03-19T14:23:23.5102558-06:00",
-  "refresh_hours": 4,
+  "refresh_minutes": 0.0,
   "refresh_items": false,
   "update_ninja_when_manul_refresh": false
 }

@@ -19,6 +19,8 @@ namespace ItemWatcher2
 {
     public class NinjaPoETradeMethods
     {
+
+        public static List<string> avaliableExplicits = new List<string>();
         public static List<string> all_base_types = new List<string>();
 
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
@@ -67,6 +69,7 @@ namespace ItemWatcher2
             {
                 avaliableExplicits = FindPoETradeExplicits();
                 config.avaliableExplicits = avaliableExplicits;
+
                 int counter = 0;
                 foreach (NinjaItem nj in NinjaItems)
                 {
@@ -76,12 +79,8 @@ namespace ItemWatcher2
                     });
                     ItemExplicitFieldSearch(nj);
 
-                    if (nj.is_weapon && allBaseTypes.Count(p => p.base_name==nj.base_type)>0)
+                    if (nj.is_weapon && allBaseTypes.Count(p => p.base_name == nj.base_type) > 0)
                     {
-                        if(nj.name.Contains("Soul Taker"))
-                        {
-                            int x = 5;
-                        }
                         decimal[] minmax = GetMinMaxPdps(nj);
                         nj.minPdps = minmax[0];
                         nj.maxPdps = minmax[1];
@@ -100,7 +99,7 @@ namespace ItemWatcher2
         {
             WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.typeLine);
             if (baseItem == null)
-                return 0 ;
+                return 0;
             string phys = item.explicitMods.FirstOrDefault(p => p.Contains("increased Physical Damage"));
             string flatPhys = item.explicitMods.FirstOrDefault(p => p.Contains("Adds") && p.Contains("Physical Damage"));
             string ias = item.explicitMods.FirstOrDefault(p => p.Contains("increased Attack Speed"));
@@ -109,7 +108,7 @@ namespace ItemWatcher2
             decimal flatPhysD = (GetMultipleNumbersNullable(flatPhys) ?? 0);
             decimal iasD = (GetSingleNumber(ias) ?? 0);
             decimal TotalDps = (baseItem.pd + flatPhysD) * (1.2M + physD / 100) * (baseItem.aps * (1 + iasD / 100));
-            return (int) TotalDps;
+            return (int)TotalDps;
         }
 
         public static void CalcDPSOfAllWeps()
@@ -305,7 +304,7 @@ namespace ItemWatcher2
                 nj.ExplicitFields = explicitsToCheck;
                 foreach (ExplicitField ef in explicitsToCheck)
                 {
-                    if (avaliableExplicits.Contains(ef.SearchField))
+                    if (avaliableExplicits.Where(p => !p.Contains("(total)")).Contains(ef.SearchField))
                     {
                         modsMinSearch += "mod_name=" + WebUtility.UrlEncode(ef.SearchField) + "&mod_min=" + WebUtility.UrlEncode(ef.MinRoll.ToString()) + "&mod_max=&";
                         decimal HighRoll = ((ef.MaxRoll - ef.MinRoll) * 0.9M) + ef.MinRoll;
@@ -418,7 +417,7 @@ namespace ItemWatcher2
 
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
-            if(item.name.Contains("Opus"))
+            if (item.name.Contains("Opus"))
             {
                 int x = 5;
             }
@@ -431,26 +430,26 @@ namespace ItemWatcher2
             decimal maxPhysARoll = (flatPhys?.MaxRoll ?? 0);
             decimal minIASRoll = (ias?.MinRoll ?? 0);
             decimal maxIASRoll = (ias?.MaxRoll ?? 0);
-            if (phys==null)
+            if (phys == null)
             {
                 string physString = item.Explicits.FirstOrDefault(p => p.Contains("increased Physical Damage"));
                 minPhysPRoll = maxPhysPRoll = (GetSingleNumber(physString) ?? 0);
             }
             if (flatPhys == null)
             {
-                
+
                 string flatPhysString = item.Explicits.FirstOrDefault(p => p.Contains("Adds") && p.Contains("Physical Damage"));
-             if(!string.IsNullOrEmpty(flatPhysString))
-                 minPhysARoll = maxPhysARoll = (GetMultipleNumbersNullable(flatPhysString) ?? 0);
+                if (!string.IsNullOrEmpty(flatPhysString))
+                    minPhysARoll = maxPhysARoll = (GetMultipleNumbersNullable(flatPhysString) ?? 0);
 
             }
             if (ias == null)
             {
                 string iasString = item.Explicits.FirstOrDefault(p => p.Contains("increased Attack Speed"));
-                if(!string.IsNullOrEmpty(iasString))
+                if (!string.IsNullOrEmpty(iasString))
                     minIASRoll = maxIASRoll = (GetSingleNumber(iasString) ?? 0);
             }
-            
+
             WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.base_type);
             if (baseItem == null)
                 return new decimal[] { 0, 0 };
@@ -589,6 +588,104 @@ namespace ItemWatcher2
             System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
         }
 
+        public static List<int> GetPoeLowest5Prices(POETradeConfig tradeConfig)
+        {
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+            request23.Method = "POST";
+            request23.KeepAlive = true;
+            request23.ContentType = "application/x-www-form-urlencoded";
+            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+            StringBuilder sb = new StringBuilder();
+            sb.Append("league=" + tradeConfig.league);
+            sb.Append("&online=x");
+            if (!string.IsNullOrEmpty(tradeConfig.aps))
+                sb.Append("&aps_min=" + tradeConfig.aps);
+            if (tradeConfig.type.HasValue)
+                sb.Append("&type=" + tradeConfig.type.ToString().Replace('_',' '));
+            if (!string.IsNullOrEmpty(tradeConfig.armour))
+                sb.Append("&armour_min=" + tradeConfig.armour);
+
+            if (!string.IsNullOrEmpty(tradeConfig.crit_chance))
+                sb.Append("&crit_min=" + tradeConfig.crit_chance);
+            if (!string.IsNullOrEmpty(tradeConfig.damage))
+                sb.Append("&dmg_min=" + tradeConfig.damage);
+            if (!string.IsNullOrEmpty(tradeConfig.dps))
+                sb.Append("&dps_min=" + tradeConfig.dps);
+            if (!string.IsNullOrEmpty(tradeConfig.edps))
+                sb.Append("&edps_min=" + tradeConfig.edps);
+
+            if (!string.IsNullOrEmpty(tradeConfig.evasion))
+                sb.Append("&evasion_min=" + tradeConfig.evasion);
+            if (!string.IsNullOrEmpty(tradeConfig.ilvl))
+                sb.Append("&ilvl_min=" + tradeConfig.ilvl);
+            if (!string.IsNullOrEmpty(tradeConfig.level))
+                sb.Append("&level_min=" + tradeConfig.level);
+            if (!string.IsNullOrEmpty(tradeConfig.links))
+                sb.Append("&link_min=" + tradeConfig.links);
+
+            if (!string.IsNullOrEmpty(tradeConfig.pdps))
+                sb.Append("&pdps_min=" + tradeConfig.pdps);
+            if (!string.IsNullOrEmpty(tradeConfig.quality))
+                sb.Append("&q_min=" + tradeConfig.quality);
+
+            if (!string.IsNullOrEmpty(tradeConfig.shield))
+                sb.Append("&shield_min=" + tradeConfig.shield);
+            if (!string.IsNullOrEmpty(tradeConfig.sockets))
+                sb.Append("&sockets_min=" + tradeConfig.sockets);
+
+            //Bools
+            if (tradeConfig.corrupted.HasValue)
+                sb.Append("&corrupted=" + Convert.ToInt32(tradeConfig.corrupted));
+            if (tradeConfig.crafted.HasValue)
+                sb.Append("&crafted=" + Convert.ToInt32(tradeConfig.crafted));
+            if (tradeConfig.normalize_q)
+                sb.Append("&capquality=x");
+            if (tradeConfig.enchanted.HasValue)
+                sb.Append("&enchanted=" + Convert.ToInt32(tradeConfig.enchanted));
+           
+
+            //Mods
+
+            foreach (string mod in tradeConfig.mods.Keys)
+            {
+                sb.Append("&mod_name=" + WebUtility.UrlEncode(mod));
+                
+                sb.Append("&mod_min=" + tradeConfig.mods[mod]);
+                sb.Append("&mod_max=");
+            }
+            sb.Append("&group_type=And");
+            sb.Append("&group_min=");
+            sb.Append("&group_max=");
+            sb.Append("&group_count=" + tradeConfig.mods.Count);
+
+            int count = 0;
+            List<decimal> Top5Prices = new List<decimal>();
+            postwriter.Write(sb.ToString());
+            postwriter.Close();
+            using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    string s = reader.ReadToEnd();
+                    HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                    htmlDoc.LoadHtml(s);
+                    var inputs = htmlDoc.DocumentNode.Descendants("tbody");
+
+                    foreach (var input in inputs)
+                    {
+                        if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("chaos") || input.Attributes["data-buyout"].Value.Contains("exalted")))
+                        {
+                            Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio) : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
+                            count++;
+                        }
+
+                    }
+                }
+            }
+            return Top5Prices.ConvertAll(p => Convert.ToInt32(p)).ToList(); ;
+        }
+
         public static List<string> FindPoETradeExplicits()
         {
             List<string> avaliableExplicits = new List<string>();
@@ -611,7 +708,7 @@ namespace ItemWatcher2
 
                             foreach (string explicitString in Explicits)
                             {
-                                if (!explicitString.Contains("(enchant)") && !explicitString.Contains("(implicit)") && !explicitString.Contains("(total)"))
+                                if (!explicitString.Contains("(enchant)") && !explicitString.Contains("(implicit)"))
                                 {
                                     avaliableExplicits.Add(explicitString.Replace("(crafted)", ""));
                                 }
