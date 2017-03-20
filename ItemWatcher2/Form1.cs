@@ -58,7 +58,7 @@ namespace ItemWatcher2
                     txtBoxUpdateThread.Text = "Doing Nothing";
                 });
 
-                if (config.LastSaved.AddHours(1) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
+                if (config.LastSaved.AddMinutes(config.refresh_minutes) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
                 {
                     txtBoxUpdateThread.Invoke((MethodInvoker)delegate
                     {
@@ -97,7 +97,7 @@ namespace ItemWatcher2
         {
             LoadBasicInfo();
             DateTime lastTimeAPIcalled = DateTime.Now;
-            Dictionary<string, Item> seenItems = new Dictionary<string, Item>();
+            Dictionary<string, decimal> seenItems = new Dictionary<string, decimal>();
             DateTime lastClearedSeen = DateTime.Now;
             DateTime refreshConfig = DateTime.Now;
             Slots.Add(new Slot());
@@ -194,10 +194,19 @@ namespace ItemWatcher2
                                         continue;
                                     if (string.IsNullOrEmpty(itemProp.note))
                                         continue;
+                                    decimal itemValue = GetPriceInChaos(itemProp.note);
                                     if (seenItems.ContainsKey(itemProp.id))
-                                        continue;
+                                    {
+                                        if (itemValue == seenItems[itemProp.id])
+                                            continue;
+                                        else
+                                            seenItems[itemProp.id] = itemValue;
+                                    }
                                     else
-                                        seenItems.Add(itemProp.id, itemProp);
+                                    {
+                                        seenItems.Add(itemProp.id, itemValue);
+                                    }
+
                                     /*if (config.number_of_people > 1)
                                     {
                                         int whogot = findWhoGets(itemProp.id, config.number_of_people);
@@ -209,7 +218,7 @@ namespace ItemWatcher2
                                     if (itemProp.explicitMods == null)
                                         itemProp.explicitMods = new string[] { "" };
 
-                                    decimal itemValue = GetPriceInChaos(itemProp.note);
+                                    
                                     if (itemValue > config.max_price)
                                         continue;
                                     itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
@@ -1185,7 +1194,7 @@ namespace ItemWatcher2
             public List<NinjaItem> SavedItems { get; set; }
             public List<string> avaliableExplicits { get; set; }
             public DateTime LastSaved { get; set; }
-            public int refresh_hours { get; set; }
+            public double refresh_minutes { get; set; }
             public bool refresh_items { get; set; }
             public bool update_ninja_when_manul_refresh { get; set; }
         }

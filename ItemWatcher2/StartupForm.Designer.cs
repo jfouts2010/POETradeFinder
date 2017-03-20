@@ -429,9 +429,9 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(312, 199);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(75, 13);
+            this.label18.Size = new System.Drawing.Size(84, 13);
             this.label18.TabIndex = 42;
-            this.label18.Text = "Refresh Hours";
+            this.label18.Text = "Refresh Minutes";
             // 
             // txtRefreshHours
             // 
