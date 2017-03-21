@@ -68,7 +68,7 @@ namespace ItemWatcher2
                         Dictionary<string, string> mods = (Dictionary<string, string>)p.GetValue(this);
                         foreach (string key in mods.Keys)
                         {
-                            sb.Append(" " + key + ":" + mods[key]);
+                            sb.Append(" " + key.Replace("#", mods[key]));
                         }
                     }
                 }catch(Exception e)

@@ -98,7 +98,7 @@ namespace ItemWatcher2
             Enum.TryParse<POETradeConfig.Rarity>(ddlRarity.SelectedValue.ToString(), out rarity);
             POETradeConfig.BaseType type;
             Enum.TryParse<POETradeConfig.BaseType>(dropDownBaseType.SelectedValue.ToString(), out type);
-            item.baseType = type;
+            item.type = type;
             foreach (string key in explicits.Keys)
             {
                 item.mods.Add(key, explicits[key]);
