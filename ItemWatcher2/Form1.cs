@@ -98,8 +98,8 @@ namespace ItemWatcher2
             {
                 type = POETradeConfig.BaseType.Boots
             };
-            conf.mods.Add(POETradeConfig.MovementSpeed, "30");
-            conf.mods.Add(POETradeConfig.TotalResString, "120");
+            conf.mods.Add(POETradeConfig.final_MovementSpeed, "30");
+            conf.mods.Add(POETradeConfig.final_TotalResString, "120");
             List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(conf);
         }
 
