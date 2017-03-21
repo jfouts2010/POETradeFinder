@@ -20,6 +20,7 @@ namespace ItemWatcher2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new EditWatchedRares());
             Application.Run(new StartupForm());
             Application.Run(new Form1());
            

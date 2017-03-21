@@ -20,6 +20,7 @@ namespace ItemWatcher2
     {
         public static List<NinjaItem> watched_items;
         public static List<WeaponBaseItem> allBaseTypes;
+        public static List<POETradeConfig> watchedRares;
         public static ItemWatchConfig config;
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
@@ -35,7 +36,7 @@ namespace ItemWatcher2
         public Form1()
         {
             LoadBasicInfo();
-            //TestPoeTradeConfig();
+            TestPoeTradeConfig();
             //GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
@@ -95,20 +96,15 @@ namespace ItemWatcher2
         [STAThread]
         private void TestPoeTradeConfig()
         {
-            POETradeConfig conf = new POETradeConfig()
-            {
-                type = POETradeConfig.BaseType.Boots
-            };
-            conf.mods.Add(POETradeConfig.MovementSpeed, "30");
-            conf.mods.Add(POETradeConfig.TotalResString, "120");
-            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(conf);
+            
+            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(watchedRares.FirstOrDefault());
         }
 
 
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
-            LoadBasicInfo();
+            
             DateTime lastTimeAPIcalled = DateTime.Now;
             Dictionary<string, decimal> seenItems = new Dictionary<string, decimal>();
             DateTime lastClearedSeen = DateTime.Now;
@@ -1053,6 +1049,14 @@ namespace ItemWatcher2
             catch (Exception e)
             {
                 allBaseTypes = new List<WeaponBaseItem>();
+            }
+            try
+            {
+                watchedRares = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POETradeConfig>>(System.IO.File.ReadAllText(FinalVariables.rareFileName));
+            }
+            catch(Exception e)
+            {
+                watchedRares = new List<POETradeConfig>();
             }
 
 

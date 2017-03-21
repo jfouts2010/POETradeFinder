@@ -638,7 +638,7 @@ namespace ItemWatcher2
                 sb.Append("&corrupted=" + Convert.ToInt32(tradeConfig.corrupted));
             if (tradeConfig.crafted.HasValue)
                 sb.Append("&crafted=" + Convert.ToInt32(tradeConfig.crafted));
-            if (tradeConfig.normalize_q)
+            if (tradeConfig.normalize_q.HasValue && tradeConfig.normalize_q.Value)
                 sb.Append("&capquality=x");
             if (tradeConfig.enchanted.HasValue)
                 sb.Append("&enchanted=" + Convert.ToInt32(tradeConfig.enchanted));

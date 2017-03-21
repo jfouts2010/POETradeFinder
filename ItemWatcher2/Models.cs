@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Reflection;
 namespace ItemWatcher2
 {
+    public class FinalVariables
+    {
+        public static string rareFileName = "rareWatcheItems.json";
+    }
+
+
     public class POETradeConfig
     {
         public POETradeConfig()
@@ -26,6 +32,7 @@ namespace ItemWatcher2
         public string league { get; set; }
         public string name { get; set; }
         public BaseType? type { get; set; }
+        public string baseType { get; set; }
         public string damage { get; set; }
         public string aps { get; set; }
         public string crit_chance { get; set; }
@@ -37,28 +44,55 @@ namespace ItemWatcher2
         public string shield { get; set; }
         public string sockets { get; set; }
         public string links { get; set; }
-        public Dictionary<string,string> mods { get; set; }
+        public Dictionary<string, string> mods { get; set; }
         public string quality { get; set; }
         public string level { get; set; }
         public string ilvl { get; set; }
         public Rarity rarity { get; set; }
         public bool? corrupted { get; set; }
-        public bool normalize_q { get; set; }
+        public bool? normalize_q { get; set; }
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (PropertyInfo p in typeof(POETradeConfig).GetProperties().OrderBy(asd => asd.Name))
+            {
+                try
+                {
+                    if (p.Name != "mods" && p.Name != "rarity" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
+                        sb.Append("  " + p.Name + ":" + p.GetValue(this).ToString());
+                    if (p.Name == "mods")
+                    {
+                        Dictionary<string, string> mods = (Dictionary<string, string>)p.GetValue(this);
+                        foreach (string key in mods.Keys)
+                        {
+                            sb.Append(" " + key.Replace("#", mods[key]));
+                        }
+                    }
+                }catch(Exception e)
+                {
+                    int x = 5;
+                }
+            }
+            return sb.ToString();
+        }
 
 
         public enum Rarity
         {
-            normal=0,
-             magic=1,
-             rare=2,
-             unique=3,
-             relic=9
+            none = 0,
+            normal = 4,
+            magic = 1,
+            rare = 2,
+            unique = 3,
+            relic = 9
         }
         public enum BaseType
         {
-            Bow = 0,
+            None = 0,
+            Bow = 33,
             Claw = 1,
             Dagger = 2,
             One_Hand_Axe = 3,
@@ -93,11 +127,17 @@ namespace ItemWatcher2
             Map_Fragments = 32,
         }
 
-        public static readonly string TotalResString = "(pseudo) +#% total Elemental Resistance";
-        public static readonly string Life = "(pseudo) (total) +# to maximum Life";
-        public static readonly string EnergyShieldFlat = "(pseudo) (total) +# to maximum Emergy Shield";
-        public static readonly string MovementSpeed = "#% increased Movement Speed";
-
+        public static readonly string final_TotalResString = "(pseudo) +#% total Elemental Resistance";
+        public static readonly string final_Life = "(pseudo) (total) +# to maximum Life";
+        public static readonly string final_EnergyShieldFlat = "(pseudo) (total) +# to maximum Emergy Shield";
+        public static readonly string final_MovementSpeed = "#% increased Movement Speed";
+        public static readonly string final_Strength = "(pseudo) (total) +# to Strength";
+        public static readonly string final_Intelligence = "(pseudo) (total) +# to Intelligence";
+        public static readonly string final_Dexterity = "(pseudo) (total) +# to Dexterity";
+        public static readonly string final_WED = "(pseudo) (total) #% increased Elemental Damage with Weapons";
+        public static readonly string final_FireRes = "(pseudo) (total) +#% to Fire Resistance";
+        public static readonly string final_ColdRes = "(pseudo) (total) +#% to Cold Resistance";
+        public static readonly string final_LightningRes = "(pseudo) (total) +#% to Lightning Resistance";
     }
 
     [Serializable]
