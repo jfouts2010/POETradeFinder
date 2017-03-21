@@ -26,6 +26,7 @@ namespace ItemWatcher2
         public string league { get; set; }
         public string name { get; set; }
         public BaseType? type { get; set; }
+        public string baseType { get; set; }
         public string damage { get; set; }
         public string aps { get; set; }
         public string crit_chance { get; set; }
