@@ -25,7 +25,7 @@ namespace ItemWatcher2
         public static string currencyfilename = "SavedCurrencies.json";
         public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
-       
+
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
         public static List<Slot> Slots = new List<Slot>();
@@ -34,9 +34,10 @@ namespace ItemWatcher2
         public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
-            TestPoeTradeConfig();
+            LoadBasicInfo();
+            //TestPoeTradeConfig();
             //GenerateAllBaseWepsFromString();
-            NinjaPoETradeMethods.CalcDPSOfAllWeps();
+            //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
@@ -197,6 +198,9 @@ namespace ItemWatcher2
                             {
                                 List<JToken> stash = jt.Children().ToList();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
+                                string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
+                                if (config.blocked_accounts.Contains(accName))
+                                    continue;
                                 List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
                                 foreach (JToken item in items)
                                 {
@@ -230,7 +234,7 @@ namespace ItemWatcher2
                                     if (itemProp.explicitMods == null)
                                         itemProp.explicitMods = new string[] { "" };
 
-                                    
+
                                     if (itemValue > config.max_price)
                                         continue;
                                     itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
@@ -244,15 +248,16 @@ namespace ItemWatcher2
                                                 NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
                                             else
                                                 NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
-                                           
+
                                             if (NinjaItem.chaos_value > 15)
                                                 GetExplicitFields(NinjaItem, itemProp);
                                             if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                             {
                                                 if (NinjaItem.is_weapon)
                                                     itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
-                                                
+
                                                 Slot s = new Slot();
+                                                s.account_name = accName;
                                                 s.BaseItem = NinjaItem;
                                                 s.SellItem = itemProp;
                                                 s.name = name;
@@ -904,7 +909,7 @@ namespace ItemWatcher2
             {
                 realnumber += Convert.ToInt32(c);
             }
-            
+
             return (int)((realnumber % number_of_people) + 1);
 
         }
@@ -961,13 +966,13 @@ namespace ItemWatcher2
                 return null;
             string[] parts = input.Split((" to ".ToCharArray()));
             decimal total = 0;
-            foreach(string s in parts)
+            foreach (string s in parts)
             {
                 try
                 {
                     total += Convert.ToInt32(s);
                 }
-                catch(Exception easdf)
+                catch (Exception easdf)
                 {
 
                 }
@@ -983,10 +988,10 @@ namespace ItemWatcher2
             return Convert.ToDecimal(y);
         }
 
-        
 
 
-        
+
+
         public static void AddNewName(string name, string value)
         {
             watched_items.Add(new NinjaItem()
@@ -1077,7 +1082,7 @@ namespace ItemWatcher2
             //file is not locked
             return true;
         }
-        
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -1293,14 +1298,33 @@ namespace ItemWatcher2
         [STAThread]
         private void btnFakeFirstMsg_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Slots[0].Message))
-            {
-                string s = Slots[0].Message;
-                Button btn = (Button)sender;
-                if (btn.Name != "btnFakeFirstMsg")
-                    last_time_clicked = DateTime.Now;
-                Clipboard.SetText(s);
-            }
+            if (config.autoCopy)
+                if (!string.IsNullOrEmpty(Slots[0].Message))
+                {
+                    string s = Slots[0].Message;
+                    Button btn = (Button)sender;
+                    if (btn.Name != "btnFakeFirstMsg")
+                        last_time_clicked = DateTime.Now;
+                    Clipboard.SetText(s);
+                }
+        }
+
+        private void btnBlock1_Click(object sender, EventArgs e)
+        {
+            config.blocked_accounts.Add(Slots[0].account_name);
+            SaveNames();
+        }
+
+        private void btnBlock2_Click(object sender, EventArgs e)
+        {
+            config.blocked_accounts.Add(Slots[1].account_name);
+            SaveNames();
+        }
+
+        private void btnBlock3_Click(object sender, EventArgs e)
+        {
+            config.blocked_accounts.Add(Slots[2].account_name);
+            SaveNames();
         }
     }
 }

@@ -150,6 +150,7 @@ namespace ItemWatcher2
         public string name;
         public string worth;
         public bool is_mine { get; set; }
+        public string account_name { get; set; }
     }
     public class Item
     {
@@ -214,6 +215,8 @@ namespace ItemWatcher2
         public double refresh_minutes { get; set; }
         public bool refresh_items { get; set; }
         public bool update_ninja_when_manul_refresh { get; set; }
+        public List<string> blocked_accounts { get; set; }
+        public bool autoCopy { get; set; }
     }
 
     public class NotChaosCurrencyConversion

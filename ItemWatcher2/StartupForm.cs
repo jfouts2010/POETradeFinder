@@ -51,8 +51,9 @@ namespace ItemWatcher2
             
             config.esh_value = Convert.ToDecimal(txtEsh.Text);
             config.xoph_value = Convert.ToDecimal(txtXoph.Text);
-
-                
+            if (config.blocked_accounts == null)
+                config.blocked_accounts = new List<string>();
+            config.autoCopy = chkAutoCopy.Checked;
             config.tul_value = Convert.ToDecimal(txtTul.Text);
             config.do_breachstones = this.chkDoBreach.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
@@ -129,6 +130,7 @@ namespace ItemWatcher2
             this.txtNumberOfPeople.Text = config.number_of_people.ToString();
             this.txtYourNumber.Text = config.my_number.ToString();
             this.txtRefreshHours.Text = config.refresh_minutes.ToString();
+            this.chkAutoCopy.Checked = config.autoCopy;
         }
 
         private void btnAddNewClick(object sender, EventArgs e)

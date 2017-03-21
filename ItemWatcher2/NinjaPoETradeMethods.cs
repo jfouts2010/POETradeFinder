@@ -683,7 +683,7 @@ namespace ItemWatcher2
                     }
                 }
             }
-            return Top5Prices.ConvertAll(p => Convert.ToInt32(p)).ToList(); ;
+            return Top5Prices.ConvertAll(p => Convert.ToInt32(p)).ToList();
         }
 
         public static List<string> FindPoETradeExplicits()
