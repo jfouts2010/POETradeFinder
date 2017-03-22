@@ -21,10 +21,11 @@ namespace ItemWatcher2
     {
 
         public static List<string> avaliableExplicits = new List<string>();
-        public static Dictionary<string, int> all_base_types = new Dictionary<string, int>();
+        public static Dictionary<string, string> all_base_types;
 
-        public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
+        public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Dictionary<string, string> current_bases, Boolean do_poetrade_lookup = false)
         {
+            all_base_types = current_bases;
             List<JObject> Jsons = new List<JObject>();
             List<JObject> Jweps = new List<JObject>();
             List<JObject> JJewlerys = new List<JObject>();
@@ -42,6 +43,7 @@ namespace ItemWatcher2
             {
                 txtBoxUpdateThread.Text = "Doing Ninja Update";
             });
+
             foreach (string s in APIURLS.Keys)
             {
                 HttpWebRequest request2 = WebRequest.Create(s) as HttpWebRequest;
@@ -70,11 +72,7 @@ namespace ItemWatcher2
                 NinjaItems.AddRange(DoNinjaParsing(jo, 2));
             foreach (JObject jo in JJewlerys)
                 NinjaItems.AddRange(DoNinjaParsing(jo, 3));
-            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(all_base_types);
-            JObject ja = JObject.Parse(serialized);
-            serialized = ja.ToString();
-            System.IO.File.Delete("AllBaseTypesStrings.json");
-            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
+            SaveBaseStrings(all_base_types);
             if (config.do_all_uniques_with_ranges && do_poetrade_lookup)
             {
                 avaliableExplicits = FindPoETradeExplicits();
@@ -103,6 +101,15 @@ namespace ItemWatcher2
             SaveNames();
 
             return NinjaItems;
+        }
+
+        public static void SaveBaseStrings(Dictionary<string, string> baseTypes)
+        {
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(baseTypes);
+            JObject ja = JObject.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete("AllBaseTypesStrings.json");
+            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
         }
 
         public static int GetDdpsOfLocalWeapon(Item item)//godamn "items"
@@ -149,11 +156,69 @@ namespace ItemWatcher2
             {
                 NinjaItem newNinjaItem = new NinjaItem();
                 newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
-                newNinjaItem.is_weapon = (type==1);
+                newNinjaItem.is_weapon = (type == 1);
                 newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
                 newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
                 if (!all_base_types.ContainsKey(newNinjaItem.base_type))
-                    all_base_types.Add(newNinjaItem.base_type,type);
+                {
+                    //jewlery
+                    if (type == 3)
+                    {
+                        if (newNinjaItem.base_type.ToLower().Contains(" ring"))
+                            all_base_types.Add(newNinjaItem.base_type, "Ring");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" amulet") || newNinjaItem.base_type.ToLower().Contains(" talisman"))
+                            all_base_types.Add(newNinjaItem.base_type, "Amulet");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" belt") || newNinjaItem.base_type.ToLower().Contains(" sash"))
+                            all_base_types.Add(newNinjaItem.base_type, "Belt");
+                        else
+                            all_base_types.Add(newNinjaItem.base_type, "OtherJewelry");
+                    }
+                    else if (type == 2)//armor
+                    {
+                        if (newNinjaItem.base_type.ToLower().Contains(" vest") || newNinjaItem.base_type.ToLower().Contains(" plate")
+                            || newNinjaItem.base_type.ToLower().Contains(" jerkin") || newNinjaItem.base_type.ToLower().Contains(" leather")
+                            || newNinjaItem.base_type.ToLower().Contains(" tunic") || newNinjaItem.base_type.ToLower().Contains(" garb")
+                            || newNinjaItem.base_type.ToLower().Contains(" robe") || newNinjaItem.base_type.ToLower().Contains(" vest")
+                            || newNinjaItem.base_type.ToLower().Contains(" vestment") || newNinjaItem.base_type.ToLower().Contains(" regalia")
+                            || newNinjaItem.base_type.ToLower().Contains(" wrap") || newNinjaItem.base_type.ToLower().Contains(" silks")
+                            || newNinjaItem.base_type.ToLower().Contains(" brigandine") || newNinjaItem.base_type.ToLower().Contains(" doublet")
+                            || newNinjaItem.base_type.ToLower().Contains(" armour") || newNinjaItem.base_type.ToLower().Contains(" lamellar")
+                            || newNinjaItem.base_type.ToLower().Contains(" wyrmscale") || newNinjaItem.base_type.ToLower().Contains(" dragonscale")
+                            || newNinjaItem.base_type.ToLower().Contains(" coat") || newNinjaItem.base_type.ToLower().Contains(" ringmail")
+                            || newNinjaItem.base_type.ToLower().Contains(" chainmail") || newNinjaItem.base_type.ToLower().Contains(" hauberk")
+                            || newNinjaItem.base_type.ToLower().Contains(" jacket") || newNinjaItem.base_type.ToLower().Contains(" raiment")
+                            || newNinjaItem.base_type.ToLower().Contains(" garb"))
+                            all_base_types.Add(newNinjaItem.base_type, "Body Armour");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" hat") || newNinjaItem.base_type.ToLower().Contains(" helmet")
+                            || newNinjaItem.base_type.ToLower().Contains(" burgonet") || newNinjaItem.base_type.ToLower().Contains(" cap")
+                            || newNinjaItem.base_type.ToLower().Contains("tricorne") || newNinjaItem.base_type.ToLower().Contains(" hood")
+                            || newNinjaItem.base_type.ToLower().Contains(" pelt") || newNinjaItem.base_type.ToLower().Contains(" tricorne")
+                            || newNinjaItem.base_type.ToLower().Contains(" circlet") || newNinjaItem.base_type.ToLower().Contains(" cage")
+                            || newNinjaItem.base_type.ToLower().Contains("sallet") || newNinjaItem.base_type.ToLower().Contains(" helm")
+                            || newNinjaItem.base_type.ToLower().Contains(" sallet") || newNinjaItem.base_type.ToLower().Contains(" bascinet")
+                            || newNinjaItem.base_type.ToLower().Contains(" coif") || newNinjaItem.base_type.ToLower().Contains(" crown")
+                            || newNinjaItem.base_type.ToLower().Contains(" mask"))
+                            all_base_types.Add(newNinjaItem.base_type, "Helmet");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" gauntlets") || newNinjaItem.base_type.ToLower().Contains(" gloves")
+                            || newNinjaItem.base_type.ToLower().Contains(" mitts"))
+                            all_base_types.Add(newNinjaItem.base_type, "Gloves");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" greaves") || newNinjaItem.base_type.ToLower().Contains(" boots")
+                            || newNinjaItem.base_type.ToLower().Contains(" shoes") || newNinjaItem.base_type.ToLower().Contains(" slippers"))
+                            all_base_types.Add(newNinjaItem.base_type, "Boots");
+                        else if (newNinjaItem.base_type.ToLower().Contains(" shield") || newNinjaItem.base_type.ToLower().Contains(" buckler")
+                            || newNinjaItem.base_type.ToLower().Contains(" bundle") || newNinjaItem.base_type.ToLower().Contains(" slippers"))
+                            all_base_types.Add(newNinjaItem.base_type, "Shield");
+                        else
+                            all_base_types.Add(newNinjaItem.base_type, "Quiver");
+                    }
+                    else if (type == 1)//weapons
+                    {
+                        all_base_types.Add(newNinjaItem.base_type, "Weapon");//we can calc later
+                    }
+                    else//other
+                        all_base_types.Add(newNinjaItem.base_type, "Other");
+                }
+
 
                 newNinjaItem.item_class = Convert.ToInt32(jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString());
                 List<string> implicits = new List<string>();
@@ -179,10 +244,56 @@ namespace ItemWatcher2
                 newNinjaItem.Explicits = explicits;
                 newNinjaItem.Implicits = implicits;
                 newNinjaItem.chaos_value = Convert.ToDecimal(jo2.Children().ToList().First(p => p.Path.EndsWith(".chaosValue")).First.ToString());
-                if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && localNinjaItems.Where(p => p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0)
+                if (/*newNinjaItem.chaos_value > 20 &&*/ !newNinjaItem.name.Contains("Atziri's Splendour") && !newNinjaItem.name.Contains("Doryani's Invitation") && !newNinjaItem.name.Contains("Vessel of Vinktar") && localNinjaItems.Where(p => p.name == newNinjaItem.name && p.base_type == newNinjaItem.base_type && p.type == newNinjaItem.type).Count() == 0 && !newNinjaItem.name.Contains("The Signal Fire"))
                     localNinjaItems.Add(newNinjaItem);
             }
             return localNinjaItems;
+        }
+
+        public static string FindBaseType(string input)
+        {
+
+            if (input.ToLower().Contains(" ring"))
+                return "Ring";
+            else if (input.ToLower().Contains(" amulet") || input.ToLower().Contains(" talisman"))
+                return "Amulet";
+            else if (input.ToLower().Contains(" belt") || input.ToLower().Contains(" sash"))
+                return "Belt";
+            
+            if (input.ToLower().Contains(" vest") || input.ToLower().Contains(" plate")
+                || input.ToLower().Contains(" jerkin") || input.ToLower().Contains(" leather")
+                || input.ToLower().Contains(" tunic") || input.ToLower().Contains(" garb")
+                || input.ToLower().Contains(" robe") || input.ToLower().Contains(" vest")
+                || input.ToLower().Contains(" vestment") || input.ToLower().Contains(" regalia")
+                || input.ToLower().Contains(" wrap") || input.ToLower().Contains(" silks")
+                || input.ToLower().Contains(" brigandine") || input.ToLower().Contains(" doublet")
+                || input.ToLower().Contains(" armour") || input.ToLower().Contains(" lamellar")
+                || input.ToLower().Contains(" wyrmscale") || input.ToLower().Contains(" dragonscale")
+                || input.ToLower().Contains(" coat") || input.ToLower().Contains(" ringmail")
+                || input.ToLower().Contains(" chainmail") || input.ToLower().Contains(" hauberk")
+                || input.ToLower().Contains(" jacket") || input.ToLower().Contains(" raiment")
+                || input.ToLower().Contains(" garb"))
+                return "Body Armour";
+            else if (input.ToLower().Contains(" hat") || input.ToLower().Contains(" helmet")
+                || input.ToLower().Contains(" burgonet") || input.ToLower().Contains(" cap")
+                || input.ToLower().Contains("tricorne") || input.ToLower().Contains(" hood")
+                || input.ToLower().Contains(" pelt") || input.ToLower().Contains(" tricorne")
+                || input.ToLower().Contains(" circlet") || input.ToLower().Contains(" cage")
+                || input.ToLower().Contains("sallet") || input.ToLower().Contains(" helm")
+                || input.ToLower().Contains(" sallet") || input.ToLower().Contains(" bascinet")
+                || input.ToLower().Contains(" coif") || input.ToLower().Contains(" crown")
+                || input.ToLower().Contains(" mask"))
+                return "Helmet";
+            else if (input.ToLower().Contains(" gauntlets") || input.ToLower().Contains(" gloves")
+                || input.ToLower().Contains(" mitts"))
+                return "Gloves";
+            else if (input.ToLower().Contains(" greaves") || input.ToLower().Contains(" boots")
+                || input.ToLower().Contains(" shoes") || input.ToLower().Contains(" slippers"))
+                return "Boots";
+            else if (input.ToLower().Contains(" shield") || input.ToLower().Contains(" buckler")
+                || input.ToLower().Contains(" bundle") || input.ToLower().Contains(" slippers"))
+                return "Shield";
+            return "idk";
         }
 
         public static WeaponBaseItem FindBaseOnHitAndAttackSpeed(string itemName)
@@ -585,16 +696,16 @@ namespace ItemWatcher2
             nj.MidLowSell = MidLowSell;
             nj.MidAvrgSell = MidAvrgSell;
         }
-        public static List<string> LoadAllBaseWeaponTypes()
+        public static Dictionary<string, string> LoadAllBaseWeaponTypes()
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(System.IO.File.ReadAllText("AllBaseTypesStrings.json"));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText("AllBaseTypesStrings.json"));
         }
         public static void SaveAllBaseWeaponTypes(List<string> allWepBases)
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allWepBases);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
-            System.IO.File.Delete(itemfilename);
+            System.IO.File.Delete(FinalVariables.itemfilename);
             System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
         }
 
@@ -610,7 +721,7 @@ namespace ItemWatcher2
             sb.Append("&online=x");
             if (!string.IsNullOrEmpty(tradeConfig.aps))
                 sb.Append("&aps_min=" + tradeConfig.aps);
-            sb.Append("&type=" + tradeConfig.type.ToString().Replace('_',' '));
+            sb.Append("&type=" + tradeConfig.type.ToString().Replace('_', ' '));
             if (!string.IsNullOrEmpty(tradeConfig.armour))
                 sb.Append("&armour_min=" + tradeConfig.armour);
 
@@ -651,14 +762,14 @@ namespace ItemWatcher2
                 sb.Append("&capquality=x");
             if (tradeConfig.enchanted.HasValue)
                 sb.Append("&enchanted=" + Convert.ToInt32(tradeConfig.enchanted));
-           
+
 
             //Mods
 
             foreach (string mod in tradeConfig.mods.Keys)
             {
                 sb.Append("&mod_name=" + WebUtility.UrlEncode(mod));
-                
+
                 sb.Append("&mod_min=" + tradeConfig.mods[mod]);
                 sb.Append("&mod_max=");
             }

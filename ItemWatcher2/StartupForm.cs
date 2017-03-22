@@ -75,8 +75,8 @@ namespace ItemWatcher2
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             JObject jo = JObject.Parse(serialized);
             serialized = jo.ToString();
-            System.IO.File.Delete(configfile);
-            System.IO.File.WriteAllText(configfile, serialized);
+            System.IO.File.Delete(FinalVariables.configfile);
+            System.IO.File.WriteAllText(FinalVariables.configfile, serialized);
         }
         public void LoadBasicInfo()
         {
@@ -90,7 +90,7 @@ namespace ItemWatcher2
             }
             try
             {
-                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(configfile));
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(FinalVariables.configfile));
             }
             catch (Exception e)
             {

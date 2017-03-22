@@ -117,83 +117,78 @@ namespace ItemWatcher2
             this.btnBlock1 = new System.Windows.Forms.Button();
             this.btnBlock2 = new System.Windows.Forms.Button();
             this.btnBlock3 = new System.Windows.Forms.Button();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(16, 41);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Location = new System.Drawing.Point(12, 33);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(252, 22);
+            this.textBox1.Size = new System.Drawing.Size(190, 20);
             this.textBox1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(16, 5);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Location = new System.Drawing.Point(12, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 28);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "Status";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(16, 96);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Location = new System.Drawing.Point(12, 78);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(254, 28);
+            this.button2.Size = new System.Drawing.Size(190, 23);
             this.button2.TabIndex = 2;
             this.button2.Text = "Past 3 Items";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(16, 132);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Location = new System.Drawing.Point(12, 107);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(254, 28);
+            this.button3.Size = new System.Drawing.Size(190, 23);
             this.button3.TabIndex = 3;
             this.button3.Text = "Name";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(311, 132);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button4.Location = new System.Drawing.Point(233, 107);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(116, 28);
+            this.button4.Size = new System.Drawing.Size(87, 23);
             this.button4.TabIndex = 4;
             this.button4.Text = "Sell / Actual Value";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(459, 132);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button5.Location = new System.Drawing.Point(344, 107);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(116, 28);
+            this.button5.Size = new System.Drawing.Size(87, 23);
             this.button5.TabIndex = 5;
             this.button5.Text = "Current Rolls";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(797, 127);
-            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button6.Location = new System.Drawing.Point(598, 103);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(116, 28);
+            this.button6.Size = new System.Drawing.Size(87, 23);
             this.button6.TabIndex = 6;
             this.button6.Text = "Item Rolls";
             this.button6.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(1125, 194);
-            this.button7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button7.Location = new System.Drawing.Point(844, 158);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(116, 28);
+            this.button7.Size = new System.Drawing.Size(87, 23);
             this.button7.TabIndex = 7;
             this.button7.Text = "Message";
             this.button7.UseVisualStyleBackColor = true;
@@ -201,78 +196,70 @@ namespace ItemWatcher2
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(311, 167);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox3.Location = new System.Drawing.Point(233, 136);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(141, 22);
+            this.textBox3.Size = new System.Drawing.Size(107, 20);
             this.textBox3.TabIndex = 9;
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(461, 169);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox1.Location = new System.Drawing.Point(346, 137);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(319, 117);
+            this.richTextBox1.Size = new System.Drawing.Size(240, 96);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(797, 170);
-            this.richTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox2.Location = new System.Drawing.Point(598, 138);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(319, 117);
+            this.richTextBox2.Size = new System.Drawing.Size(240, 96);
             this.richTextBox2.TabIndex = 13;
             this.richTextBox2.Text = "";
             // 
             // richTextBox3
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(461, 334);
-            this.richTextBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox3.Location = new System.Drawing.Point(346, 271);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(319, 117);
+            this.richTextBox3.Size = new System.Drawing.Size(240, 96);
             this.richTextBox3.TabIndex = 22;
             this.richTextBox3.Text = "";
             // 
             // richTextBox4
             // 
-            this.richTextBox4.Location = new System.Drawing.Point(797, 334);
-            this.richTextBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox4.Location = new System.Drawing.Point(598, 271);
             this.richTextBox4.Name = "richTextBox4";
             this.richTextBox4.ReadOnly = true;
-            this.richTextBox4.Size = new System.Drawing.Size(313, 117);
+            this.richTextBox4.Size = new System.Drawing.Size(236, 96);
             this.richTextBox4.TabIndex = 21;
             this.richTextBox4.Text = "";
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(16, 332);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox4.Location = new System.Drawing.Point(12, 270);
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(253, 22);
+            this.textBox4.Size = new System.Drawing.Size(191, 20);
             this.textBox4.TabIndex = 20;
             // 
             // textBox5
             // 
             this.textBox5.AcceptsReturn = true;
-            this.textBox5.Location = new System.Drawing.Point(311, 332);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox5.Location = new System.Drawing.Point(233, 270);
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(141, 22);
+            this.textBox5.Size = new System.Drawing.Size(107, 20);
             this.textBox5.TabIndex = 19;
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(1125, 359);
-            this.button8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button8.Location = new System.Drawing.Point(844, 292);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 28);
+            this.button8.Size = new System.Drawing.Size(87, 23);
             this.button8.TabIndex = 18;
             this.button8.Text = "Message";
             this.button8.UseVisualStyleBackColor = true;
@@ -280,88 +267,79 @@ namespace ItemWatcher2
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(797, 292);
-            this.button9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button9.Location = new System.Drawing.Point(598, 237);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(116, 28);
+            this.button9.Size = new System.Drawing.Size(87, 23);
             this.button9.TabIndex = 17;
             this.button9.Text = "Item Rolls";
             this.button9.UseVisualStyleBackColor = true;
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(459, 298);
-            this.button10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button10.Location = new System.Drawing.Point(344, 242);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(116, 28);
+            this.button10.Size = new System.Drawing.Size(87, 23);
             this.button10.TabIndex = 16;
             this.button10.Text = "Current Rolls";
             this.button10.UseVisualStyleBackColor = true;
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(311, 297);
-            this.button11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button11.Location = new System.Drawing.Point(233, 241);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(116, 28);
+            this.button11.Size = new System.Drawing.Size(87, 23);
             this.button11.TabIndex = 15;
             this.button11.Text = "Sell / Actual Value";
             this.button11.UseVisualStyleBackColor = true;
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(16, 297);
-            this.button12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button12.Location = new System.Drawing.Point(12, 241);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(254, 28);
+            this.button12.Size = new System.Drawing.Size(190, 23);
             this.button12.TabIndex = 14;
             this.button12.Text = "Name";
             this.button12.UseVisualStyleBackColor = true;
             // 
             // richTextBox5
             // 
-            this.richTextBox5.Location = new System.Drawing.Point(461, 501);
-            this.richTextBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox5.Location = new System.Drawing.Point(346, 407);
             this.richTextBox5.Name = "richTextBox5";
             this.richTextBox5.ReadOnly = true;
-            this.richTextBox5.Size = new System.Drawing.Size(319, 117);
+            this.richTextBox5.Size = new System.Drawing.Size(240, 96);
             this.richTextBox5.TabIndex = 31;
             this.richTextBox5.Text = "";
             // 
             // richTextBox6
             // 
-            this.richTextBox6.Location = new System.Drawing.Point(797, 501);
-            this.richTextBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox6.Location = new System.Drawing.Point(598, 407);
             this.richTextBox6.Name = "richTextBox6";
             this.richTextBox6.ReadOnly = true;
-            this.richTextBox6.Size = new System.Drawing.Size(313, 117);
+            this.richTextBox6.Size = new System.Drawing.Size(236, 96);
             this.richTextBox6.TabIndex = 30;
             this.richTextBox6.Text = "";
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(16, 500);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox6.Location = new System.Drawing.Point(12, 406);
             this.textBox6.Name = "textBox6";
             this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(253, 22);
+            this.textBox6.Size = new System.Drawing.Size(191, 20);
             this.textBox6.TabIndex = 29;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(311, 500);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox7.Location = new System.Drawing.Point(233, 406);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(141, 22);
+            this.textBox7.Size = new System.Drawing.Size(107, 20);
             this.textBox7.TabIndex = 28;
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(1125, 527);
-            this.button13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button13.Location = new System.Drawing.Point(844, 428);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(116, 28);
+            this.button13.Size = new System.Drawing.Size(87, 23);
             this.button13.TabIndex = 27;
             this.button13.Text = "Message";
             this.button13.UseVisualStyleBackColor = true;
@@ -369,40 +347,36 @@ namespace ItemWatcher2
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(797, 459);
-            this.button14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button14.Location = new System.Drawing.Point(598, 373);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(116, 28);
+            this.button14.Size = new System.Drawing.Size(87, 23);
             this.button14.TabIndex = 26;
             this.button14.Text = "Item Rolls";
             this.button14.UseVisualStyleBackColor = true;
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(459, 459);
-            this.button15.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button15.Location = new System.Drawing.Point(344, 373);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(116, 28);
+            this.button15.Size = new System.Drawing.Size(87, 23);
             this.button15.TabIndex = 25;
             this.button15.Text = "Current Rolls";
             this.button15.UseVisualStyleBackColor = true;
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(311, 464);
-            this.button16.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button16.Location = new System.Drawing.Point(233, 377);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(116, 28);
+            this.button16.Size = new System.Drawing.Size(87, 23);
             this.button16.TabIndex = 24;
             this.button16.Text = "Sell / Actual Value";
             this.button16.UseVisualStyleBackColor = true;
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(16, 464);
-            this.button17.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button17.Location = new System.Drawing.Point(12, 377);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(254, 28);
+            this.button17.Size = new System.Drawing.Size(190, 23);
             this.button17.TabIndex = 23;
             this.button17.Text = "Name";
             this.button17.UseVisualStyleBackColor = true;
@@ -411,10 +385,9 @@ namespace ItemWatcher2
             // 
             this.checkBox1.AutoCheck = false;
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(16, 261);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox1.Location = new System.Drawing.Point(12, 212);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(61, 21);
+            this.checkBox1.Size = new System.Drawing.Size(50, 17);
             this.checkBox1.TabIndex = 32;
             this.checkBox1.Text = "Relic";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -422,10 +395,9 @@ namespace ItemWatcher2
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(16, 431);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox2.Location = new System.Drawing.Point(12, 350);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(61, 21);
+            this.checkBox2.Size = new System.Drawing.Size(50, 17);
             this.checkBox2.TabIndex = 33;
             this.checkBox2.Text = "Relic";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -433,10 +405,9 @@ namespace ItemWatcher2
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(16, 598);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox3.Location = new System.Drawing.Point(12, 486);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(61, 21);
+            this.checkBox3.Size = new System.Drawing.Size(50, 17);
             this.checkBox3.TabIndex = 34;
             this.checkBox3.Text = "Relic";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -444,10 +415,9 @@ namespace ItemWatcher2
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(140, 261);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox4.Location = new System.Drawing.Point(68, 212);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(93, 21);
+            this.checkBox4.Size = new System.Drawing.Size(72, 17);
             this.checkBox4.TabIndex = 35;
             this.checkBox4.Text = "Corrupted";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -455,10 +425,9 @@ namespace ItemWatcher2
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(140, 431);
-            this.checkBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox5.Location = new System.Drawing.Point(69, 350);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(93, 21);
+            this.checkBox5.Size = new System.Drawing.Size(72, 17);
             this.checkBox5.TabIndex = 36;
             this.checkBox5.Text = "Corrupted";
             this.checkBox5.UseVisualStyleBackColor = true;
@@ -467,10 +436,9 @@ namespace ItemWatcher2
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(140, 598);
-            this.checkBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox6.Location = new System.Drawing.Point(68, 486);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(93, 21);
+            this.checkBox6.Size = new System.Drawing.Size(72, 17);
             this.checkBox6.TabIndex = 37;
             this.checkBox6.Text = "Corrupted";
             this.checkBox6.UseVisualStyleBackColor = true;
@@ -478,28 +446,25 @@ namespace ItemWatcher2
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(16, 724);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox9.Location = new System.Drawing.Point(12, 588);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(928, 22);
+            this.textBox9.Size = new System.Drawing.Size(697, 20);
             this.textBox9.TabIndex = 39;
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(16, 768);
-            this.textBox10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox10.Location = new System.Drawing.Point(12, 624);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
-            this.textBox10.Size = new System.Drawing.Size(928, 22);
+            this.textBox10.Size = new System.Drawing.Size(697, 20);
             this.textBox10.TabIndex = 40;
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(1000, 681);
-            this.button18.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button18.Location = new System.Drawing.Point(750, 553);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(116, 28);
+            this.button18.Size = new System.Drawing.Size(87, 23);
             this.button18.TabIndex = 41;
             this.button18.Text = "Message";
             this.button18.UseVisualStyleBackColor = true;
@@ -507,10 +472,9 @@ namespace ItemWatcher2
             // 
             // button19
             // 
-            this.button19.Location = new System.Drawing.Point(1000, 725);
-            this.button19.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button19.Location = new System.Drawing.Point(750, 589);
             this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(116, 28);
+            this.button19.Size = new System.Drawing.Size(87, 23);
             this.button19.TabIndex = 42;
             this.button19.Text = "Message";
             this.button19.UseVisualStyleBackColor = true;
@@ -518,10 +482,9 @@ namespace ItemWatcher2
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(1000, 772);
-            this.button20.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button20.Location = new System.Drawing.Point(750, 627);
             this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(116, 28);
+            this.button20.Size = new System.Drawing.Size(87, 23);
             this.button20.TabIndex = 43;
             this.button20.Text = "Message";
             this.button20.UseVisualStyleBackColor = true;
@@ -529,40 +492,36 @@ namespace ItemWatcher2
             // 
             // button21
             // 
-            this.button21.Location = new System.Drawing.Point(16, 641);
-            this.button21.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button21.Location = new System.Drawing.Point(12, 521);
             this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(116, 28);
+            this.button21.Size = new System.Drawing.Size(87, 23);
             this.button21.TabIndex = 44;
             this.button21.Text = "Leaguestones";
             this.button21.UseVisualStyleBackColor = true;
             // 
             // richtxtBox2Rep
             // 
-            this.richtxtBox2Rep.Location = new System.Drawing.Point(16, 167);
-            this.richtxtBox2Rep.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richtxtBox2Rep.Location = new System.Drawing.Point(12, 136);
             this.richtxtBox2Rep.Name = "richtxtBox2Rep";
             this.richtxtBox2Rep.ReadOnly = true;
-            this.richtxtBox2Rep.Size = new System.Drawing.Size(253, 24);
+            this.richtxtBox2Rep.Size = new System.Drawing.Size(191, 20);
             this.richtxtBox2Rep.TabIndex = 0;
             this.richtxtBox2Rep.Text = "";
             // 
             // richTxtBox8Rep
             // 
-            this.richTxtBox8Rep.Location = new System.Drawing.Point(16, 681);
-            this.richTxtBox8Rep.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTxtBox8Rep.Location = new System.Drawing.Point(12, 553);
             this.richTxtBox8Rep.Name = "richTxtBox8Rep";
             this.richTxtBox8Rep.ReadOnly = true;
-            this.richTxtBox8Rep.Size = new System.Drawing.Size(928, 24);
+            this.richTxtBox8Rep.Size = new System.Drawing.Size(697, 20);
             this.richTxtBox8Rep.TabIndex = 45;
             this.richTxtBox8Rep.Text = "";
             // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(1125, 245);
-            this.button22.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button22.Location = new System.Drawing.Point(844, 199);
             this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(116, 28);
+            this.button22.Size = new System.Drawing.Size(87, 23);
             this.button22.TabIndex = 45;
             this.button22.Text = "PoE.Trade";
             this.button22.UseVisualStyleBackColor = true;
@@ -570,10 +529,9 @@ namespace ItemWatcher2
             // 
             // button23
             // 
-            this.button23.Location = new System.Drawing.Point(1125, 406);
-            this.button23.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button23.Location = new System.Drawing.Point(844, 330);
             this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(116, 28);
+            this.button23.Size = new System.Drawing.Size(87, 23);
             this.button23.TabIndex = 46;
             this.button23.Text = "PoE.Trade";
             this.button23.UseVisualStyleBackColor = true;
@@ -581,10 +539,9 @@ namespace ItemWatcher2
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(1125, 562);
-            this.button24.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button24.Location = new System.Drawing.Point(844, 457);
             this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(116, 28);
+            this.button24.Size = new System.Drawing.Size(87, 23);
             this.button24.TabIndex = 47;
             this.button24.Text = "PoE.Trade";
             this.button24.UseVisualStyleBackColor = true;
@@ -593,175 +550,157 @@ namespace ItemWatcher2
             // lblSeller1
             // 
             this.lblSeller1.AutoSize = true;
-            this.lblSeller1.Location = new System.Drawing.Point(16, 201);
-            this.lblSeller1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeller1.Location = new System.Drawing.Point(12, 163);
             this.lblSeller1.Name = "lblSeller1";
-            this.lblSeller1.Size = new System.Drawing.Size(52, 17);
+            this.lblSeller1.Size = new System.Drawing.Size(39, 13);
             this.lblSeller1.TabIndex = 48;
             this.lblSeller1.Text = "Seller1";
             // 
             // lblSeller2
             // 
             this.lblSeller2.AutoSize = true;
-            this.lblSeller2.Location = new System.Drawing.Point(12, 366);
-            this.lblSeller2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeller2.Location = new System.Drawing.Point(9, 297);
             this.lblSeller2.Name = "lblSeller2";
-            this.lblSeller2.Size = new System.Drawing.Size(52, 17);
+            this.lblSeller2.Size = new System.Drawing.Size(39, 13);
             this.lblSeller2.TabIndex = 49;
             this.lblSeller2.Text = "Seller1";
             // 
             // lblSeller3
             // 
             this.lblSeller3.AutoSize = true;
-            this.lblSeller3.Location = new System.Drawing.Point(16, 533);
-            this.lblSeller3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeller3.Location = new System.Drawing.Point(12, 433);
             this.lblSeller3.Name = "lblSeller3";
-            this.lblSeller3.Size = new System.Drawing.Size(52, 17);
+            this.lblSeller3.Size = new System.Drawing.Size(39, 13);
             this.lblSeller3.TabIndex = 50;
             this.lblSeller3.Text = "Seller1";
             // 
             // lblTime1
             // 
             this.lblTime1.AutoSize = true;
-            this.lblTime1.Location = new System.Drawing.Point(136, 201);
-            this.lblTime1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTime1.Location = new System.Drawing.Point(102, 163);
             this.lblTime1.Name = "lblTime1";
-            this.lblTime1.Size = new System.Drawing.Size(52, 17);
+            this.lblTime1.Size = new System.Drawing.Size(39, 13);
             this.lblTime1.TabIndex = 51;
             this.lblTime1.Text = "Seller1";
             // 
             // lblTime2
             // 
             this.lblTime2.AutoSize = true;
-            this.lblTime2.Location = new System.Drawing.Point(136, 366);
-            this.lblTime2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTime2.Location = new System.Drawing.Point(102, 297);
             this.lblTime2.Name = "lblTime2";
-            this.lblTime2.Size = new System.Drawing.Size(52, 17);
+            this.lblTime2.Size = new System.Drawing.Size(39, 13);
             this.lblTime2.TabIndex = 52;
             this.lblTime2.Text = "Seller1";
             // 
             // lblTime3
             // 
             this.lblTime3.AutoSize = true;
-            this.lblTime3.Location = new System.Drawing.Point(136, 533);
-            this.lblTime3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTime3.Location = new System.Drawing.Point(102, 433);
             this.lblTime3.Name = "lblTime3";
-            this.lblTime3.Size = new System.Drawing.Size(52, 17);
+            this.lblTime3.Size = new System.Drawing.Size(39, 13);
             this.lblTime3.TabIndex = 53;
             this.lblTime3.Text = "Seller1";
             // 
             // lblSeconds1
             // 
             this.lblSeconds1.AutoSize = true;
-            this.lblSeconds1.Location = new System.Drawing.Point(217, 201);
-            this.lblSeconds1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeconds1.Location = new System.Drawing.Point(163, 163);
             this.lblSeconds1.Name = "lblSeconds1";
-            this.lblSeconds1.Size = new System.Drawing.Size(52, 17);
+            this.lblSeconds1.Size = new System.Drawing.Size(39, 13);
             this.lblSeconds1.TabIndex = 54;
             this.lblSeconds1.Text = "Seller1";
             // 
             // lblSeconds2
             // 
             this.lblSeconds2.AutoSize = true;
-            this.lblSeconds2.Location = new System.Drawing.Point(217, 366);
-            this.lblSeconds2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeconds2.Location = new System.Drawing.Point(163, 297);
             this.lblSeconds2.Name = "lblSeconds2";
-            this.lblSeconds2.Size = new System.Drawing.Size(52, 17);
+            this.lblSeconds2.Size = new System.Drawing.Size(39, 13);
             this.lblSeconds2.TabIndex = 55;
             this.lblSeconds2.Text = "Seller1";
             // 
             // lblSeconds3
             // 
             this.lblSeconds3.AutoSize = true;
-            this.lblSeconds3.Location = new System.Drawing.Point(217, 533);
-            this.lblSeconds3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSeconds3.Location = new System.Drawing.Point(163, 433);
             this.lblSeconds3.Name = "lblSeconds3";
-            this.lblSeconds3.Size = new System.Drawing.Size(52, 17);
+            this.lblSeconds3.Size = new System.Drawing.Size(39, 13);
             this.lblSeconds3.TabIndex = 56;
             this.lblSeconds3.Text = "Seller1";
             // 
             // slot0minandavrg
             // 
-            this.slot0minandavrg.Location = new System.Drawing.Point(311, 199);
-            this.slot0minandavrg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.slot0minandavrg.Location = new System.Drawing.Point(233, 162);
             this.slot0minandavrg.Name = "slot0minandavrg";
-            this.slot0minandavrg.Size = new System.Drawing.Size(55, 86);
+            this.slot0minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot0minandavrg.TabIndex = 57;
             this.slot0minandavrg.Text = "";
             // 
             // slot1minandavrg
             // 
-            this.slot1minandavrg.Location = new System.Drawing.Point(311, 364);
-            this.slot1minandavrg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.slot1minandavrg.Location = new System.Drawing.Point(233, 296);
             this.slot1minandavrg.Name = "slot1minandavrg";
-            this.slot1minandavrg.Size = new System.Drawing.Size(55, 86);
+            this.slot1minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot1minandavrg.TabIndex = 58;
             this.slot1minandavrg.Text = "";
             // 
             // slot2minandavrg
             // 
-            this.slot2minandavrg.Location = new System.Drawing.Point(311, 533);
-            this.slot2minandavrg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.slot2minandavrg.Location = new System.Drawing.Point(233, 433);
             this.slot2minandavrg.Name = "slot2minandavrg";
-            this.slot2minandavrg.Size = new System.Drawing.Size(55, 86);
+            this.slot2minandavrg.Size = new System.Drawing.Size(42, 71);
             this.slot2minandavrg.TabIndex = 59;
             this.slot2minandavrg.Text = "";
             // 
             // txtBoxUpdateThread
             // 
-            this.txtBoxUpdateThread.Location = new System.Drawing.Point(297, 41);
-            this.txtBoxUpdateThread.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBoxUpdateThread.Location = new System.Drawing.Point(223, 33);
             this.txtBoxUpdateThread.Name = "txtBoxUpdateThread";
             this.txtBoxUpdateThread.ReadOnly = true;
-            this.txtBoxUpdateThread.Size = new System.Drawing.Size(252, 22);
+            this.txtBoxUpdateThread.Size = new System.Drawing.Size(190, 20);
             this.txtBoxUpdateThread.TabIndex = 60;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(307, 11);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(230, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(140, 17);
+            this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 61;
             this.label1.Text = "UpdateThreadStatus";
             // 
             // lblUpdatedTime1
             // 
             this.lblUpdatedTime1.AutoSize = true;
-            this.lblUpdatedTime1.Location = new System.Drawing.Point(375, 199);
-            this.lblUpdatedTime1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblUpdatedTime1.Location = new System.Drawing.Point(281, 162);
             this.lblUpdatedTime1.Name = "lblUpdatedTime1";
-            this.lblUpdatedTime1.Size = new System.Drawing.Size(60, 17);
+            this.lblUpdatedTime1.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime1.TabIndex = 62;
             this.lblUpdatedTime1.Text = "updated";
             // 
             // lblUpdatedTime2
             // 
             this.lblUpdatedTime2.AutoSize = true;
-            this.lblUpdatedTime2.Location = new System.Drawing.Point(375, 366);
-            this.lblUpdatedTime2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblUpdatedTime2.Location = new System.Drawing.Point(281, 297);
             this.lblUpdatedTime2.Name = "lblUpdatedTime2";
-            this.lblUpdatedTime2.Size = new System.Drawing.Size(60, 17);
+            this.lblUpdatedTime2.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime2.TabIndex = 63;
             this.lblUpdatedTime2.Text = "updated";
             // 
             // lblUpdatedTime3
             // 
             this.lblUpdatedTime3.AutoSize = true;
-            this.lblUpdatedTime3.Location = new System.Drawing.Point(375, 533);
-            this.lblUpdatedTime3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblUpdatedTime3.Location = new System.Drawing.Point(281, 433);
             this.lblUpdatedTime3.Name = "lblUpdatedTime3";
-            this.lblUpdatedTime3.Size = new System.Drawing.Size(60, 17);
+            this.lblUpdatedTime3.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime3.TabIndex = 64;
             this.lblUpdatedTime3.Text = "updated";
             // 
             // btnRefreshPoe1
             // 
-            this.btnRefreshPoe1.Location = new System.Drawing.Point(371, 220);
-            this.btnRefreshPoe1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefreshPoe1.Location = new System.Drawing.Point(278, 183);
             this.btnRefreshPoe1.Name = "btnRefreshPoe1";
-            this.btnRefreshPoe1.Size = new System.Drawing.Size(83, 28);
+            this.btnRefreshPoe1.Size = new System.Drawing.Size(62, 23);
             this.btnRefreshPoe1.TabIndex = 65;
             this.btnRefreshPoe1.Text = "Refresh";
             this.btnRefreshPoe1.UseVisualStyleBackColor = true;
@@ -769,10 +708,9 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe2
             // 
-            this.btnRefreshPoe2.Location = new System.Drawing.Point(368, 385);
-            this.btnRefreshPoe2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefreshPoe2.Location = new System.Drawing.Point(276, 317);
             this.btnRefreshPoe2.Name = "btnRefreshPoe2";
-            this.btnRefreshPoe2.Size = new System.Drawing.Size(85, 28);
+            this.btnRefreshPoe2.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe2.TabIndex = 66;
             this.btnRefreshPoe2.Text = "Refresh";
             this.btnRefreshPoe2.UseVisualStyleBackColor = true;
@@ -780,10 +718,9 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe3
             // 
-            this.btnRefreshPoe3.Location = new System.Drawing.Point(368, 553);
-            this.btnRefreshPoe3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefreshPoe3.Location = new System.Drawing.Point(276, 449);
             this.btnRefreshPoe3.Name = "btnRefreshPoe3";
-            this.btnRefreshPoe3.Size = new System.Drawing.Size(85, 28);
+            this.btnRefreshPoe3.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe3.TabIndex = 67;
             this.btnRefreshPoe3.Text = "Refresh";
             this.btnRefreshPoe3.UseVisualStyleBackColor = true;
@@ -791,10 +728,9 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe
             // 
-            this.btnRefreshPoe.Location = new System.Drawing.Point(561, 41);
-            this.btnRefreshPoe.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefreshPoe.Location = new System.Drawing.Point(421, 33);
             this.btnRefreshPoe.Name = "btnRefreshPoe";
-            this.btnRefreshPoe.Size = new System.Drawing.Size(116, 28);
+            this.btnRefreshPoe.Size = new System.Drawing.Size(87, 23);
             this.btnRefreshPoe.TabIndex = 68;
             this.btnRefreshPoe.Text = "Refresh Poe";
             this.btnRefreshPoe.UseVisualStyleBackColor = true;
@@ -802,10 +738,9 @@ namespace ItemWatcher2
             // 
             // btnOverride1
             // 
-            this.btnOverride1.Location = new System.Drawing.Point(371, 256);
-            this.btnOverride1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnOverride1.Location = new System.Drawing.Point(278, 208);
             this.btnOverride1.Name = "btnOverride1";
-            this.btnOverride1.Size = new System.Drawing.Size(83, 28);
+            this.btnOverride1.Size = new System.Drawing.Size(62, 23);
             this.btnOverride1.TabIndex = 69;
             this.btnOverride1.Text = "Override";
             this.btnOverride1.UseVisualStyleBackColor = true;
@@ -813,10 +748,9 @@ namespace ItemWatcher2
             // 
             // btnOverride2
             // 
-            this.btnOverride2.Location = new System.Drawing.Point(368, 421);
-            this.btnOverride2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnOverride2.Location = new System.Drawing.Point(276, 346);
             this.btnOverride2.Name = "btnOverride2";
-            this.btnOverride2.Size = new System.Drawing.Size(85, 28);
+            this.btnOverride2.Size = new System.Drawing.Size(64, 23);
             this.btnOverride2.TabIndex = 70;
             this.btnOverride2.Text = "Override";
             this.btnOverride2.UseVisualStyleBackColor = true;
@@ -824,10 +758,9 @@ namespace ItemWatcher2
             // 
             // btnOverride3
             // 
-            this.btnOverride3.Location = new System.Drawing.Point(368, 588);
-            this.btnOverride3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnOverride3.Location = new System.Drawing.Point(276, 478);
             this.btnOverride3.Name = "btnOverride3";
-            this.btnOverride3.Size = new System.Drawing.Size(85, 28);
+            this.btnOverride3.Size = new System.Drawing.Size(64, 23);
             this.btnOverride3.TabIndex = 71;
             this.btnOverride3.Text = "Override";
             this.btnOverride3.UseVisualStyleBackColor = true;
@@ -835,10 +768,9 @@ namespace ItemWatcher2
             // 
             // btnFakeFirstMsg
             // 
-            this.btnFakeFirstMsg.Location = new System.Drawing.Point(1125, 159);
-            this.btnFakeFirstMsg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnFakeFirstMsg.Location = new System.Drawing.Point(844, 129);
             this.btnFakeFirstMsg.Name = "btnFakeFirstMsg";
-            this.btnFakeFirstMsg.Size = new System.Drawing.Size(13, 12);
+            this.btnFakeFirstMsg.Size = new System.Drawing.Size(10, 10);
             this.btnFakeFirstMsg.TabIndex = 72;
             this.btnFakeFirstMsg.Text = "Message";
             this.btnFakeFirstMsg.UseVisualStyleBackColor = true;
@@ -848,138 +780,126 @@ namespace ItemWatcher2
             // 
             this.lblCopyLock.AutoSize = true;
             this.lblCopyLock.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCopyLock.Location = new System.Drawing.Point(791, 37);
-            this.lblCopyLock.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCopyLock.Location = new System.Drawing.Point(593, 30);
             this.lblCopyLock.Name = "lblCopyLock";
-            this.lblCopyLock.Size = new System.Drawing.Size(86, 31);
+            this.lblCopyLock.Size = new System.Drawing.Size(70, 26);
             this.lblCopyLock.TabIndex = 73;
             this.lblCopyLock.Text = "label2";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(583, 138);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(437, 112);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 17);
+            this.label2.Size = new System.Drawing.Size(31, 13);
             this.label2.TabIndex = 74;
             this.label2.Text = "Pdps";
             // 
             // lblLocalDps1
             // 
             this.lblLocalDps1.AutoSize = true;
-            this.lblLocalDps1.Location = new System.Drawing.Point(620, 139);
-            this.lblLocalDps1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLocalDps1.Location = new System.Drawing.Point(465, 113);
             this.lblLocalDps1.Name = "lblLocalDps1";
-            this.lblLocalDps1.Size = new System.Drawing.Size(32, 17);
+            this.lblLocalDps1.Size = new System.Drawing.Size(25, 13);
             this.lblLocalDps1.TabIndex = 77;
             this.lblLocalDps1.Text = "150";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(583, 304);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(437, 247);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 17);
+            this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 78;
             this.label6.Text = "Pdps";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(583, 465);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(437, 378);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 17);
+            this.label7.Size = new System.Drawing.Size(31, 13);
             this.label7.TabIndex = 79;
             this.label7.Text = "Pdps";
             // 
             // lblDpsRange1
             // 
             this.lblDpsRange1.AutoSize = true;
-            this.lblDpsRange1.Location = new System.Drawing.Point(716, 139);
-            this.lblDpsRange1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDpsRange1.Location = new System.Drawing.Point(537, 113);
             this.lblDpsRange1.Name = "lblDpsRange1";
-            this.lblDpsRange1.Size = new System.Drawing.Size(61, 17);
+            this.lblDpsRange1.Size = new System.Drawing.Size(46, 13);
             this.lblDpsRange1.TabIndex = 80;
             this.lblDpsRange1.Text = "120-190";
             // 
             // lblLocalDps2
             // 
             this.lblLocalDps2.AutoSize = true;
-            this.lblLocalDps2.Location = new System.Drawing.Point(620, 305);
-            this.lblLocalDps2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLocalDps2.Location = new System.Drawing.Point(465, 248);
             this.lblLocalDps2.Name = "lblLocalDps2";
-            this.lblLocalDps2.Size = new System.Drawing.Size(32, 17);
+            this.lblLocalDps2.Size = new System.Drawing.Size(25, 13);
             this.lblLocalDps2.TabIndex = 81;
             this.lblLocalDps2.Text = "150";
             // 
             // lblLocalDps3
             // 
             this.lblLocalDps3.AutoSize = true;
-            this.lblLocalDps3.Location = new System.Drawing.Point(620, 466);
-            this.lblLocalDps3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLocalDps3.Location = new System.Drawing.Point(465, 379);
             this.lblLocalDps3.Name = "lblLocalDps3";
-            this.lblLocalDps3.Size = new System.Drawing.Size(32, 17);
+            this.lblLocalDps3.Size = new System.Drawing.Size(25, 13);
             this.lblLocalDps3.TabIndex = 82;
             this.lblLocalDps3.Text = "150";
             // 
             // lblDpsRange2
             // 
             this.lblDpsRange2.AutoSize = true;
-            this.lblDpsRange2.Location = new System.Drawing.Point(716, 304);
-            this.lblDpsRange2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDpsRange2.Location = new System.Drawing.Point(537, 247);
             this.lblDpsRange2.Name = "lblDpsRange2";
-            this.lblDpsRange2.Size = new System.Drawing.Size(61, 17);
+            this.lblDpsRange2.Size = new System.Drawing.Size(46, 13);
             this.lblDpsRange2.TabIndex = 83;
             this.lblDpsRange2.Text = "120-190";
             // 
             // lblDpsRange3
             // 
             this.lblDpsRange3.AutoSize = true;
-            this.lblDpsRange3.Location = new System.Drawing.Point(716, 466);
-            this.lblDpsRange3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDpsRange3.Location = new System.Drawing.Point(537, 379);
             this.lblDpsRange3.Name = "lblDpsRange3";
-            this.lblDpsRange3.Size = new System.Drawing.Size(61, 17);
+            this.lblDpsRange3.Size = new System.Drawing.Size(46, 13);
             this.lblDpsRange3.TabIndex = 84;
             this.lblDpsRange3.Text = "120-190";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(661, 465);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Location = new System.Drawing.Point(496, 378);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(50, 17);
+            this.label11.Size = new System.Drawing.Size(39, 13);
             this.label11.TabIndex = 87;
             this.label11.Text = "Range";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(661, 304);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Location = new System.Drawing.Point(496, 247);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(50, 17);
+            this.label12.Size = new System.Drawing.Size(39, 13);
             this.label12.TabIndex = 86;
             this.label12.Text = "Range";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(661, 138);
-            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label13.Location = new System.Drawing.Point(496, 112);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(50, 17);
+            this.label13.Size = new System.Drawing.Size(39, 13);
             this.label13.TabIndex = 85;
             this.label13.Text = "Range";
             // 
             // btnBlock1
             // 
-            this.btnBlock1.Location = new System.Drawing.Point(12, 225);
+            this.btnBlock1.Location = new System.Drawing.Point(9, 183);
+            this.btnBlock1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBlock1.Name = "btnBlock1";
-            this.btnBlock1.Size = new System.Drawing.Size(104, 23);
+            this.btnBlock1.Size = new System.Drawing.Size(78, 19);
             this.btnBlock1.TabIndex = 88;
             this.btnBlock1.Text = "Block";
             this.btnBlock1.UseVisualStyleBackColor = true;
@@ -987,9 +907,10 @@ namespace ItemWatcher2
             // 
             // btnBlock2
             // 
-            this.btnBlock2.Location = new System.Drawing.Point(12, 390);
+            this.btnBlock2.Location = new System.Drawing.Point(9, 317);
+            this.btnBlock2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBlock2.Name = "btnBlock2";
-            this.btnBlock2.Size = new System.Drawing.Size(104, 23);
+            this.btnBlock2.Size = new System.Drawing.Size(78, 19);
             this.btnBlock2.TabIndex = 89;
             this.btnBlock2.Text = "Block";
             this.btnBlock2.UseVisualStyleBackColor = true;
@@ -997,19 +918,53 @@ namespace ItemWatcher2
             // 
             // btnBlock3
             // 
-            this.btnBlock3.Location = new System.Drawing.Point(12, 556);
+            this.btnBlock3.Location = new System.Drawing.Point(9, 452);
+            this.btnBlock3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBlock3.Name = "btnBlock3";
-            this.btnBlock3.Size = new System.Drawing.Size(104, 23);
+            this.btnBlock3.Size = new System.Drawing.Size(78, 19);
             this.btnBlock3.TabIndex = 90;
             this.btnBlock3.Text = "Block";
             this.btnBlock3.UseVisualStyleBackColor = true;
             this.btnBlock3.Click += new System.EventHandler(this.btnBlock3_Click);
             // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(146, 486);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(78, 17);
+            this.checkBox7.TabIndex = 91;
+            this.checkBox7.Text = "Enchanted";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(146, 350);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(78, 17);
+            this.checkBox8.TabIndex = 92;
+            this.checkBox8.Text = "Enchanted";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(146, 212);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(78, 17);
+            this.checkBox9.TabIndex = 93;
+            this.checkBox9.Text = "Enchanted";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1222, 807);
+            this.ClientSize = new System.Drawing.Size(916, 656);
+            this.Controls.Add(this.checkBox9);
+            this.Controls.Add(this.checkBox8);
+            this.Controls.Add(this.checkBox7);
             this.Controls.Add(this.btnBlock3);
             this.Controls.Add(this.btnBlock2);
             this.Controls.Add(this.btnBlock1);
@@ -1097,7 +1052,6 @@ namespace ItemWatcher2
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1195,6 +1149,9 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnBlock1;
         private System.Windows.Forms.Button btnBlock2;
         private System.Windows.Forms.Button btnBlock3;
+        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox9;
     }
 }
 

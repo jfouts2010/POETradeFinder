@@ -21,11 +21,9 @@ namespace ItemWatcher2
         public static List<NinjaItem> watched_items;
         public static List<WeaponBaseItem> allBaseTypes;
         public static List<POETradeConfig> watchedRares;
+        public static Dictionary<string, string> all_base_types;
         public static ItemWatchConfig config;
-        public static string itemfilename = "SavedItems.json";
-        public static string currencyfilename = "SavedCurrencies.json";
-        public static string wepBaseTypesFile = "AllBaseTypes.json";
-        public static string configfile = "Config.json";
+        
 
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
@@ -46,7 +44,6 @@ namespace ItemWatcher2
             bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
-
         }
 
 
@@ -67,7 +64,7 @@ namespace ItemWatcher2
                     {
                         txtBoxUpdateThread.Text = "Starting Ninja Update";
                     });
-                    ninjaItems = NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread, true);
+                    ninjaItems = NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread, all_base_types, true);
 
                 }
                 else
@@ -79,18 +76,20 @@ namespace ItemWatcher2
         private void GenerateAllBaseWepsFromString()
         {
             allBaseTypes = new List<WeaponBaseItem>();
-            List<string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
-            foreach (string s in allbasetypesstring)
+            Dictionary<string,string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
+            foreach (string s in allbasetypesstring.Keys)
             {
-                WeaponBaseItem wep = NinjaPoETradeMethods.FindBaseOnHitAndAttackSpeed(s);
-                if (wep != null)
-                    allBaseTypes.Add(wep);
+                if (allbasetypesstring[s] == "Weapon")
+                {
+                    WeaponBaseItem wep = NinjaPoETradeMethods.FindBaseOnHitAndAttackSpeed(s);
+                    if (wep != null)
+                        allBaseTypes.Add(wep);
+                }
             }
-            int x = 0;
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allBaseTypes);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
-            System.IO.File.Delete(itemfilename);
+            System.IO.File.Delete(FinalVariables.itemfilename);
             System.IO.File.WriteAllText("allBaseTypes.json", serialized);
         }
         [STAThread]
@@ -202,7 +201,7 @@ namespace ItemWatcher2
                                 {
                                     
                                     Item itemProp = item.ToObject<Item>();
-                                    if (itemProp.typeLine.ToLower().Contains(" ring "))
+                                    if (itemProp.enchantMods!=null && itemProp.enchantMods.Count()>0)
                                     {
                                         int x = 5;
                                     }
@@ -270,9 +269,6 @@ namespace ItemWatcher2
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
-
-
-
                                             }
                                         }
                                     }
@@ -292,15 +288,13 @@ namespace ItemWatcher2
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
                                                 SetSlots(Slots);
-
-
                                             }
                                         }
                                         if (watchedRares.Count > 0 && itemProp.frameType == 2)//is rare
                                         {
                                             foreach (POETradeConfig rare in watchedRares)
                                             {
-                                                POETradeConfig.SeeIfItemMatchesRare(rare, itemProp);
+                                                POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types);
                                             }
                                         }
                                     }
@@ -584,7 +578,7 @@ namespace ItemWatcher2
                 });
                 checkBox4.Invoke((MethodInvoker)delegate
                 {
-                    checkBox4.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    checkBox4.Checked = localslot.SellItem.corrupted;
                     if (checkBox4.Checked)
                         checkBox4.ForeColor = Color.Red;
                     else
@@ -701,7 +695,7 @@ namespace ItemWatcher2
                 });
                 checkBox5.Invoke((MethodInvoker)delegate
                 {
-                    checkBox5.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    checkBox5.Checked = localslot.SellItem.corrupted;
                     if (checkBox5.Checked)
                         checkBox5.ForeColor = Color.Red;
                     else
@@ -810,7 +804,7 @@ namespace ItemWatcher2
                 });
                 checkBox6.Invoke((MethodInvoker)delegate
                 {
-                    checkBox6.Checked = localslot.SellItem.corrupted.ToLower().Contains("true");
+                    checkBox6.Checked = localslot.SellItem.corrupted;
                     if (checkBox6.Checked)
                         checkBox6.ForeColor = Color.Red;
                     else
@@ -1022,20 +1016,20 @@ namespace ItemWatcher2
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(watched_items);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
-            System.IO.File.Delete(itemfilename);
-            System.IO.File.WriteAllText(itemfilename, serialized);
+            System.IO.File.Delete(FinalVariables.itemfilename);
+            System.IO.File.WriteAllText(FinalVariables.itemfilename, serialized);
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             JObject jo = JObject.Parse(serialized);
             serialized = jo.ToString();
-            System.IO.File.Delete(configfile);
-            System.IO.File.WriteAllText(configfile, serialized);
+            System.IO.File.Delete(FinalVariables.configfile);
+            System.IO.File.WriteAllText(FinalVariables.configfile, serialized);
         }
         public static void LoadBasicInfo()
         {
 
             try
             {
-                watched_items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(itemfilename));
+                watched_items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NinjaItem>>(System.IO.File.ReadAllText(FinalVariables.itemfilename));
             }
             catch (Exception e)
             {
@@ -1043,7 +1037,7 @@ namespace ItemWatcher2
             }
             try
             {
-                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(configfile));
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWatchConfig>(System.IO.File.ReadAllText(FinalVariables.configfile));
             }
             catch (Exception e)
             {
@@ -1051,7 +1045,7 @@ namespace ItemWatcher2
             }
             try
             {
-                othercurrencies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NotChaosCurrencyConversion>>(System.IO.File.ReadAllText(currencyfilename));
+                othercurrencies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<NotChaosCurrencyConversion>>(System.IO.File.ReadAllText(FinalVariables.currencyfilename));
             }
             catch (Exception e)
             {
@@ -1059,7 +1053,7 @@ namespace ItemWatcher2
             }
             try
             {
-                allBaseTypes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WeaponBaseItem>>(System.IO.File.ReadAllText(wepBaseTypesFile));
+                allBaseTypes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WeaponBaseItem>>(System.IO.File.ReadAllText(FinalVariables.wepBaseTypesFile));
             }
             catch (Exception e)
             {
@@ -1072,6 +1066,14 @@ namespace ItemWatcher2
             catch (Exception e)
             {
                 watchedRares = new List<POETradeConfig>();
+            }
+            try
+            {
+                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
+            }
+            catch (Exception e)
+            {
+                all_base_types = new Dictionary<string, string>();
             }
 
 

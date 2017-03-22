@@ -11,6 +11,11 @@ namespace ItemWatcher2
     public class FinalVariables
     {
         public static string rareFileName = "rareWatcheItems.json";
+        public static string itemfilename = "SavedItems.json";
+        public static string currencyfilename = "SavedCurrencies.json";
+        public static string baseTimesStringFilename = "AllBaseTypesStrings.json";
+        public static string wepBaseTypesFile = "AllBaseTypes.json";
+        public static string configfile = "Config.json";
     }
 
 
@@ -73,7 +78,8 @@ namespace ItemWatcher2
                             sb.Append(" " + key.Replace("#", mods[key]));
                         }
                     }
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     int x = 5;
                 }
@@ -93,11 +99,11 @@ namespace ItemWatcher2
         }
         public enum BaseType
         {
-            
+
             Bow = 0,
             Claw = 1,
             Dagger = 2,
-            One_Hand_Axe = 31,
+            One_Hand_Axe = 3,
             One_Hand_Sword = 4,
             One_Hand_Mace = 5,
             Sceptre = 6,
@@ -111,7 +117,7 @@ namespace ItemWatcher2
             Gloves = 14,
             Helmet = 15,
             Shield = 16,
-            
+
             Breach = 19,
             Currency = 20,
             Divination_Card = 21,
@@ -124,7 +130,9 @@ namespace ItemWatcher2
             Map = 28,
             Prophecy = 29,
             Quiver = 30,
-            Jewlery = 3,
+            Ring = 31,
+            Amulet = 33,
+            Belt = 34,
             Map_Fragments = 32,
         }
 
@@ -140,19 +148,69 @@ namespace ItemWatcher2
         public static readonly string final_ColdRes = "(pseudo) (total) +#% to Cold Resistance";
         public static readonly string final_LightningRes = "(pseudo) (total) +#% to Lightning Resistance";
 
-        public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp)
+        public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp, Dictionary<string, string> baseStrings)
         {
-            
-            
-            string baseType ;
-            if(itemProp.properties.ToString().ToLower().Contains("ring"))
-            {
-                int x = 5;
-            }
+            string baseType = "";
             if (itemProp.properties.First()["type"] == null)
                 baseType = itemProp.properties.First()["name"].ToString();
+
+            if (!baseStrings.ContainsKey(itemProp.typeLine))
+            {
+                if (!string.IsNullOrEmpty(baseType))
+                {
+                    baseStrings.Add(itemProp.typeLine, "Weapon");
+                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
+                }
+                else
+                {
+                    string[] halves = itemProp.typeLine.Split(' ');
+                    if (halves.Count() > 1)
+                    {
+                        List<string> allKeys = baseStrings.Keys.ToList();
+                        bool found = false;
+                        foreach (string key in allKeys)
+                        {
+                            if (halves.Last() == key.Split(' ').Last())
+                            {
+                                baseStrings.Add(itemProp.typeLine, baseStrings[key]);
+                                NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            string last_try = NinjaPoETradeMethods.FindBaseType(itemProp.typeLine);
+                            if (last_try == "idk")
+                                return false;
+                            else
+                            {
+                                baseStrings.Add(itemProp.typeLine, last_try);
+                                NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
+                            }
+                        }
+                    }
+                    else
+                        return false;
+                }
+            }
+            string generalBase = baseStrings[itemProp.typeLine];
+            
+            if (generalBase == "Weapon")
+                if (itemProp.properties.First()["type"] == null)
+                    baseType = itemProp.properties.First()["name"].ToString();
+                else
+                    return false;
+            if (!string.IsNullOrEmpty(baseType))
+            {
+                if (baseType.ToLower() != conf.type.ToString())
+                    return false;
+            }
             else
-                return false;
+            {
+                if (conf.type.ToString() != generalBase)
+                    return false;
+            }
             if (!string.IsNullOrEmpty(conf.aps))
             {
 
@@ -202,6 +260,15 @@ namespace ItemWatcher2
 
             }
             if (!string.IsNullOrEmpty(conf.sockets))
+            {
+
+            }
+            if (conf.corrupted.HasValue)
+            {
+                if (itemProp.corrupted != conf.corrupted.Value)
+                    return false;
+            }
+            if (conf.mods.Count > 0)
             {
 
             }
@@ -270,11 +337,12 @@ namespace ItemWatcher2
         public string ilvl { get; set; }
         public string league { get; set; }
         public string id { get; set; }
+        public string[] enchantMods { get; set; }
         //public string[] sockets { get; set; }
         public string name { get; set; }
         public string typeLine { get; set; }
         public string identified { get; set; }
-        public string corrupted { get; set; }
+        public Boolean corrupted { get; set; }
         public string note { get; set; }
         public int frameType { get; set; }
         public string inventoryId { get; set; }
