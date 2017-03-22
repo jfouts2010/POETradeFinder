@@ -96,7 +96,7 @@ namespace ItemWatcher2
         [STAThread]
         private void TestPoeTradeConfig()
         {
-            
+
             List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(watchedRares.FirstOrDefault());
         }
 
@@ -104,7 +104,7 @@ namespace ItemWatcher2
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
         {
-            
+
             DateTime lastTimeAPIcalled = DateTime.Now;
             Dictionary<string, decimal> seenItems = new Dictionary<string, decimal>();
             DateTime lastClearedSeen = DateTime.Now;
@@ -200,7 +200,12 @@ namespace ItemWatcher2
                                 List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
                                 foreach (JToken item in items)
                                 {
+                                    
                                     Item itemProp = item.ToObject<Item>();
+                                    if (itemProp.typeLine.ToLower().Contains(" ring "))
+                                    {
+                                        int x = 5;
+                                    }
 
                                     if (itemProp.league != "Legacy")
                                         continue;
@@ -272,6 +277,7 @@ namespace ItemWatcher2
                                         }
                                     }
                                     if (config.do_watch_list)
+                                    {
                                         if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
                                         {
                                             NinjaItem localitem = watched_items.Where(p => itemProp.
@@ -290,6 +296,14 @@ namespace ItemWatcher2
 
                                             }
                                         }
+                                        if (watchedRares.Count > 0 && itemProp.frameType == 2)//is rare
+                                        {
+                                            foreach (POETradeConfig rare in watchedRares)
+                                            {
+                                                POETradeConfig.SeeIfItemMatchesRare(rare, itemProp);
+                                            }
+                                        }
+                                    }
                                     if (config.do_breachstones)
                                     {
 
@@ -399,6 +413,7 @@ namespace ItemWatcher2
                 }
                 catch (Exception eee)
                 {
+                    int x = 5;
                 }
 
             }
@@ -1054,7 +1069,7 @@ namespace ItemWatcher2
             {
                 watchedRares = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POETradeConfig>>(System.IO.File.ReadAllText(FinalVariables.rareFileName));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 watchedRares = new List<POETradeConfig>();
             }

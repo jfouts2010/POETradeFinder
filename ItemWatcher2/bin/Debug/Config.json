@@ -3,13 +3,13 @@
   "xoph_value": 6.0,
   "tul_value": 16.0,
   "do_breachstones": true,
-  "do_watch_list": false,
+  "do_watch_list": true,
   "do_all_uniques": true,
   "do_all_uniques_with_ranges": true,
   "exalt_ratio": 73.0,
   "fusing_ratio": 0.444,
   "alch_ratio": 0.333,
-  "max_price": 240,
+  "max_price": 1000,
   "profit_percent": 0.9,
   "min_profit_range": 5,
   "my_number": 1,
@@ -35383,5 +35383,7 @@
   "LastSaved": "2017-03-19T14:23:23.5102558-06:00",
   "refresh_minutes": 0.0,
   "refresh_items": false,
-  "update_ninja_when_manul_refresh": false
+  "update_ninja_when_manul_refresh": false,
+  "blocked_accounts": [],
+  "autoCopy": false
 }

@@ -21,21 +21,23 @@ namespace ItemWatcher2
     {
 
         public static List<string> avaliableExplicits = new List<string>();
-        public static List<string> all_base_types = new List<string>();
+        public static Dictionary<string, int> all_base_types = new Dictionary<string, int>();
 
         public static List<NinjaItem> SetNinjaValues(List<NinjaItem> NinjaItems, System.Windows.Forms.TextBox txtBoxUpdateThread, Boolean do_poetrade_lookup = false)
         {
             List<JObject> Jsons = new List<JObject>();
             List<JObject> Jweps = new List<JObject>();
-            Dictionary<string, bool> APIURLS = new Dictionary<string, bool>();
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), true);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), false);
+            List<JObject> JJewlerys = new List<JObject>();
+            List<JObject> JArmors = new List<JObject>();
+            Dictionary<string, int> APIURLS = new Dictionary<string, int>();
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 1);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 2);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 3);
             txtBoxUpdateThread.Invoke((MethodInvoker)delegate
             {
                 txtBoxUpdateThread.Text = "Doing Ninja Update";
@@ -49,19 +51,27 @@ namespace ItemWatcher2
                     // Get the response stream  
                     using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                     {
-                        if (APIURLS[s])
-                            Jweps.Add(JObject.Parse(reader.ReadToEnd()));
-                        else
+                        if (APIURLS[s] == 0)
                             Jsons.Add(JObject.Parse(reader.ReadToEnd()));
+                        else if ((APIURLS[s] == 1))
+                            Jweps.Add(JObject.Parse(reader.ReadToEnd()));
+                        else if ((APIURLS[s] == 2))
+                            JArmors.Add(JObject.Parse(reader.ReadToEnd()));
+                        else
+                            JJewlerys.Add(JObject.Parse(reader.ReadToEnd()));
                     }
                 }
             }
             foreach (JObject jo in Jsons)
                 NinjaItems.AddRange(DoNinjaParsing(jo));
             foreach (JObject jo in Jweps)
-                NinjaItems.AddRange(DoNinjaParsing(jo, true));
+                NinjaItems.AddRange(DoNinjaParsing(jo, 1));
+            foreach (JObject jo in JArmors)
+                NinjaItems.AddRange(DoNinjaParsing(jo, 2));
+            foreach (JObject jo in JJewlerys)
+                NinjaItems.AddRange(DoNinjaParsing(jo, 3));
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(all_base_types);
-            JArray ja = JArray.Parse(serialized);
+            JObject ja = JObject.Parse(serialized);
             serialized = ja.ToString();
             System.IO.File.Delete("AllBaseTypesStrings.json");
             System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
@@ -132,18 +142,18 @@ namespace ItemWatcher2
 
             SaveNames();
         }
-        public static List<NinjaItem> DoNinjaParsing(JObject jo, bool is_wep = false)
+        public static List<NinjaItem> DoNinjaParsing(JObject jo, int type = 0)
         {
             List<NinjaItem> localNinjaItems = new List<NinjaItem>();
             foreach (JObject jo2 in jo.First.First.Children().ToList())
             {
                 NinjaItem newNinjaItem = new NinjaItem();
                 newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
-                newNinjaItem.is_weapon = is_wep;
+                newNinjaItem.is_weapon = (type==1);
                 newNinjaItem.type = jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString();
                 newNinjaItem.base_type = jo2.Children().ToList().First(p => p.Path.EndsWith(".baseType")).First.ToString();
-                if (!all_base_types.Contains(newNinjaItem.base_type) && newNinjaItem.is_weapon)
-                    all_base_types.Add(newNinjaItem.base_type);
+                if (!all_base_types.ContainsKey(newNinjaItem.base_type))
+                    all_base_types.Add(newNinjaItem.base_type,type);
 
                 newNinjaItem.item_class = Convert.ToInt32(jo2.Children().ToList().First(p => p.Path.EndsWith(".itemClass")).First.ToString());
                 List<string> implicits = new List<string>();
@@ -600,8 +610,7 @@ namespace ItemWatcher2
             sb.Append("&online=x");
             if (!string.IsNullOrEmpty(tradeConfig.aps))
                 sb.Append("&aps_min=" + tradeConfig.aps);
-            if (tradeConfig.type.HasValue)
-                sb.Append("&type=" + tradeConfig.type.ToString().Replace('_',' '));
+            sb.Append("&type=" + tradeConfig.type.ToString().Replace('_',' '));
             if (!string.IsNullOrEmpty(tradeConfig.armour))
                 sb.Append("&armour_min=" + tradeConfig.armour);
 

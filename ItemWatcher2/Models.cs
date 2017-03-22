@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
+
 namespace ItemWatcher2
 {
     public class FinalVariables
@@ -31,7 +33,7 @@ namespace ItemWatcher2
         }
         public string league { get; set; }
         public string name { get; set; }
-        public BaseType? type { get; set; }
+        public BaseType type { get; set; }
         public string baseType { get; set; }
         public string damage { get; set; }
         public string aps { get; set; }
@@ -71,7 +73,7 @@ namespace ItemWatcher2
                             sb.Append(" " + key.Replace("#", mods[key]));
                         }
                     }
-                }catch(Exception e)
+                } catch (Exception e)
                 {
                     int x = 5;
                 }
@@ -91,11 +93,11 @@ namespace ItemWatcher2
         }
         public enum BaseType
         {
-            None = 0,
-            Bow = 33,
+            
+            Bow = 0,
             Claw = 1,
             Dagger = 2,
-            One_Hand_Axe = 3,
+            One_Hand_Axe = 31,
             One_Hand_Sword = 4,
             One_Hand_Mace = 5,
             Sceptre = 6,
@@ -109,8 +111,7 @@ namespace ItemWatcher2
             Gloves = 14,
             Helmet = 15,
             Shield = 16,
-            Amulet = 17,
-            Belt = 18,
+            
             Breach = 19,
             Currency = 20,
             Divination_Card = 21,
@@ -123,7 +124,7 @@ namespace ItemWatcher2
             Map = 28,
             Prophecy = 29,
             Quiver = 30,
-            Ring = 31,
+            Jewlery = 3,
             Map_Fragments = 32,
         }
 
@@ -138,6 +139,75 @@ namespace ItemWatcher2
         public static readonly string final_FireRes = "(pseudo) (total) +#% to Fire Resistance";
         public static readonly string final_ColdRes = "(pseudo) (total) +#% to Cold Resistance";
         public static readonly string final_LightningRes = "(pseudo) (total) +#% to Lightning Resistance";
+
+        public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp)
+        {
+            
+            
+            string baseType ;
+            if(itemProp.properties.ToString().ToLower().Contains("ring"))
+            {
+                int x = 5;
+            }
+            if (itemProp.properties.First()["type"] == null)
+                baseType = itemProp.properties.First()["name"].ToString();
+            else
+                return false;
+            if (!string.IsNullOrEmpty(conf.aps))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.armour))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.baseType))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.crit_chance))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.evasion))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.ilvl))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.level))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.links))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.name))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.pdps))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.quality))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.shield))
+            {
+
+            }
+            if (!string.IsNullOrEmpty(conf.sockets))
+            {
+
+            }
+            return true;
+        }
+
     }
 
     [Serializable]
@@ -211,10 +281,11 @@ namespace ItemWatcher2
         public int x { get; set; }
         public int y { get; set; }
         //public string requirements { get; set; }
+        //public List<Dictionary<string,string>> properties { get; set; }
         public string[] implicitMods { get; set; }
         public string[] explicitMods { get; set; }
         public int pdps { get; set; }
-
+        public JArray properties { get; set; }
         public override bool Equals(object obj)
         {
             Item input = (Item)obj;
