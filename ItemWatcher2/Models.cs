@@ -64,11 +64,13 @@ namespace ItemWatcher2
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append("Base:" + this.type.ToString());
             foreach (PropertyInfo p in typeof(POETradeConfig).GetProperties().OrderBy(asd => asd.Name))
             {
                 try
                 {
-                    if (p.Name != "mods" && p.Name != "rarity" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
+
+                    if (p.Name != "mods" && p.Name != "rarity" && p.Name != "type" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
                         sb.Append("  " + p.Name + ":" + p.GetValue(this).ToString());
                     if (p.Name == "mods")
                     {
@@ -150,129 +152,227 @@ namespace ItemWatcher2
 
         public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp, Dictionary<string, string> baseStrings)
         {
-            string baseType = "";
-            if (itemProp.properties.First()["type"] == null)
-                baseType = itemProp.properties.First()["name"].ToString();
-
-            if (!baseStrings.ContainsKey(itemProp.typeLine))
+            try
             {
-                if (!string.IsNullOrEmpty(baseType))
+                string baseType = "";
+                if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
+                    baseType = itemProp.properties.First()["name"].ToString();
+
+                if (!baseStrings.ContainsKey(itemProp.typeLine))
                 {
-                    baseStrings.Add(itemProp.typeLine, "Weapon");
-                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
-                }
-                else
-                {
-                    string[] halves = itemProp.typeLine.Split(' ');
-                    if (halves.Count() > 1)
+                    if (!string.IsNullOrEmpty(baseType))
                     {
-                        List<string> allKeys = baseStrings.Keys.ToList();
-                        bool found = false;
-                        foreach (string key in allKeys)
-                        {
-                            if (halves.Last() == key.Split(' ').Last())
-                            {
-                                baseStrings.Add(itemProp.typeLine, baseStrings[key]);
-                                NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                            string last_try = NinjaPoETradeMethods.FindBaseType(itemProp.typeLine);
-                            if (last_try == "idk")
-                                return false;
-                            else
-                            {
-                                baseStrings.Add(itemProp.typeLine, last_try);
-                                NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
-                            }
-                        }
+                        baseStrings.Add(itemProp.typeLine, "Weapon");
+                        NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                     }
                     else
+                    {
+                        string[] halves = itemProp.typeLine.Split(' ');
+                        if (halves.Count() > 1)
+                        {
+                            List<string> allKeys = baseStrings.Keys.ToList();
+                            bool found = false;
+                            foreach (string key in allKeys)
+                            {
+                                if (halves.Last() == key.Split(' ').Last())
+                                {
+                                    baseStrings.Add(itemProp.typeLine, baseStrings[key]);
+                                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found)
+                            {
+                                string last_try = NinjaPoETradeMethods.FindBaseType(itemProp.typeLine);
+                                if (last_try == "idk")
+                                    return false;
+                                else
+                                {
+                                    baseStrings.Add(itemProp.typeLine, last_try);
+                                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
+                                }
+                            }
+                        }
+                        else
+                            return false;
+                    }
+                }
+                string generalBase = baseStrings[itemProp.typeLine];
+
+                if (generalBase == "Weapon")
+                    if (itemProp.properties.First()["type"] == null)
+                        baseType = itemProp.properties.First()["name"].ToString();
+                    else
+                        return false;
+                if (!string.IsNullOrEmpty(baseType))
+                {
+                    if (baseType.ToLower() != conf.type.ToString().ToLower())
                         return false;
                 }
-            }
-            string generalBase = baseStrings[itemProp.typeLine];
-            
-            if (generalBase == "Weapon")
-                if (itemProp.properties.First()["type"] == null)
-                    baseType = itemProp.properties.First()["name"].ToString();
                 else
-                    return false;
-            if (!string.IsNullOrEmpty(baseType))
-            {
-                if (baseType.ToLower() != conf.type.ToString())
-                    return false;
-            }
-            else
-            {
-                if (conf.type.ToString() != generalBase)
-                    return false;
-            }
-            if (!string.IsNullOrEmpty(conf.aps))
-            {
+                {
+                    if (conf.type.ToString() != generalBase)
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(conf.aps))
+                {
+                    JToken aps = itemProp.properties.FirstOrDefault(p => p["name"].ToString() == "Attacks per Second");
+                    JToken aps2 = aps.Children().FirstOrDefault();
+                    JToken values = aps2.Next;
+                    JToken SAPS = values.Children().FirstOrDefault().FirstOrDefault()[0];
+                    if (Convert.ToDecimal(SAPS.ToString()) < Convert.ToDecimal(conf.aps))
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(conf.armour))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.armour))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.baseType))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.baseType))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.crit_chance))
+                {
+                    JToken aps = itemProp.properties.FirstOrDefault(p => p["name"].ToString() == "Critical Strike Chance");
+                    JToken aps2 = aps.Children().FirstOrDefault();
+                    JToken values = aps2.Next;
+                    JToken SAPS = values.Children().FirstOrDefault().FirstOrDefault()[0];
+                    if (Convert.ToDecimal(SAPS.ToString().Replace("%", "")) < Convert.ToDecimal(conf.crit_chance))
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(conf.evasion))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.crit_chance))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.ilvl))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.evasion))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.level))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.ilvl))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.links))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.level))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.name))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.links))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.pdps))
+                {
+                    decimal pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
 
-            }
-            if (!string.IsNullOrEmpty(conf.name))
-            {
+                    if (pdps < Convert.ToDecimal(conf.pdps))
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(conf.quality))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.pdps))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.shield))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.quality))
-            {
+                }
+                if (!string.IsNullOrEmpty(conf.sockets))
+                {
 
-            }
-            if (!string.IsNullOrEmpty(conf.shield))
-            {
+                }
+                if (conf.corrupted.HasValue)
+                {
+                    if (itemProp.corrupted != conf.corrupted.Value)
+                        return false;
+                }
+                if (conf.mods.Count > 0)
+                {
+                    Dictionary<string, decimal> initialMods = new Dictionary<string, decimal>();
+                    Dictionary<string, decimal> FinalMods = new Dictionary<string, decimal>();
 
-            }
-            if (!string.IsNullOrEmpty(conf.sockets))
-            {
+                    foreach (string ex in itemProp.explicitMods)
+                    {
+                        string value = new string(ex.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
+                        decimal dValue = 0;
+                        if (value.Contains(" "))
+                        {
+                            decimal total = 0;
+                            foreach (string s in value.Split(' '))
+                                try { total += Convert.ToDecimal(s); } catch (Exception e) { }
+                            dValue = total / 2;
+                        }
+                        else
+                            dValue = Convert.ToDecimal(value);
+                        initialMods.Add(new string(ex.Where(c => !char.IsDigit(c) && c != '.' && c != '%').ToArray()).ToLower().Trim(), dValue);
+                    }
+                    foreach (string ex in itemProp.implicitMods)
+                    {
+                        string key = new string(ex.Where(c => !char.IsDigit(c) && c != '.' && c != '%').ToArray()).ToLower().Trim();
+                        string value = new string(ex.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
+                        decimal dValue = 0;
+                        if (value.Contains(" "))
+                        {
+                            decimal total = 0;
+                            foreach (string s in value.Split(' '))
+                                try { total += Convert.ToDecimal(s); } catch (Exception e) { }
+                            dValue = total / 2;
+                        }
+                        else
+                            dValue = Convert.ToDecimal(value);
+                        if (initialMods.ContainsKey(key))
+                            initialMods[key] += dValue;
+                        else
+                            initialMods.Add(key, dValue);
+                    }
+                    foreach (string key in initialMods.Keys)
+                        FinalMods.Add(key, initialMods[key]);
+                    foreach (string expl in initialMods.Keys)
+                    {
+                        if(expl== "+ to all elemental resistances")
+                        {
+                            string coldres = "+ to cold resistance";
+                            string fire = "+ to fire resistance";
+                            string lightning = "+ to lightning resistance";
+                            if (!FinalMods.ContainsKey(coldres))
+                                FinalMods.Add(coldres, FinalMods[expl]);
+                            else
+                                FinalMods[coldres] += FinalMods[expl];
+                            if (!FinalMods.ContainsKey(fire))
+                                FinalMods.Add(fire, FinalMods[expl]);
+                            else
+                                FinalMods[fire] += FinalMods[expl];
+                            if (!FinalMods.ContainsKey(lightning))
+                                FinalMods.Add(lightning, FinalMods[expl]);
+                            else
+                                FinalMods[lightning] += FinalMods[expl];
+                        }
+                    }
+                    foreach (string mod in conf.mods.Keys)
+                    {
+                        if (mod == POETradeConfig.final_TotalResString)
+                        {
 
+                        }
+                        else
+                        {
+                            string field = mod.Replace("(pseudo)", "").Replace("(total)", "").Replace("%","").Replace("#","").ToLower().Trim();
+                            if(FinalMods.ContainsKey(field))
+                            {
+                                decimal value = Convert.ToDecimal(FinalMods[field]);
+                                if (value < Convert.ToDecimal(conf.mods[mod]))
+                                    return false;
+                            }
+                            
+                        }
+                    }
+                }
+                return true;
             }
-            if (conf.corrupted.HasValue)
+            catch (Exception e)
             {
-                if (itemProp.corrupted != conf.corrupted.Value)
-                    return false;
+                int x = 5;
+                return false;
             }
-            if (conf.mods.Count > 0)
-            {
-
-            }
-            return true;
         }
 
     }

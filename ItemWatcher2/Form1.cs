@@ -96,7 +96,7 @@ namespace ItemWatcher2
         private void TestPoeTradeConfig()
         {
 
-            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(watchedRares.FirstOrDefault());
+            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(watchedRares.LastOrDefault());
         }
 
 

@@ -347,6 +347,53 @@ namespace ItemWatcher2
             }
             return null;
         }
+        public static void GetExplicitFields(NinjaItem nj, Item sellItem)
+        {
+            List<ExplicitField> Explicits = new List<ExplicitField>();
+            decimal RollPercent = 0;
+            if (nj.is_weapon && nj.minPdps != nj.maxPdps)
+            {
+                RollPercent = (sellItem.pdps - nj.minPdps) / (nj.maxPdps - nj.minPdps);
+            }
+            /*   else
+               {
+                   foreach (ExplicitField ef in nj.ExplicitFields)
+                   {
+                       //alright its a rollable field, lets compare
+                       Regex rgx = new Regex("[^a-zA-Z -]");
+                       string LettersOnly = rgx.Replace(ef.SearchField, "");
+                       string ItemRoll = sellItem.explicitMods.First(p => rgx.Replace(p, "") == LettersOnly);
+                       ExplicitField sellItemEF = new ExplicitField();
+                       sellItemEF.SearchField = ef.SearchField;
+                       sellItemEF.MinRoll = GetMultipleNumbers(ItemRoll);
+                       if (ef.SearchField.Contains("# to #"))
+                       {
+                           string[] parts = ItemRoll.Split(new string[] { " to " }, StringSplitOptions.None);
+                           decimal Roll1 = GetMultipleNumbers(parts[0]);
+                           decimal Roll2 = GetMultipleNumbers(parts[1]);
+                           sellItemEF.MinRoll = (Roll1 + Roll2) / 2;
+                       }
+
+                       Explicits.Add(sellItemEF);
+                       RollPercent += ((sellItemEF.MinRoll - ef.MinRoll) / (ef.MaxRoll - ef.MinRoll)) / nj.ExplicitFields.Count();
+                   }
+
+                       Regex rgx = new Regex("[^a-zA-Z -]");
+                       string ItemRoll = sellItem.explicitMods.First(p => rgx.Replace(p, "") == LettersOnly);
+                       ExplicitField sellItemEF = new ExplicitField();
+                       sellItemEF.SearchField = rgx.Replace(Explicit;
+                       sellItemEF.MinRoll = GetMultipleNumbers(ItemRoll);
+                       if (ef.SearchField.Contains("# to #"))
+                       {
+                           string[] parts = ItemRoll.Split(new string[] { " to " }, StringSplitOptions.None);
+                           decimal Roll1 = GetMultipleNumbers(parts[0]);
+                           decimal Roll2 = GetMultipleNumbers(parts[1]);
+                           sellItemEF.MinRoll = (Roll1 + Roll2) / 2;
+                       }
+               }*/
+            
+        }
+
         public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
         {
 
@@ -445,18 +492,15 @@ namespace ItemWatcher2
                     if (nj.chaos_value > 30)
                     {
                         MinSearch(nj, modsMinSearch, explicitsToCheck);
-                        MidSearch(nj, modsMidSearch, explicitsToCheck);
-                        MaxSearch(nj, modsMaxSearch, explicitsToCheck);
+                        
                         nj.HasRolls = true;
                     }
                     else
                     {
                         MinSearch(nj, modsMinSearch, explicitsToCheck);
-                        MaxSearch(nj, modsMaxSearch, explicitsToCheck);
                         nj.HasRolls = true;
                     }
                 }
-
             }
             else
             {
@@ -538,10 +582,7 @@ namespace ItemWatcher2
 
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
-            if (item.name.Contains("Opus"))
-            {
-                int x = 5;
-            }
+            
             ExplicitField phys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Physical Damage");
             ExplicitField flatPhys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "Adds # to # Physical Damage");
             ExplicitField ias = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Attack Speed");
