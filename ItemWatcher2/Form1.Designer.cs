@@ -117,9 +117,12 @@ namespace ItemWatcher2
             this.btnBlock1 = new System.Windows.Forms.Button();
             this.btnBlock2 = new System.Windows.Forms.Button();
             this.btnBlock3 = new System.Windows.Forms.Button();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted3 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted2 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted1 = new System.Windows.Forms.CheckBox();
+            this.lblLinks1 = new System.Windows.Forms.Label();
+            this.lblLinks2 = new System.Windows.Forms.Label();
+            this.lblLinks3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -927,44 +930,74 @@ namespace ItemWatcher2
             this.btnBlock3.UseVisualStyleBackColor = true;
             this.btnBlock3.Click += new System.EventHandler(this.btnBlock3_Click);
             // 
-            // checkBox7
+            // chkEnchanted3
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(146, 486);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(78, 17);
-            this.checkBox7.TabIndex = 91;
-            this.checkBox7.Text = "Enchanted";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.chkEnchanted3.AutoSize = true;
+            this.chkEnchanted3.Location = new System.Drawing.Point(146, 486);
+            this.chkEnchanted3.Name = "chkEnchanted3";
+            this.chkEnchanted3.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted3.TabIndex = 91;
+            this.chkEnchanted3.Text = "Enchanted";
+            this.chkEnchanted3.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // chkEnchanted2
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(146, 350);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(78, 17);
-            this.checkBox8.TabIndex = 92;
-            this.checkBox8.Text = "Enchanted";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.chkEnchanted2.AutoSize = true;
+            this.chkEnchanted2.Location = new System.Drawing.Point(146, 350);
+            this.chkEnchanted2.Name = "chkEnchanted2";
+            this.chkEnchanted2.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted2.TabIndex = 92;
+            this.chkEnchanted2.Text = "Enchanted";
+            this.chkEnchanted2.UseVisualStyleBackColor = true;
             // 
-            // checkBox9
+            // chkEnchanted1
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(146, 212);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(78, 17);
-            this.checkBox9.TabIndex = 93;
-            this.checkBox9.Text = "Enchanted";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.chkEnchanted1.AutoSize = true;
+            this.chkEnchanted1.Location = new System.Drawing.Point(146, 212);
+            this.chkEnchanted1.Name = "chkEnchanted1";
+            this.chkEnchanted1.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted1.TabIndex = 93;
+            this.chkEnchanted1.Text = "Enchanted";
+            this.chkEnchanted1.UseVisualStyleBackColor = true;
+            // 
+            // lblLinks1
+            // 
+            this.lblLinks1.AutoSize = true;
+            this.lblLinks1.Location = new System.Drawing.Point(92, 186);
+            this.lblLinks1.Name = "lblLinks1";
+            this.lblLinks1.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks1.TabIndex = 94;
+            this.lblLinks1.Text = "Links";
+            // 
+            // lblLinks2
+            // 
+            this.lblLinks2.AutoSize = true;
+            this.lblLinks2.Location = new System.Drawing.Point(92, 320);
+            this.lblLinks2.Name = "lblLinks2";
+            this.lblLinks2.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks2.TabIndex = 95;
+            this.lblLinks2.Text = "Links";
+            // 
+            // lblLinks3
+            // 
+            this.lblLinks3.AutoSize = true;
+            this.lblLinks3.Location = new System.Drawing.Point(92, 455);
+            this.lblLinks3.Name = "lblLinks3";
+            this.lblLinks3.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks3.TabIndex = 96;
+            this.lblLinks3.Text = "Links";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(916, 656);
-            this.Controls.Add(this.checkBox9);
-            this.Controls.Add(this.checkBox8);
-            this.Controls.Add(this.checkBox7);
+            this.Controls.Add(this.lblLinks3);
+            this.Controls.Add(this.lblLinks2);
+            this.Controls.Add(this.lblLinks1);
+            this.Controls.Add(this.chkEnchanted1);
+            this.Controls.Add(this.chkEnchanted2);
+            this.Controls.Add(this.chkEnchanted3);
             this.Controls.Add(this.btnBlock3);
             this.Controls.Add(this.btnBlock2);
             this.Controls.Add(this.btnBlock1);
@@ -1149,9 +1182,12 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnBlock1;
         private System.Windows.Forms.Button btnBlock2;
         private System.Windows.Forms.Button btnBlock3;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox chkEnchanted3;
+        private System.Windows.Forms.CheckBox chkEnchanted2;
+        private System.Windows.Forms.CheckBox chkEnchanted1;
+        private System.Windows.Forms.Label lblLinks1;
+        private System.Windows.Forms.Label lblLinks2;
+        private System.Windows.Forms.Label lblLinks3;
     }
 }
 

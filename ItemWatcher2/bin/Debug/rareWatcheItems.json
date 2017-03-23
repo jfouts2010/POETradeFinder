@@ -58,7 +58,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 68
+    "estimated_value": 43
   },
   {
     "league": "Legacy",
@@ -89,7 +89,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 168
+    "estimated_value": 118
   },
   {
     "league": "Legacy",
@@ -151,6 +151,6 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 100
+    "estimated_value": 506
   }
 ]

@@ -156,6 +156,8 @@ namespace ItemWatcher2
         {
             try
             {
+                if ((int)conf.rarity != itemProp.frameType)
+                    return false;
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
                     baseType = itemProp.properties.First()["name"].ToString();
@@ -419,6 +421,8 @@ namespace ItemWatcher2
         public static decimal GetValueOrAvgValue(string input)
         {
             string value = new string(input.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
+            if (string.IsNullOrEmpty(value))
+                return 0;
             if (value.Contains(" "))
             {
                 decimal total = 0;
@@ -492,7 +496,21 @@ namespace ItemWatcher2
         public string league { get; set; }
         public string id { get; set; }
         public string[] enchantMods { get; set; }
-        //public string[] sockets { get; set; }
+        public JArray sockets { get; set; }
+        public int Links
+        {
+            get
+            {
+                int count = 0;
+                foreach (JObject jo in sockets.Children())
+                {
+                    count++;
+                    if (jo["group"].ToString() != "0")
+                        return count;
+                }
+                return count;
+            }
+        }
         public string name { get; set; }
         public string typeLine { get; set; }
         public string identified { get; set; }
