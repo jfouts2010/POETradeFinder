@@ -299,15 +299,17 @@ namespace ItemWatcher2
                                         }
                                         if (watchedRares.Count > 0 && itemProp.frameType == 2)//is rare
                                         {
-                                            foreach (POETradeConfig rare in watchedRares)
+                                            foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
                                             {
-                                                if (POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
+                                                if (POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types) && rare.estimated_value * config.profit_percent >  itemValue)
                                                 {
+                                                    
                                                     Slot s = new Slot();
                                                     NinjaItem fakeNinja = new NinjaItem();
                                                     fakeNinja.name = "Rare:" + rare.type.ToString();
                                                     fakeNinja.chaos_value = rare.estimated_value;
-                                                    fakeNinja.Explicits = rare.mods.Values.ToList();
+                                                    foreach (KeyValuePair<string, string> kvp in rare.mods)
+                                                        fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
                                                     s.BaseItem = fakeNinja;
                                                     s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 

@@ -844,6 +844,17 @@ namespace ItemWatcher2
                     }
                 }
             }
+            if (Top5Prices.Count > 0)
+            {
+                decimal last = Top5Prices.First();
+                for (int i = 0; i < Top5Prices.Count; i++)
+                {
+                    decimal current = Top5Prices[i];
+                    if (last * 2 - current < 0)
+                        Top5Prices[i] = last * 1.5M;
+                    last = Top5Prices[i];
+                }
+            }
             return Top5Prices.ConvertAll(p => Convert.ToInt32(p)).ToList();
         }
 

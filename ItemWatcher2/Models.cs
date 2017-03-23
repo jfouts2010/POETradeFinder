@@ -379,6 +379,14 @@ namespace ItemWatcher2
                                 totalRes += FinalMods[lightningres];
                             if (totalRes < Convert.ToDecimal(conf.mods[mod]))
                                 return false;
+                            else
+                            {
+                                string[] temparray = new string[itemProp.explicitMods.Count() + 1];
+                                for (int i = 0; i < itemProp.explicitMods.Count(); i++)
+                                    temparray[i] = itemProp.explicitMods[i];
+                                temparray[itemProp.explicitMods.Count()] = "(Calc) Total Ele Res: " + totalRes;
+                                itemProp.explicitMods = temparray;
+                            }
                         }
                         else
                         {
