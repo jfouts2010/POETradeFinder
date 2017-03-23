@@ -35432,7 +35432,7 @@
     ""
   ],
   "LastSaved": "2017-03-19T14:23:23.5102558-06:00",
-  "refresh_minutes": 0.0,
+  "refresh_minutes": 60.0,
   "refresh_items": false,
   "update_ninja_when_manul_refresh": false,
   "blocked_accounts": [],

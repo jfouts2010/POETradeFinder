@@ -23,7 +23,7 @@ namespace ItemWatcher2
         public static List<POETradeConfig> watchedRares;
         public static Dictionary<string, string> all_base_types;
         public static ItemWatchConfig config;
-        
+
 
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
@@ -76,7 +76,7 @@ namespace ItemWatcher2
         private void GenerateAllBaseWepsFromString()
         {
             allBaseTypes = new List<WeaponBaseItem>();
-            Dictionary<string,string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
+            Dictionary<string, string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
             foreach (string s in allbasetypesstring.Keys)
             {
                 if (allbasetypesstring[s] == "Weapon")
@@ -95,8 +95,15 @@ namespace ItemWatcher2
         [STAThread]
         private void TestPoeTradeConfig()
         {
-
-            List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(watchedRares.LastOrDefault());
+            foreach (POETradeConfig rare in watchedRares)
+            {
+                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
+                if (prices.Count > 0)
+                    rare.estimated_value = prices.Sum(p => p) / prices.Count;
+                else
+                    rare.estimated_value = 10000;
+            }
+            saveRares();
         }
 
 
@@ -199,9 +206,9 @@ namespace ItemWatcher2
                                 List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
                                 foreach (JToken item in items)
                                 {
-                                    
+
                                     Item itemProp = item.ToObject<Item>();
-                                    if (itemProp.enchantMods!=null && itemProp.enchantMods.Count()>0)
+                                    if (itemProp.enchantMods != null && itemProp.enchantMods.Count() > 0)
                                     {
                                         int x = 5;
                                     }
@@ -294,7 +301,25 @@ namespace ItemWatcher2
                                         {
                                             foreach (POETradeConfig rare in watchedRares)
                                             {
-                                                POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types);
+                                                if (POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
+                                                {
+                                                    Slot s = new Slot();
+                                                    NinjaItem fakeNinja = new NinjaItem();
+                                                    fakeNinja.name = "Rare:" + rare.type.ToString();
+                                                    fakeNinja.chaos_value = rare.estimated_value;
+                                                    fakeNinja.Explicits = rare.mods.Values.ToList();
+                                                    s.BaseItem = fakeNinja;
+                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+
+                                                    s.is_mine = true;
+                                                    s.SellItem = itemProp;
+                                                    s.account_name = accName;
+                                                    s.name = name;
+                                                    if (Slots.Count == 3)
+                                                        Slots.RemoveAt(2);
+                                                    Slots.Insert(0, s);
+                                                    SetSlots(Slots);
+                                                }
                                             }
                                         }
                                     }
@@ -1069,15 +1094,22 @@ namespace ItemWatcher2
             }
             try
             {
-                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
+                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
             }
             catch (Exception e)
             {
                 all_base_types = new Dictionary<string, string>();
             }
-
-
         }
+        public static void saveRares()
+        {
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(watchedRares);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete(FinalVariables.rareFileName);
+            System.IO.File.WriteAllText(FinalVariables.rareFileName, serialized);
+        }
+
         public static bool isFileOpen(FileInfo file)
         {
             FileStream stream = null;

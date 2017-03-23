@@ -61,6 +61,8 @@ namespace ItemWatcher2
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
 
+        public int estimated_value { get; set; }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -289,80 +291,107 @@ namespace ItemWatcher2
                 {
                     Dictionary<string, decimal> initialMods = new Dictionary<string, decimal>();
                     Dictionary<string, decimal> FinalMods = new Dictionary<string, decimal>();
-
+                    string coldres = "+ to cold resistance";
+                    string fireres = "+ to fire resistance";
+                    string lightningres = "+ to lightning resistance";
                     foreach (string ex in itemProp.explicitMods)
                     {
-                        string value = new string(ex.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
-                        decimal dValue = 0;
-                        if (value.Contains(" "))
-                        {
-                            decimal total = 0;
-                            foreach (string s in value.Split(' '))
-                                try { total += Convert.ToDecimal(s); } catch (Exception e) { }
-                            dValue = total / 2;
-                        }
-                        else
-                            dValue = Convert.ToDecimal(value);
-                        initialMods.Add(new string(ex.Where(c => !char.IsDigit(c) && c != '.' && c != '%').ToArray()).ToLower().Trim(), dValue);
+                        string key = ConvertToCommonForm(ex);
+                        decimal value = GetValueOrAvgValue(ex);
+                        initialMods.Add(key, value);
                     }
                     foreach (string ex in itemProp.implicitMods)
                     {
-                        string key = new string(ex.Where(c => !char.IsDigit(c) && c != '.' && c != '%').ToArray()).ToLower().Trim();
-                        string value = new string(ex.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
-                        decimal dValue = 0;
-                        if (value.Contains(" "))
-                        {
-                            decimal total = 0;
-                            foreach (string s in value.Split(' '))
-                                try { total += Convert.ToDecimal(s); } catch (Exception e) { }
-                            dValue = total / 2;
-                        }
-                        else
-                            dValue = Convert.ToDecimal(value);
+                        string key = ConvertToCommonForm(ex);
+                        decimal value = GetValueOrAvgValue(ex);
+
                         if (initialMods.ContainsKey(key))
-                            initialMods[key] += dValue;
+                            initialMods[key] += value;
                         else
-                            initialMods.Add(key, dValue);
+                            initialMods.Add(key, value);
                     }
                     foreach (string key in initialMods.Keys)
                         FinalMods.Add(key, initialMods[key]);
                     foreach (string expl in initialMods.Keys)
                     {
-                        if(expl== "+ to all elemental resistances")
+
+                        if (expl == "+ to all elemental resistances")
                         {
-                            string coldres = "+ to cold resistance";
-                            string fire = "+ to fire resistance";
-                            string lightning = "+ to lightning resistance";
+
                             if (!FinalMods.ContainsKey(coldres))
-                                FinalMods.Add(coldres, FinalMods[expl]);
+                                FinalMods.Add(coldres, initialMods[expl]);
                             else
-                                FinalMods[coldres] += FinalMods[expl];
-                            if (!FinalMods.ContainsKey(fire))
-                                FinalMods.Add(fire, FinalMods[expl]);
+                                FinalMods[coldres] += initialMods[expl];
+                            if (!FinalMods.ContainsKey(fireres))
+                                FinalMods.Add(fireres, initialMods[expl]);
                             else
-                                FinalMods[fire] += FinalMods[expl];
-                            if (!FinalMods.ContainsKey(lightning))
-                                FinalMods.Add(lightning, FinalMods[expl]);
+                                FinalMods[fireres] += initialMods[expl];
+                            if (!FinalMods.ContainsKey(lightningres))
+                                FinalMods.Add(lightningres, initialMods[expl]);
                             else
-                                FinalMods[lightning] += FinalMods[expl];
+                                FinalMods[lightningres] += initialMods[expl];
+                        }
+                        else if (expl == "+ to fire and lightning resistances")
+                        {
+
+                            if (!FinalMods.ContainsKey(fireres))
+                                FinalMods.Add(fireres, 15);
+                            else
+                                FinalMods[fireres] += 15;
+                            if (!FinalMods.ContainsKey(lightningres))
+                                FinalMods.Add(lightningres, 15);
+                            else
+                                FinalMods[lightningres] += 15;
+                        }
+                        else if (expl == "+ to cold and lightning resistances")
+                        {
+                            if (!FinalMods.ContainsKey(coldres))
+                                FinalMods.Add(coldres, 15);
+                            else
+                                FinalMods[coldres] += 15;
+                            if (!FinalMods.ContainsKey(lightningres))
+                                FinalMods.Add(lightningres, 15);
+                            else
+                                FinalMods[lightningres] += 15;
+                        }
+                        else if (expl == "+ to fire and cold resistances")
+                        {
+                            if (!FinalMods.ContainsKey(coldres))
+                                FinalMods.Add(coldres, 15);
+                            else
+                                FinalMods[coldres] += 15;
+                            if (!FinalMods.ContainsKey(fireres))
+                                FinalMods.Add(fireres, 15);
+                            else
+                                FinalMods[fireres] += 15;
                         }
                     }
                     foreach (string mod in conf.mods.Keys)
                     {
                         if (mod == POETradeConfig.final_TotalResString)
                         {
-
+                            decimal totalRes = 0;
+                            if (FinalMods.ContainsKey(coldres))
+                                totalRes += FinalMods[coldres];
+                            if (FinalMods.ContainsKey(fireres))
+                                totalRes += FinalMods[fireres];
+                            if (FinalMods.ContainsKey(lightningres))
+                                totalRes += FinalMods[lightningres];
+                            if (totalRes < Convert.ToDecimal(conf.mods[mod]))
+                                return false;
                         }
                         else
                         {
-                            string field = mod.Replace("(pseudo)", "").Replace("(total)", "").Replace("%","").Replace("#","").ToLower().Trim();
-                            if(FinalMods.ContainsKey(field))
+                            string field = ConvertToCommonForm(mod);
+                            if (FinalMods.ContainsKey(field))
                             {
                                 decimal value = Convert.ToDecimal(FinalMods[field]);
                                 if (value < Convert.ToDecimal(conf.mods[mod]))
                                     return false;
                             }
-                            
+                            else
+                                return false;
+
                         }
                     }
                 }
@@ -374,7 +403,24 @@ namespace ItemWatcher2
                 return false;
             }
         }
-
+        public static string ConvertToCommonForm(string input)
+        {
+            input = input.Replace("(pseudo)", "").Replace("(total)", "").Replace("%", "").Replace("#", "").ToLower().Trim();
+            return (new string(input.Where(c => !char.IsDigit(c) && c != '.' && c != '%').ToArray()).ToLower().Trim());
+        }
+        public static decimal GetValueOrAvgValue(string input)
+        {
+            string value = new string(input.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
+            if (value.Contains(" "))
+            {
+                decimal total = 0;
+                foreach (string s in value.Split(' '))
+                    try { total += Convert.ToDecimal(s); } catch (Exception e) { }
+                return (total / 2);
+            }
+            else
+                return (Convert.ToDecimal(value));
+        }
     }
 
     [Serializable]

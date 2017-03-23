@@ -1,0 +1,63 @@
+[
+  {
+    "league": "Legacy",
+    "name": "",
+    "type": 31,
+    "baseType": "",
+    "damage": "",
+    "aps": "",
+    "crit_chance": "",
+    "dps": "",
+    "edps": "",
+    "pdps": "",
+    "armour": "",
+    "evasion": "",
+    "shield": "",
+    "sockets": "",
+    "links": "",
+    "mods": {
+      "(pseudo) (total) +# to Strength": "43",
+      "(pseudo) (total) +#% to Cold Resistance": "38",
+      "(pseudo) (total) +#% to Fire Resistance": "68"
+    },
+    "quality": "",
+    "level": "",
+    "ilvl": "",
+    "rarity": 0,
+    "corrupted": null,
+    "normalize_q": null,
+    "crafted": null,
+    "enchanted": null,
+    "estimated_value": 10000
+  },
+  {
+    "league": "Legacy",
+    "name": "",
+    "type": 31,
+    "baseType": "",
+    "damage": "",
+    "aps": "",
+    "crit_chance": "",
+    "dps": "",
+    "edps": "",
+    "pdps": "",
+    "armour": "",
+    "evasion": "",
+    "shield": "",
+    "sockets": "",
+    "links": "",
+    "mods": {
+      "(pseudo) (total) +# to maximum Life": "70",
+      "(pseudo) +#% total Elemental Resistance": "130"
+    },
+    "quality": "",
+    "level": "",
+    "ilvl": "",
+    "rarity": 0,
+    "corrupted": null,
+    "normalize_q": null,
+    "crafted": null,
+    "enchanted": null,
+    "estimated_value": 57
+  }
+]
