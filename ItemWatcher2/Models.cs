@@ -156,7 +156,7 @@ namespace ItemWatcher2
         {
             try
             {
-                if ((int)conf.rarity != itemProp.frameType)
+                if (conf.rarity != POETradeConfig.Rarity.none && (int)conf.rarity != itemProp.frameType)
                     return false;
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)

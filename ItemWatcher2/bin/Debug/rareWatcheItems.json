@@ -23,7 +23,7 @@
     "quality": "",
     "level": "",
     "ilvl": "",
-    "rarity": 0,
+    "rarity": 2,
     "corrupted": null,
     "normalize_q": null,
     "crafted": null,
@@ -53,7 +53,7 @@
     "quality": "",
     "level": "",
     "ilvl": "",
-    "rarity": 0,
+    "rarity": 2,
     "corrupted": null,
     "normalize_q": null,
     "crafted": null,
@@ -84,12 +84,12 @@
     "quality": "",
     "level": "",
     "ilvl": "",
-    "rarity": 0,
+    "rarity": 2,
     "corrupted": null,
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 118
+    "estimated_value": 105
   },
   {
     "league": "Legacy",
@@ -115,7 +115,7 @@
     "quality": "",
     "level": "",
     "ilvl": "",
-    "rarity": 0,
+    "rarity": 2,
     "corrupted": null,
     "normalize_q": null,
     "crafted": null,
@@ -146,11 +146,11 @@
     "quality": "",
     "level": "",
     "ilvl": "",
-    "rarity": 0,
+    "rarity": 2,
     "corrupted": null,
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 506
+    "estimated_value": 480
   }
 ]
