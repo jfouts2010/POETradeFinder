@@ -1,32 +1,17 @@
 [
   {
-    "base_name": "Imperial Skean",
-    "pd": 47.5,
+    "base_name": "Spine Bow",
+    "pd": 53.5,
+    "aps": 1.35
+  },
+  {
+    "base_name": "Imperial Bow",
+    "pd": 48.5,
     "aps": 1.45
   },
   {
-    "base_name": "Bone Offering",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Summon Ice Golem",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Royal Skean",
-    "pd": 40.0,
-    "aps": 1.45
-  },
-  {
-    "base_name": "War Hammer",
-    "pd": 23.0,
-    "aps": 1.4
-  },
-  {
-    "base_name": "Carved Wand",
-    "pd": 11.0,
+    "base_name": "Siege Axe",
+    "pd": 54.0,
     "aps": 1.5
   },
   {
@@ -35,109 +20,89 @@
     "aps": 1.2
   },
   {
-    "base_name": "Primeval Rapier",
-    "pd": 45.5,
-    "aps": 1.3
+    "base_name": "Cutlass",
+    "pd": 33.0,
+    "aps": 1.55
   },
   {
-    "base_name": "Lightning Trap",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Earthquake",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Raise Spectre",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Bladefall",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Spiked Club",
-    "pd": 15.0,
-    "aps": 1.4
-  },
-  {
-    "base_name": "Jagged Foil",
-    "pd": 20.5,
-    "aps": 1.6
-  },
-  {
-    "base_name": "Coronal Maul",
-    "pd": 92.0,
-    "aps": 1.25
-  },
-  {
-    "base_name": "Serrated Foil",
-    "pd": 35.0,
-    "aps": 1.6
-  },
-  {
-    "base_name": "Elegant Sword",
-    "pd": 26.5,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Timeworn Claw",
-    "pd": 29.5,
-    "aps": 1.3
-  },
-  {
-    "base_name": "Demon's Horn",
-    "pd": 45.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Platinum Kris",
-    "pd": 59.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Karui Maul",
-    "pd": 98.5,
-    "aps": 1.1
-  },
-  {
-    "base_name": "Reaver Sword",
-    "pd": 69.0,
-    "aps": 1.45
-  },
-  {
-    "base_name": "Imbued Wand",
-    "pd": 34.0,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Brass Maul",
-    "pd": 42.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Exquisite Blade",
-    "pd": 75.0,
+    "base_name": "Infernal Sword",
+    "pd": 80.0,
     "aps": 1.35
   },
   {
-    "base_name": "Vaal Hatchet",
-    "pd": 60.0,
+    "base_name": "Eternal Sword",
+    "pd": 54.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Prophecy Wand",
+    "pd": 41.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Maelström Staff",
+    "pd": 88.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Void Axe",
+    "pd": 95.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Death Bow",
+    "pd": 36.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Imperial Maul",
+    "pd": 92.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Terror Claw",
+    "pd": 44.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Jewelled Foil",
+    "pd": 46.0,
+    "aps": 1.6
+  },
+  {
+    "base_name": "Imperial Claw",
+    "pd": 45.0,
+    "aps": 1.6
+  },
+  {
+    "base_name": "Imperial Staff",
+    "pd": 98.0,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Crude Bow",
+    "pd": 9.0,
     "aps": 1.4
   },
   {
-    "base_name": "Spiraled Wand",
-    "pd": 20.5,
+    "base_name": "Despot Axe",
+    "pd": 89.5,
     "aps": 1.3
   },
   {
-    "base_name": "Corsair Sword",
-    "pd": 50.0,
-    "aps": 1.55
+    "base_name": "Ritual Sceptre",
+    "pd": 35.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Sage Wand",
+    "pd": 27.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Carnal Sceptre",
+    "pd": 68.0,
+    "aps": 1.2
   },
   {
     "base_name": "Ornate Sword",
@@ -145,23 +110,48 @@
     "aps": 1.4
   },
   {
-    "base_name": "Gavel",
-    "pd": 77.5,
-    "aps": 1.15
-  },
-  {
-    "base_name": "Colossus Mallet",
-    "pd": 87.5,
-    "aps": 1.25
-  },
-  {
-    "base_name": "Stiletto",
-    "pd": 17.0,
+    "base_name": "Elegant Sword",
+    "pd": 26.5,
     "aps": 1.5
   },
   {
-    "base_name": "Boot Knife",
-    "pd": 22.0,
+    "base_name": "Fiend Dagger",
+    "pd": 54.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Long Staff",
+    "pd": 22.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Royal Axe",
+    "pd": 77.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Vaal Blade",
+    "pd": 66.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Crystal Sceptre",
+    "pd": 43.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Midnight Blade",
+    "pd": 67.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Woodsplitter",
+    "pd": 26.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Vaal Sceptre",
+    "pd": 53.5,
     "aps": 1.4
   },
   {
@@ -170,289 +160,24 @@
     "aps": 1.45
   },
   {
-    "base_name": "Demon Dagger",
-    "pd": 60.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Flaying Knife",
-    "pd": 40.0,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Engraved Wand",
-    "pd": 24.5,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Rock Breaker",
-    "pd": 53.0,
+    "base_name": "Highborn Staff",
+    "pd": 83.5,
     "aps": 1.15
   },
   {
-    "base_name": "The Gladiator",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Mirror Arrow",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Driftwood Wand",
-    "pd": 6.0,
-    "aps": 1.4
-  },
-  {
-    "base_name": "The Opulent",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Lantador's Lost Love",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The Penitent",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Treasure Hunter",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The Garish Power",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The Wolverine",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Dialla's Subjugation",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The Body",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The One With All",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Doedre's Madness",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Might is Right",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "The Feast",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Crystal Wand",
-    "pd": 33.0,
+    "base_name": "Long Bow",
+    "pd": 15.5,
     "aps": 1.3
   },
   {
-    "base_name": "Lightning Strike",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Opal Wand",
-    "pd": 41.5,
-    "aps": 1.3
-  },
-  {
-    "base_name": "Vile Staff",
-    "pd": 47.5,
-    "aps": 1.25
-  },
-  {
-    "base_name": "Tyrant's Sekhem",
-    "pd": 61.5,
-    "aps": 1.25
-  },
-  {
-    "base_name": "Prophecy Wand",
-    "pd": 41.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Earth Drinker",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Slaughter Knife",
-    "pd": 48.0,
-    "aps": 1.4
-  },
-  {
-    "base_name": "Ice Crash",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Amethyst Flask",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Burning Arrow",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Atziri's Arsenal",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Boundless Realms",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Ambusher",
-    "pd": 46.5,
+    "base_name": "Blinder",
+    "pd": 22.0,
     "aps": 1.5
   },
   {
-    "base_name": "Summon Chaos Golem",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Rejuvenation Totem",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Frost Bomb",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Vortex",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Tornado Wand",
-    "pd": 41.5,
-    "aps": 1.3
-  },
-  {
-    "base_name": "Crude Bow",
-    "pd": 9.0,
+    "base_name": "Jade Hatchet",
+    "pd": 13.0,
     "aps": 1.4
-  },
-  {
-    "base_name": "Harpy Rapier",
-    "pd": 51.5,
-    "aps": 1.4
-  },
-  {
-    "base_name": "Arc",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Vaal Rain of Arrows",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Vaal Lightning Warp",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Shock Nova",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Whirling Blades",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Blight",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Devouring Totem",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Hope",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Flameblast",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Summon Raging Spirit",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Puncture",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Vaal Cyclone",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Jewelled Foil",
-    "pd": 46.0,
-    "aps": 1.6
-  },
-  {
-    "base_name": "Conductivity",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Maelström Staff",
-    "pd": 88.0,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Opal Sceptre",
-    "pd": 61.0,
-    "aps": 1.25
-  },
-  {
-    "base_name": "Shadow Axe",
-    "pd": 52.0,
-    "aps": 1.25
   },
   {
     "base_name": "Sledgehammer",
@@ -460,59 +185,39 @@
     "aps": 1.3
   },
   {
-    "base_name": "Death Bow",
-    "pd": 36.5,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Butcher Knife",
-    "pd": 33.0,
-    "aps": 1.4
-  },
-  {
-    "base_name": "Harbinger Bow",
-    "pd": 63.0,
-    "aps": 1.2
-  },
-  {
-    "base_name": "Wraith Sword",
-    "pd": 69.0,
-    "aps": 1.35
-  },
-  {
-    "base_name": "Spiraled Foil",
-    "pd": 45.5,
-    "aps": 1.6
-  },
-  {
-    "base_name": "Midnight Blade",
-    "pd": 67.0,
-    "aps": 1.3
-  },
-  {
-    "base_name": "Noble Claw",
-    "pd": 38.5,
-    "aps": 1.6
-  },
-  {
-    "base_name": "Karui Sceptre",
-    "pd": 46.0,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Siege Axe",
-    "pd": 54.0,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Tiger Hook",
-    "pd": 77.0,
+    "base_name": "Gavel",
+    "pd": 77.5,
     "aps": 1.15
   },
   {
-    "base_name": "Gemini Claw",
-    "pd": 45.5,
-    "aps": 1.5
+    "base_name": "Spiraled Wand",
+    "pd": 20.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Citadel Bow",
+    "pd": 63.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Steelhead",
+    "pd": 58.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Abyssal Axe",
+    "pd": 86.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Jasper Chopper",
+    "pd": 64.0,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Terror Maul",
+    "pd": 88.5,
+    "aps": 1.25
   },
   {
     "base_name": "Judgement Staff",
@@ -520,44 +225,14 @@
     "aps": 1.25
   },
   {
-    "base_name": "The Doppelganger",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Iron Staff",
+    "pd": 31.5,
+    "aps": 1.2
   },
   {
-    "base_name": "The Battle Born",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Serpent Wand",
-    "pd": 35.5,
-    "aps": 1.3
-  },
-  {
-    "base_name": "The Sharpened Blade",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Vaal Arc",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Animate Guardian",
-    "pd": 0.0,
-    "aps": 0.0
-  },
-  {
-    "base_name": "Dragonbone Rapier",
-    "pd": 47.0,
-    "aps": 1.5
-  },
-  {
-    "base_name": "Talisman Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Meatgrinder",
+    "pd": 90.0,
+    "aps": 1.25
   },
   {
     "base_name": "Fright Claw",
@@ -565,48 +240,443 @@
     "aps": 1.5
   },
   {
+    "base_name": "Karui Sceptre",
+    "pd": 46.0,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Harbinger Bow",
+    "pd": 63.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Dusk Blade",
+    "pd": 36.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Sundering Axe",
+    "pd": 95.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Coiled Staff",
+    "pd": 35.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Driftwood Wand",
+    "pd": 6.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Tornado Wand",
+    "pd": 41.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Slaughter Knife",
+    "pd": 48.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Labrys",
+    "pd": 84.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Imperial Skean",
+    "pd": 47.5,
+    "aps": 1.45
+  },
+  {
     "base_name": "Platinum Sceptre",
     "pd": 63.5,
     "aps": 1.25
   },
   {
-    "base_name": "Clarity",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Thresher Claw",
+    "pd": 36.5,
+    "aps": 1.3
   },
   {
-    "base_name": "Omen Wand",
+    "base_name": "Engraved Wand",
+    "pd": 24.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Bronze Sceptre",
+    "pd": 17.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Whalebone Rapier",
+    "pd": 11.0,
+    "aps": 1.55
+  },
+  {
+    "base_name": "Imbued Wand",
+    "pd": 34.0,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Tiger Sword",
+    "pd": 61.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Vile Staff",
+    "pd": 47.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Vaal Claw",
+    "pd": 52.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Assassin Bow",
+    "pd": 59.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Vaal Hatchet",
+    "pd": 60.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Tomahawk",
+    "pd": 35.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Legion Sword",
+    "pd": 75.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "War Sword",
+    "pd": 28.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Rusted Sword",
+    "pd": 7.0,
+    "aps": 1.45
+  },
+  {
+    "base_name": "Sabre",
+    "pd": 13.5,
+    "aps": 1.55
+  },
+  {
+    "base_name": "Primordial Staff",
+    "pd": 94.0,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Reaver Sword",
+    "pd": 69.0,
+    "aps": 1.45
+  },
+  {
+    "base_name": "Decorative Axe",
     "pd": 38.5,
     "aps": 1.2
   },
   {
-    "base_name": "Prophecy Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Opal Wand",
+    "pd": 41.5,
+    "aps": 1.3
   },
   {
-    "base_name": "Warbands Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Jagged Foil",
+    "pd": 20.5,
+    "aps": 1.6
   },
   {
-    "base_name": "Domination Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Corsair Sword",
+    "pd": 50.0,
+    "aps": 1.55
   },
   {
-    "base_name": "Anarchy Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Gut Ripper",
+    "pd": 36.5,
+    "aps": 1.5
   },
   {
-    "base_name": "Torment Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Stiletto",
+    "pd": 17.0,
+    "aps": 1.5
   },
   {
-    "base_name": "Rampage Leaguestone",
-    "pd": 0.0,
-    "aps": 0.0
+    "base_name": "Goat's Horn",
+    "pd": 10.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Infernal Axe",
+    "pd": 68.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Bone Bow",
+    "pd": 24.0,
+    "aps": 1.35
+  },
+  {
+    "base_name": "Ornate Mace",
+    "pd": 60.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Rock Breaker",
+    "pd": 53.0,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Flaying Knife",
+    "pd": 40.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Quartz Wand",
+    "pd": 17.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Demon's Horn",
+    "pd": 45.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Royal Skean",
+    "pd": 40.0,
+    "aps": 1.45
+  },
+  {
+    "base_name": "Nailed Fist",
+    "pd": 7.5,
+    "aps": 1.6
+  },
+  {
+    "base_name": "Karui Maul",
+    "pd": 98.5,
+    "aps": 1.1
+  },
+  {
+    "base_name": "Etched Greatsword",
+    "pd": 34.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Poleaxe",
+    "pd": 31.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Twilight Blade",
+    "pd": 58.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Elegant Foil",
+    "pd": 25.5,
+    "aps": 1.6
+  },
+  {
+    "base_name": "Hellion's Paw",
+    "pd": 42.0,
+    "aps": 1.6
+  },
+  {
+    "base_name": "Spiked Club",
+    "pd": 15.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Carved Wand",
+    "pd": 11.0,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Estoc",
+    "pd": 35.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Shadow Sceptre",
+    "pd": 36.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Great Mallet",
+    "pd": 56.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Short Bow",
+    "pd": 11.0,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Brass Maul",
+    "pd": 42.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Ezomyte Blade",
+    "pd": 78.5,
+    "aps": 1.35
+  },
+  {
+    "base_name": "Lion Sword",
+    "pd": 75.5,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Decimation Bow",
+    "pd": 56.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Auric Mace",
+    "pd": 73.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Lathi",
+    "pd": 82.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Boot Knife",
+    "pd": 22.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Headsman Axe",
+    "pd": 66.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Elder Sword",
+    "pd": 51.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Antique Rapier",
+    "pd": 29.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Void Sceptre",
+    "pd": 63.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Platinum Kris",
+    "pd": 59.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "War Hammer",
+    "pd": 23.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Recurve Bow",
+    "pd": 22.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Iron Sceptre",
+    "pd": 26.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Ranger Bow",
+    "pd": 56.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Karui Chopper",
+    "pd": 102.5,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Shadow Axe",
+    "pd": 52.0,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Jagged Maul",
+    "pd": 34.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Royal Staff",
+    "pd": 46.5,
+    "aps": 1.15
+  },
+  {
+    "base_name": "Serpentine Staff",
+    "pd": 70.5,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Skinning Knife",
+    "pd": 12.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Awl",
+    "pd": 15.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Cleaver",
+    "pd": 26.0,
+    "aps": 1.2
+  },
+  {
+    "base_name": "Dread Maul",
+    "pd": 77.5,
+    "aps": 1.25
+  },
+  {
+    "base_name": "Basket Rapier",
+    "pd": 18.5,
+    "aps": 1.5
+  },
+  {
+    "base_name": "Timeworn Claw",
+    "pd": 29.5,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Bastard Sword",
+    "pd": 20.0,
+    "aps": 1.45
+  },
+  {
+    "base_name": "Boot Blade",
+    "pd": 37.0,
+    "aps": 1.4
+  },
+  {
+    "base_name": "Highland Blade",
+    "pd": 55.5,
+    "aps": 1.35
+  },
+  {
+    "base_name": "Crystal Wand",
+    "pd": 33.0,
+    "aps": 1.3
+  },
+  {
+    "base_name": "Military Staff",
+    "pd": 67.5,
+    "aps": 1.2
   }
 ]

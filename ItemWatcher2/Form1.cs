@@ -38,9 +38,9 @@ namespace ItemWatcher2
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("ExaltIcon2.ico")));
 
             LoadBasicInfo();
-            TestPoeTradeConfig();
-            GenerateAllBaseWepsFromString();
-            //NinjaPoETradeMethods.CalcDPSOfAllWeps();
+            //TestPoeTradeConfig();
+            //GenerateAllBaseWepsFromString();
+            NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
@@ -1180,7 +1180,9 @@ namespace ItemWatcher2
             }
             try
             {
-                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
+                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTypesStringFilename));
+                if (all_base_types == null)
+                    all_base_types = new Dictionary<string, string>();
             }
             catch (Exception e)
             {

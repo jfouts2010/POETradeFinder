@@ -13,13 +13,13 @@ namespace ItemWatcher2
         public static string rareFileName = "rareWatcheItems.json";
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
-        public static string baseTimesStringFilename = "AllBaseTypesStrings.json";
+        public static string baseTypesStringFilename = "AllBaseTypesStrings.json";
         public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
     }
 
 
-    public class POETradeConfig 
+    public class POETradeConfig
     {
         public POETradeConfig()
         {
@@ -169,22 +169,35 @@ namespace ItemWatcher2
         {
             try
             {
+                if (itemProp.frameType >= 4 && itemProp.frameType != 9)
+                    return false;
                 if (conf.rarity != POETradeConfig.Rarity.none && (int)conf.rarity != itemProp.frameType)
                     return false;
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
                     baseType = itemProp.properties.First()["name"].ToString();
-                itemProp.typeLine = itemProp.typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
-                if (!baseStrings.ContainsKey(itemProp.typeLine))
+                string typeLine = itemProp.typeLine;
+
+                if (itemProp.frameType == 1)
+                {
+                    typeLine = typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
+                    if (typeLine.Split(' ').Count() == 3)
+                    {
+                        typeLine = typeLine.Substring(typeLine.IndexOf(' ')).Trim();
+                    }
+                }
+                if (!baseStrings.ContainsKey(typeLine) || baseStrings.Where(p => typeLine.Contains(typeLine)).Count() == 0)
                 {
                     if (!string.IsNullOrEmpty(baseType))
                     {
-                        baseStrings.Add(itemProp.typeLine, "Weapon");
+                        if (typeLine.ToLower().Contains("leaguestone"))
+                            return false;
+                        baseStrings.Add(typeLine, "Weapon");
                         NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                     }
                     else
                     {
-                        string[] halves = itemProp.typeLine.Split(' ');
+                        string[] halves = typeLine.Split(' ');
                         if (halves.Count() > 1)
                         {
                             List<string> allKeys = baseStrings.Keys.ToList();
@@ -193,7 +206,9 @@ namespace ItemWatcher2
                             {
                                 if (halves.Last() == key.Split(' ').Last())
                                 {
-                                    baseStrings.Add(itemProp.typeLine, baseStrings[key]);
+                                    string value = baseStrings[key];
+
+                                    baseStrings.Add(typeLine, value);
                                     NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                     found = true;
                                     break;
@@ -201,12 +216,16 @@ namespace ItemWatcher2
                             }
                             if (!found)
                             {
-                                string last_try = NinjaPoETradeMethods.FindBaseType(itemProp.typeLine);
+                                string last_try = NinjaPoETradeMethods.FindBaseType(typeLine);
                                 if (last_try == "idk")
+                                {
+                                    baseStrings.Add(typeLine, "IDK");
+                                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                     return false;
+                                }
                                 else
                                 {
-                                    baseStrings.Add(itemProp.typeLine, last_try);
+                                    baseStrings.Add(typeLine, last_try);
                                     NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                 }
                             }
@@ -215,7 +234,15 @@ namespace ItemWatcher2
                             return false;
                     }
                 }
-                string generalBase = baseStrings[itemProp.typeLine];
+                string generalBase = "";
+                try
+                {
+                    generalBase = baseStrings[typeLine];
+                }
+                catch
+                {
+                    generalBase = baseStrings.FirstOrDefault(p => typeLine.Contains(p.Key)).Value;
+                }
 
                 if (generalBase == "Weapon")
                     if (itemProp.properties.First()["type"] == null)
