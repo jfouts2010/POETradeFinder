@@ -19,7 +19,7 @@ namespace ItemWatcher2
     }
 
 
-    public class POETradeConfig
+    public class POETradeConfig 
     {
         public POETradeConfig()
         {
@@ -34,8 +34,21 @@ namespace ItemWatcher2
                 name += " " + uniqueItem.base_type;
             else
                 name = uniqueItem.name;
-
         }
+        public NinjaItem CreateNinja()
+        {
+            NinjaItem nj = new NinjaItem()
+            {
+                base_type = type.ToString(),
+                chaos_value = estimated_value,
+                Explicits = mods.Keys.ToList(),
+                name = "",
+                tradeConfig = this
+
+            };
+            return nj;
+        }
+
         public string league { get; set; }
         public string name { get; set; }
         public BaseType type { get; set; }
@@ -61,7 +74,7 @@ namespace ItemWatcher2
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
 
-        public int estimated_value { get; set; }
+        public decimal estimated_value { get; set; }
 
         public override string ToString()
         {
@@ -161,7 +174,7 @@ namespace ItemWatcher2
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
                     baseType = itemProp.properties.First()["name"].ToString();
-
+                itemProp.typeLine = itemProp.typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
                 if (!baseStrings.ContainsKey(itemProp.typeLine))
                 {
                     if (!string.IsNullOrEmpty(baseType))
@@ -409,6 +422,7 @@ namespace ItemWatcher2
             }
             catch (Exception e)
             {
+
                 int x = 5;
                 return false;
             }
@@ -466,6 +480,7 @@ namespace ItemWatcher2
         public bool is_weapon { get; set; }
         public decimal minPdps { get; set; }
         public decimal maxPdps { get; set; }
+        public POETradeConfig tradeConfig { get; set; }
 
         public override string ToString()
         {

@@ -259,7 +259,7 @@ namespace ItemWatcher2
                 return "Amulet";
             else if (input.ToLower().Contains(" belt") || input.ToLower().Contains(" sash"))
                 return "Belt";
-            
+
             if (input.ToLower().Contains(" vest") || input.ToLower().Contains(" plate")
                 || input.ToLower().Contains(" jerkin") || input.ToLower().Contains(" leather")
                 || input.ToLower().Contains(" tunic") || input.ToLower().Contains(" garb")
@@ -293,6 +293,8 @@ namespace ItemWatcher2
             else if (input.ToLower().Contains(" shield") || input.ToLower().Contains(" buckler")
                 || input.ToLower().Contains(" bundle") || input.ToLower().Contains(" slippers"))
                 return "Shield";
+            else if (input.ToLower().Contains(" jewel"))
+                return "Jewel";
             return "idk";
         }
 
@@ -391,7 +393,7 @@ namespace ItemWatcher2
                            sellItemEF.MinRoll = (Roll1 + Roll2) / 2;
                        }
                }*/
-            
+
         }
 
         public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
@@ -492,7 +494,7 @@ namespace ItemWatcher2
                     if (nj.chaos_value > 30)
                     {
                         MinSearch(nj, modsMinSearch, explicitsToCheck);
-                        
+
                         nj.HasRolls = true;
                     }
                     else
@@ -582,7 +584,7 @@ namespace ItemWatcher2
 
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
-            
+
             ExplicitField phys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Physical Damage");
             ExplicitField flatPhys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "Adds # to # Physical Damage");
             ExplicitField ias = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Attack Speed");
@@ -679,6 +681,34 @@ namespace ItemWatcher2
             nj.HighRollMinSell = HighRollMinSell;
             nj.HighRollAvrgSell = HighRollAvrgSell;
         }
+
+        public static string FindSearchUrl(NinjaItem item)
+        {
+            if (item.tradeConfig != null)
+            {
+                return GetUrlFromWatchedItem(item.tradeConfig);
+            }
+            else
+            {
+                string rarity = "unique";
+                if (item.type == "9")
+                    rarity = "relic";
+                else if (item.item_class == 6 || item.type == "6")
+                    rarity = "";
+                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+                request23.Method = "POST";
+                request23.KeepAlive = true;
+                request23.ContentType = "application/x-www-form-urlencoded";
+                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Close();
+                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                {
+                    return response2.ResponseUri.OriginalString;
+                }
+            }
+        }
+
         public static void MidSearch(NinjaItem nj, string modsMidSearch, List<ExplicitField> explicitsToCheck)
         {
             string rarity = "unique";
@@ -739,24 +769,20 @@ namespace ItemWatcher2
         }
         public static Dictionary<string, string> LoadAllBaseWeaponTypes()
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText("AllBaseTypesStrings.json"));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
         }
         public static void SaveAllBaseWeaponTypes(List<string> allWepBases)
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allWepBases);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
-            System.IO.File.Delete(FinalVariables.itemfilename);
-            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
+            System.IO.File.Delete(FinalVariables.baseTimesStringFilename);
+            System.IO.File.WriteAllText(FinalVariables.baseTimesStringFilename, serialized);
         }
 
-        public static List<int> GetPoeLowest5Prices(POETradeConfig tradeConfig)
+        public static string GetUrlFromWatchedItem(POETradeConfig tradeConfig)
         {
-            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
-            request23.Method = "POST";
-            request23.KeepAlive = true;
-            request23.ContentType = "application/x-www-form-urlencoded";
-            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
+            
             StringBuilder sb = new StringBuilder();
             sb.Append("league=" + tradeConfig.league);
             sb.Append("&online=x");
@@ -818,7 +844,17 @@ namespace ItemWatcher2
             sb.Append("&group_min=");
             sb.Append("&group_max=");
             sb.Append("&group_count=" + tradeConfig.mods.Count);
+            return sb.ToString();
+        }
 
+        public static List<decimal> GetPoeLowest5Prices(POETradeConfig tradeConfig)
+        {
+            string sb = GetUrlFromWatchedItem(tradeConfig);
+            HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
+            request23.Method = "POST";
+            request23.KeepAlive = true;
+            request23.ContentType = "application/x-www-form-urlencoded";
+            StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
             int count = 0;
             List<decimal> Top5Prices = new List<decimal>();
             postwriter.Write(sb.ToString());
@@ -855,7 +891,7 @@ namespace ItemWatcher2
                     last = Top5Prices[i];
                 }
             }
-            return Top5Prices.ConvertAll(p => Convert.ToInt32(p)).ToList();
+            return Top5Prices;
         }
 
         public static List<string> FindPoETradeExplicits()

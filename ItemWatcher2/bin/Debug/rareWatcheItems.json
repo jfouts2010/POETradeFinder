@@ -28,7 +28,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 10000
+    "estimated_value": 10000.0
   },
   {
     "league": "Legacy",
@@ -58,7 +58,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 43
+    "estimated_value": 89.4
   },
   {
     "league": "Legacy",
@@ -89,7 +89,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 105
+    "estimated_value": 147.0
   },
   {
     "league": "Legacy",
@@ -120,7 +120,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 10000
+    "estimated_value": 10000.0
   },
   {
     "league": "Legacy",
@@ -151,6 +151,37 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 480
+    "estimated_value": 60.9375
+  },
+  {
+    "league": "Legacy",
+    "name": "",
+    "type": 31,
+    "baseType": "",
+    "damage": "",
+    "aps": "",
+    "crit_chance": "",
+    "dps": "",
+    "edps": "",
+    "pdps": "",
+    "armour": "",
+    "evasion": "",
+    "shield": "",
+    "sockets": "",
+    "links": "",
+    "mods": {
+      "(pseudo) (total) +# to maximum Life": "70",
+      "(pseudo) (total) +# to Intelligence": "34",
+      "(pseudo) (total) +# to Strength": "43"
+    },
+    "quality": "",
+    "level": "",
+    "ilvl": "",
+    "rarity": 0,
+    "corrupted": null,
+    "normalize_q": null,
+    "crafted": null,
+    "enchanted": null,
+    "estimated_value": 1.2
   }
 ]

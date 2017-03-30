@@ -33,9 +33,13 @@ namespace ItemWatcher2
         public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
+            System.ComponentModel.ComponentResourceManager resources =
+            new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("ExaltIcon2.ico")));
+
             LoadBasicInfo();
             TestPoeTradeConfig();
-            //GenerateAllBaseWepsFromString();
+            GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
             bgw = new BackgroundWorker();
@@ -97,7 +101,7 @@ namespace ItemWatcher2
         {
             foreach (POETradeConfig rare in watchedRares)
             {
-                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
+                List<decimal> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
                 if (prices.Count > 0)
                     rare.estimated_value = prices.Sum(p => p) / prices.Count;
                 else
@@ -161,7 +165,10 @@ namespace ItemWatcher2
             {
                 try
                 {
-                    if (DateTime.Now.Subtract(lastClearedSeen).TotalSeconds > 3600)
+                    double msUniquing = 0;
+                    double msRaring = 0;
+                    double msBreaching = 0;
+                    if (DateTime.Now.Subtract(lastClearedSeen).TotalSeconds > 10800)
                     {
                         seenItems.Clear();
                         lastClearedSeen = DateTime.Now;
@@ -245,6 +252,7 @@ namespace ItemWatcher2
                                         itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                         if (config.do_all_uniques)
                                         {
+                                            DateTime now = DateTime.Now;
                                             if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                                             {
                                                 NinjaItem NinjaItem = new NinjaItem(); ;
@@ -276,9 +284,11 @@ namespace ItemWatcher2
                                                     SetSlots(Slots);
                                                 }
                                             }
+                                            msUniquing += DateTime.Now.Subtract(now).TotalMilliseconds;
                                         }
                                         if (config.do_watch_list)
                                         {
+                                            DateTime now = DateTime.Now;
                                             if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
                                             {
                                                 NinjaItem localitem = watched_items.Where(p => itemProp.
@@ -297,15 +307,16 @@ namespace ItemWatcher2
                                             }
                                             if (watchedRares.Count > 0)//is rare
                                             {
+                                                now = DateTime.Now;
                                                 foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
                                                 {
-                                                    if (POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types) && rare.estimated_value * config.profit_percent > itemValue)
+                                                    if (rare.estimated_value * config.profit_percent > itemValue && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
                                                     {
 
                                                         Slot s = new Slot();
-                                                        NinjaItem fakeNinja = new NinjaItem();
-                                                        fakeNinja.name = "Rare:" + rare.type.ToString();
-                                                        fakeNinja.chaos_value = rare.estimated_value;
+                                                        NinjaItem fakeNinja = rare.CreateNinja();
+                                                        fakeNinja.name = itemProp.name + " " + itemProp.typeLine;
+                                                        
                                                         foreach (KeyValuePair<string, string> kvp in rare.mods)
                                                             fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
                                                         s.BaseItem = fakeNinja;
@@ -322,18 +333,19 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                             }
+                                            msRaring += DateTime.Now.Subtract(now).TotalMilliseconds;
                                         }
                                         if (config.do_breachstones)
                                         {
-
+                                            DateTime now = DateTime.Now;
                                             //old
                                             if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && (itemProp.typeLine.Contains("Breach Leaguestone") || itemProp.typeLine.Contains("Talisman Leaguestone")))
                                             {
                                                 string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
-                                                if (what == "5" && !itemProp.typeLine.Contains("Unburdened"))
+                                                if (what == "5" && !itemProp.typeLine.Contains("Unburdened") && Convert.ToInt32(itemProp.ilvl) >= 68)
                                                 {
                                                     /*
-                                                    if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Legacy" )
                                                     {
 
                                                         if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
@@ -343,7 +355,7 @@ namespace ItemWatcher2
 
                                                         }
                                                     }
-                                                    else if (itemProp.typeLine.Contains("Talisman Leaguestone of Fear") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    else if (itemProp.typeLine.Contains("Talisman Leaguestone of Fear") && itemProp.league == "Legacy" )
                                                     {
 
                                                         if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 7)
@@ -354,17 +366,17 @@ namespace ItemWatcher2
                                                     }
                                                     */
                                                     //2.1 per breach * 5 * 3 = 31c
-                                                    if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Legacy")
                                                     {
 
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
+                                                        if (itemProp.note != null && itemValue < 20)
                                                         {
                                                             SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 31c");
 
                                                         }
                                                     }
                                                     //2.1 per breach * 5 * 2 = 21c
-                                                    else if (itemProp.typeLine.Contains("Ample Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    else if (itemProp.typeLine.Contains("Ample Breach Leaguestone of Splinters") && itemProp.league == "Legacy")
                                                     {
                                                         if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                         {
@@ -373,25 +385,25 @@ namespace ItemWatcher2
                                                         }
                                                     }
                                                     //1.26 per breach * 5 * 3 = 19c
-                                                    else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Legacy")
                                                     {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
+                                                        if (itemProp.note != null && itemValue < 6)
                                                         {
                                                             SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 19c");
 
                                                         }
                                                     }
                                                     //2.1 per breach * 5 = 10c
-                                                    else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Legacy")
                                                     {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 8)
+                                                        if (itemProp.note != null && itemValue < 8)
                                                         {
                                                             SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 10c");
 
                                                         }
                                                     }
                                                     //1.26 per breach * 5 * 2 = 12c
-                                                    /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Legacy" )
                                                     {
                                                         if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                         {
@@ -400,18 +412,18 @@ namespace ItemWatcher2
                                                         }
                                                     }*/
                                                     //1c per splinter * 10 * 5 = 50c
-                                                    if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Legacy")
                                                     {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 35)
+                                                        if (itemProp.note != null && itemValue < 35)
                                                         {
                                                             SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 50c");
 
                                                         }
                                                     }
                                                     //1c per splinter * 6 * 5 = 30c
-                                                    else if (itemProp.typeLine.Contains("Dreaming Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                    else if (itemProp.typeLine.Contains("Dreaming Breach") && itemProp.league == "Legacy")
                                                     {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
+                                                        if (itemProp.note != null && itemValue < 20)
                                                         {
                                                             SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 30c");
 
@@ -419,6 +431,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                             }
+                                            msBreaching += DateTime.Now.Subtract(now).TotalMilliseconds;
                                         }
                                     }
                                     catch (Exception othere)
@@ -433,6 +446,7 @@ namespace ItemWatcher2
                             System.Threading.Thread.Sleep(1000);
                         }
                     }
+                    SetDebug("UN:" + msUniquing / 1000 + " R: " + msRaring / 1000 + " B: " + msBreaching/1000);
                 }
                 catch (Exception eee)
                 {
@@ -567,6 +581,16 @@ namespace ItemWatcher2
             else return Color.Red;
         }
         [STAThread]
+        public void SetDebug(string text)
+        {
+            lblDebug.Invoke((MethodInvoker)delegate
+            {
+                lblDebug.Text = text;
+            });
+        }
+
+
+        [STAThread]
         public void SetSlots(List<Slot> Slots)
         {
 
@@ -581,7 +605,7 @@ namespace ItemWatcher2
                     player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\cartoon022.wav";
                 else
                     player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                if (localslot.BaseItem.chaos_value - Convert.ToDecimal(GetPriceInChaos(localslot.SellItem.note)) > 30)
+                if (localslot.BaseItem.chaos_value * config.profit_percent - Convert.ToDecimal(GetPriceInChaos(localslot.SellItem.note)) > 30)
                 {
                     player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\mine.wav";
                 }
@@ -1280,23 +1304,7 @@ namespace ItemWatcher2
         {
             if (Slots[0].BaseItem != null)
             {
-                string rarity = "unique";
-                if (Slots[0].BaseItem.type == "9")
-                    rarity = "relic";
-                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6")
-                    rarity = "";
-                string redirectUrl = "";
-                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
-                request23.Method = "POST";
-                request23.KeepAlive = true;
-                request23.ContentType = "application/x-www-form-urlencoded";
-                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
-                postwriter.Close();
-                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
-                {
-                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
-                }
+                System.Diagnostics.Process.Start(NinjaPoETradeMethods.FindSearchUrl(Slots[0].BaseItem));
             }
         }
 
@@ -1304,66 +1312,54 @@ namespace ItemWatcher2
         {
             if (Slots[1].BaseItem != null)
             {
-                string rarity = "unique";
-                if (Slots[1].BaseItem.type == "9")
-                    rarity = "relic";
-                else if (Slots[1].BaseItem.item_class == 6 || Slots[1].BaseItem.type == "6")
-                    rarity = "";
-                string redirectUrl = "";
-                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
-                request23.Method = "POST";
-                request23.KeepAlive = true;
-                request23.ContentType = "application/x-www-form-urlencoded";
-                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
-                postwriter.Close();
-                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
-                {
-                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
-                }
+                System.Diagnostics.Process.Start(NinjaPoETradeMethods.FindSearchUrl(Slots[1].BaseItem));
             }
         }
 
         private void button24_Click(object sender, EventArgs e)
         {
             if (Slots[2].BaseItem != null)
-            {
-                string rarity = "unique";
-                if (Slots[2].BaseItem.type == "9")
-                    rarity = "relic";
-                else if (Slots[2].BaseItem.item_class == 6 || Slots[2].BaseItem.type == "6")
-                    rarity = "";
-                string redirectUrl = "";
-                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
-                request23.Method = "POST";
-                request23.KeepAlive = true;
-                request23.ContentType = "application/x-www-form-urlencoded";
-                StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
-                postwriter.Close();
-                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
-                {
-                    System.Diagnostics.Process.Start(response2.ResponseUri.OriginalString);
-                }
+            { 
+                System.Diagnostics.Process.Start(NinjaPoETradeMethods.FindSearchUrl(Slots[2].BaseItem));
             }
         }
 
         private void btnRefreshPoe1_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[0].BaseItem, true);
+            Slot localslot = Slots[0];
+            if (localslot.BaseItem.tradeConfig != null)
+            {
+                localslot.BaseItem.Top5Sells=NinjaPoETradeMethods.GetPoeLowest5Prices(localslot.BaseItem.tradeConfig);
+            }
+            else
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(localslot.BaseItem, true);
             SetSlots(Slots);
         }
 
         private void btnRefreshPoe2_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[1].BaseItem, true);
+            Slot localslot = Slots[1];
+            if (localslot.BaseItem.tradeConfig != null)
+            {
+                localslot.BaseItem.Top5Sells = NinjaPoETradeMethods.GetPoeLowest5Prices(localslot.BaseItem.tradeConfig);
+            }
+            else
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(localslot.BaseItem, true);
             SetSlots(Slots);
+            
         }
 
         private void btnRefreshPoe3_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[2].BaseItem, true);
+            Slot localslot = Slots[2];
+            if (localslot.BaseItem.tradeConfig != null)
+            {
+                localslot.BaseItem.Top5Sells = NinjaPoETradeMethods.GetPoeLowest5Prices(localslot.BaseItem.tradeConfig);
+            }
+            else
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(localslot.BaseItem, true);
             SetSlots(Slots);
+            
         }
 
         private void btnRefreshPoe_Click(object sender, EventArgs e)

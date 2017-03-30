@@ -123,6 +123,7 @@ namespace ItemWatcher2
             this.lblLinks1 = new System.Windows.Forms.Label();
             this.lblLinks2 = new System.Windows.Forms.Label();
             this.lblLinks3 = new System.Windows.Forms.Label();
+            this.lblDebug = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -987,11 +988,22 @@ namespace ItemWatcher2
             this.lblLinks3.TabIndex = 96;
             this.lblLinks3.Text = "Links";
             // 
+            // lblDebug
+            // 
+            this.lblDebug.AutoSize = true;
+            this.lblDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDebug.Location = new System.Drawing.Point(593, 65);
+            this.lblDebug.Name = "lblDebug";
+            this.lblDebug.Size = new System.Drawing.Size(76, 26);
+            this.lblDebug.TabIndex = 97;
+            this.lblDebug.Text = "Debug";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 656);
+            this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.lblLinks3);
             this.Controls.Add(this.lblLinks2);
             this.Controls.Add(this.lblLinks1);
@@ -1188,6 +1200,7 @@ namespace ItemWatcher2
         private System.Windows.Forms.Label lblLinks1;
         private System.Windows.Forms.Label lblLinks2;
         private System.Windows.Forms.Label lblLinks3;
+        private System.Windows.Forms.Label lblDebug;
     }
 }
 
