@@ -178,10 +178,16 @@ namespace ItemWatcher2
                     baseType = itemProp.properties.First()["name"].ToString();
                 string typeLine = itemProp.typeLine;
 
+                typeLine = typeLine.Replace("Superior ", "");
                 if (itemProp.frameType == 1)
                 {
+                    
                     typeLine = typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
-                    if (typeLine.Split(' ').Count() == 3)
+                    if(typeLine.Contains("Map"))
+                    {
+                        int x = 5;
+                    }
+                    if (typeLine.Split(' ').Count() >= 3)
                     {
                         typeLine = typeLine.Substring(typeLine.IndexOf(' ')).Trim();
                     }
