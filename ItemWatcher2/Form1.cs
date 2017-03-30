@@ -65,7 +65,10 @@ namespace ItemWatcher2
                         txtBoxUpdateThread.Text = "Starting Ninja Update";
                     });
                     ninjaItems = NinjaPoETradeMethods.SetNinjaValues(new List<NinjaItem>(), txtBoxUpdateThread, all_base_types, true);
-
+                    ex_ratio.Invoke((MethodInvoker)delegate
+                    {
+                        ex_ratio.Text = "Ex Ratio : " + config.exalt_ratio + "c";
+                    });
                 }
                 else
                     System.Threading.Thread.Sleep(1000);
@@ -132,7 +135,10 @@ namespace ItemWatcher2
                 */
 
             ninjaItems = config.SavedItems;
-
+            ex_ratio.Invoke((MethodInvoker)delegate
+            {
+                ex_ratio.Text = "Ex Ratio : " + config.exalt_ratio + "c";
+            });
 
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -245,10 +251,11 @@ namespace ItemWatcher2
                                         itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                                         if (config.do_all_uniques)
                                         {
-                                            if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
+                                            
+                                            if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 5 && ninjaItems.Where(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString()).Count() > 0))
                                             {
-                                                NinjaItem NinjaItem = new NinjaItem(); ;
-                                                if (itemProp.frameType != 6)
+                                                NinjaItem NinjaItem = new NinjaItem();
+                                                if (itemProp.frameType != 6 && itemProp.frameType != 5)
                                                     NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
                                                 else
                                                     NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
@@ -257,6 +264,10 @@ namespace ItemWatcher2
                                                     GetExplicitFields(NinjaItem, itemProp);
                                                 if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
                                                 {
+                                                    if(itemProp.typeLine == "Exalted Orb")
+                                                    {
+                                                        int x123 = 5;
+                                                    }
                                                     if (NinjaItem.is_weapon)
                                                         itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
 
@@ -1283,7 +1294,7 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[0].BaseItem.type == "9")
                     rarity = "relic";
-                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6")
+                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6" || Slots[0].BaseItem.item_class == 5 || Slots[0].BaseItem.type == "5")
                     rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
@@ -1307,7 +1318,7 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[1].BaseItem.type == "9")
                     rarity = "relic";
-                else if (Slots[1].BaseItem.item_class == 6 || Slots[1].BaseItem.type == "6")
+                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6" || Slots[0].BaseItem.item_class == 5 || Slots[0].BaseItem.type == "5")
                     rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
@@ -1331,7 +1342,7 @@ namespace ItemWatcher2
                 string rarity = "unique";
                 if (Slots[2].BaseItem.type == "9")
                     rarity = "relic";
-                else if (Slots[2].BaseItem.item_class == 6 || Slots[2].BaseItem.type == "6")
+                else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6" || Slots[0].BaseItem.item_class == 5 || Slots[0].BaseItem.type == "5")
                     rarity = "";
                 string redirectUrl = "";
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");

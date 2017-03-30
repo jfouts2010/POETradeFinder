@@ -28,9 +28,11 @@ namespace ItemWatcher2
             all_base_types = current_bases;
             List<JObject> Jsons = new List<JObject>();
             List<JObject> Jweps = new List<JObject>();
+            List<JObject> JCurrency = new List<JObject>();
             List<JObject> JJewlerys = new List<JObject>();
             List<JObject> JArmors = new List<JObject>();
             Dictionary<string, int> APIURLS = new Dictionary<string, int>();
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetCurrencyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 99);
             APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
             APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
             APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Legacy&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
@@ -57,6 +59,8 @@ namespace ItemWatcher2
                             Jsons.Add(JObject.Parse(reader.ReadToEnd()));
                         else if ((APIURLS[s] == 1))
                             Jweps.Add(JObject.Parse(reader.ReadToEnd()));
+                        else if ((APIURLS[s] == 99))
+                            JCurrency.Add(JObject.Parse(reader.ReadToEnd()));
                         else if ((APIURLS[s] == 2))
                             JArmors.Add(JObject.Parse(reader.ReadToEnd()));
                         else
@@ -64,6 +68,14 @@ namespace ItemWatcher2
                     }
                 }
             }
+            foreach (JObject jo in JCurrency)
+                NinjaItems.AddRange(DoNinjaParsing(jo));
+            config.exalt_ratio = Convert.ToInt32(NinjaItems.First(p => p.name == "Exalted Orb").chaos_value);
+            config.alch_ratio = NinjaItems.First(p => p.name == "Orb of Alchemy").chaos_value;
+            config.fusing_ratio = NinjaItems.First(p => p.name == "Orb of Fusing").chaos_value;
+            config.esh_value = NinjaItems.First(p => p.name == "Splinter of Esh").chaos_value;
+            config.xoph_value = NinjaItems.First(p => p.name == "Splinter of Xoph").chaos_value;
+            config.tul_value = NinjaItems.First(p => p.name == "Splinter of Tul").chaos_value;
             foreach (JObject jo in Jsons)
                 NinjaItems.AddRange(DoNinjaParsing(jo));
             foreach (JObject jo in Jweps)
@@ -154,6 +166,15 @@ namespace ItemWatcher2
             List<NinjaItem> localNinjaItems = new List<NinjaItem>();
             foreach (JObject jo2 in jo.First.First.Children().ToList())
             {
+                if(jo2.Children().ToList().First().Path.EndsWith(".currencyTypeName"))
+                {
+                    NinjaItem newCurrencyItem = new NinjaItem();
+                    newCurrencyItem.name = jo2.Children().ToList().First().First.ToString();
+                    newCurrencyItem.type = "5";
+                    newCurrencyItem.chaos_value = Convert.ToDecimal(jo2.Children().First(p=>p.Path.EndsWith(".chaosEquivalent")).First.ToString());
+                    localNinjaItems.Add(newCurrencyItem);
+                    continue;
+                }
                 NinjaItem newNinjaItem = new NinjaItem();
                 newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
                 newNinjaItem.is_weapon = (type == 1);
@@ -504,7 +525,7 @@ namespace ItemWatcher2
             }
             else
             {
-                if (nj.type == "6" && nj.base_type.Contains("Map"))
+                if ((nj.type == "6" && nj.base_type.Contains("Map")) || nj.type == "5")
                 {
                     MinSearch(nj, "", new List<ExplicitField>());
                 }
@@ -516,7 +537,7 @@ namespace ItemWatcher2
             string rarity = "unique";
             if (nj.type == "9")
                 rarity = "relic";
-            else if (nj.item_class == 6 || nj.type == "6")
+            else if (nj.item_class == 6 || nj.type == "6" || nj.type == "5")
                 rarity = "";
             //min search
             decimal MinSell = 0;
