@@ -446,7 +446,7 @@ namespace ItemWatcher2
                             System.Threading.Thread.Sleep(1000);
                         }
                     }
-                    SetDebug("UN:" + msUniquing / 1000 + " R: " + msRaring / 1000 + " B: " + msBreaching/1000);
+                    SetDebug("UN:" + string.Format("{0:0.00}", msUniquing / 1000) + " R: " + string.Format("{0:0.00}", msRaring / 1000) + " B: " + string.Format("{0:0.00}", msBreaching /1000));
                 }
                 catch (Exception eee)
                 {
