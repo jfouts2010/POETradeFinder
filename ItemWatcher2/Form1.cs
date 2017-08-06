@@ -213,7 +213,7 @@ namespace ItemWatcher2
                                         int x = 5;
                                     }
 
-                                    if (itemProp.league != "Legacy")
+                                    if (itemProp.league != "Harbinger")
                                         continue;
                                     if (string.IsNullOrEmpty(itemProp.note))
                                         continue;
@@ -270,7 +270,7 @@ namespace ItemWatcher2
                                                 s.name = name;
                                                 int x = findWhoGets(itemProp.id, config.number_of_people);
                                                 s.is_mine = x == config.my_number;
-                                                s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+                                                s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
                                                 if (Slots.Count == 3)
                                                     Slots.RemoveAt(2);
@@ -290,7 +290,9 @@ namespace ItemWatcher2
                                                 Slot s = new Slot();
 
                                                 s.BaseItem = localitem;
+                                                s.account_name = accName;
                                                 s.SellItem = itemProp;
+                                                s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
                                                 if (Slots.Count == 3)
                                                     Slots.RemoveAt(2);
                                                 Slots.Insert(0, s);
@@ -309,7 +311,7 @@ namespace ItemWatcher2
                                                     fakeNinja.chaos_value = rare.estimated_value;
                                                     fakeNinja.Explicits = rare.mods.Values.ToList();
                                                     s.BaseItem = fakeNinja;
-                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
                                                     s.is_mine = true;
                                                     s.SellItem = itemProp;
@@ -333,7 +335,7 @@ namespace ItemWatcher2
                                             if (what == "5" && !itemProp.typeLine.Contains("Unburdened"))
                                             {
                                                 /*
-                                                if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
 
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
@@ -343,7 +345,7 @@ namespace ItemWatcher2
 
                                                     }
                                                 }
-                                                else if (itemProp.typeLine.Contains("Talisman Leaguestone of Fear") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                else if (itemProp.typeLine.Contains("Talisman Leaguestone of Fear") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
 
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 7)
@@ -354,7 +356,7 @@ namespace ItemWatcher2
                                                 }
                                                 */
                                                 //2.1 per breach * 5 * 3 = 31c
-                                                if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
 
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
@@ -364,7 +366,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                                 //2.1 per breach * 5 * 2 = 21c
-                                                else if (itemProp.typeLine.Contains("Ample Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                else if (itemProp.typeLine.Contains("Ample Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
                                                     {
@@ -373,7 +375,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 3 = 19c
-                                                else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
@@ -382,7 +384,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                                 //2.1 per breach * 5 = 10c
-                                                else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 8)
                                                     {
@@ -391,7 +393,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                                 //1.26 per breach * 5 * 2 = 12c
-                                                /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
                                                     {
@@ -400,7 +402,7 @@ namespace ItemWatcher2
                                                     }
                                                 }*/
                                                 //1c per splinter * 10 * 5 = 50c
-                                                if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 35)
                                                     {
@@ -409,7 +411,7 @@ namespace ItemWatcher2
                                                     }
                                                 }
                                                 //1c per splinter * 6 * 5 = 30c
-                                                else if (itemProp.typeLine.Contains("Dreaming Breach") && itemProp.league == "Legacy" && Convert.ToInt32(itemProp.ilvl) > 65)
+                                                else if (itemProp.typeLine.Contains("Dreaming Breach") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
                                                 {
                                                     if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
                                                     {
@@ -462,7 +464,7 @@ namespace ItemWatcher2
             s.name = name;
             s.worth = value;
 
-            s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Legacy (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+            s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
             SoundPlayer player = new SoundPlayer();
             player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
@@ -1229,7 +1231,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
@@ -1253,7 +1255,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
@@ -1277,7 +1279,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Legacy&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
