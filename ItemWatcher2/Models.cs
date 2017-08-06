@@ -23,7 +23,7 @@ namespace ItemWatcher2
     {
         public POETradeConfig()
         {
-            league = "Legacy";
+            league = "Harbinger";
             normalize_q = true;
             mods = new Dictionary<string, string>();
         }
