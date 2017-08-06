@@ -117,9 +117,14 @@ namespace ItemWatcher2
             this.btnBlock1 = new System.Windows.Forms.Button();
             this.btnBlock2 = new System.Windows.Forms.Button();
             this.btnBlock3 = new System.Windows.Forms.Button();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted3 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted2 = new System.Windows.Forms.CheckBox();
+            this.chkEnchanted1 = new System.Windows.Forms.CheckBox();
+            this.lblLinks1 = new System.Windows.Forms.Label();
+            this.lblLinks2 = new System.Windows.Forms.Label();
+            this.lblLinks3 = new System.Windows.Forms.Label();
+ this.ex_ratio = new System.Windows.Forms.Label();
+            this.lblDebug = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -159,9 +164,9 @@ namespace ItemWatcher2
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(233, 107);
+            this.button4.Location = new System.Drawing.Point(227, 107);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(87, 23);
+            this.button4.Size = new System.Drawing.Size(93, 23);
             this.button4.TabIndex = 4;
             this.button4.Text = "Sell / Actual Value";
             this.button4.UseVisualStyleBackColor = true;
@@ -196,10 +201,10 @@ namespace ItemWatcher2
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(233, 136);
+            this.textBox3.Location = new System.Drawing.Point(227, 136);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(107, 20);
+            this.textBox3.Size = new System.Drawing.Size(113, 20);
             this.textBox3.TabIndex = 9;
             // 
             // richTextBox1
@@ -249,10 +254,10 @@ namespace ItemWatcher2
             // textBox5
             // 
             this.textBox5.AcceptsReturn = true;
-            this.textBox5.Location = new System.Drawing.Point(233, 270);
+            this.textBox5.Location = new System.Drawing.Point(227, 270);
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(107, 20);
+            this.textBox5.Size = new System.Drawing.Size(113, 20);
             this.textBox5.TabIndex = 19;
             // 
             // button8
@@ -285,9 +290,9 @@ namespace ItemWatcher2
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(233, 241);
+            this.button11.Location = new System.Drawing.Point(227, 241);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(87, 23);
+            this.button11.Size = new System.Drawing.Size(93, 23);
             this.button11.TabIndex = 15;
             this.button11.Text = "Sell / Actual Value";
             this.button11.UseVisualStyleBackColor = true;
@@ -329,10 +334,10 @@ namespace ItemWatcher2
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(233, 406);
+            this.textBox7.Location = new System.Drawing.Point(227, 406);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(107, 20);
+            this.textBox7.Size = new System.Drawing.Size(113, 20);
             this.textBox7.TabIndex = 28;
             // 
             // button13
@@ -365,9 +370,9 @@ namespace ItemWatcher2
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(233, 377);
+            this.button16.Location = new System.Drawing.Point(227, 377);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(87, 23);
+            this.button16.Size = new System.Drawing.Size(93, 23);
             this.button16.TabIndex = 24;
             this.button16.Text = "Sell / Actual Value";
             this.button16.UseVisualStyleBackColor = true;
@@ -630,34 +635,34 @@ namespace ItemWatcher2
             // 
             // slot0minandavrg
             // 
-            this.slot0minandavrg.Location = new System.Drawing.Point(233, 162);
+            this.slot0minandavrg.Location = new System.Drawing.Point(224, 162);
             this.slot0minandavrg.Name = "slot0minandavrg";
-            this.slot0minandavrg.Size = new System.Drawing.Size(42, 71);
+            this.slot0minandavrg.Size = new System.Drawing.Size(54, 71);
             this.slot0minandavrg.TabIndex = 57;
             this.slot0minandavrg.Text = "";
             // 
             // slot1minandavrg
             // 
-            this.slot1minandavrg.Location = new System.Drawing.Point(233, 296);
+            this.slot1minandavrg.Location = new System.Drawing.Point(227, 296);
             this.slot1minandavrg.Name = "slot1minandavrg";
-            this.slot1minandavrg.Size = new System.Drawing.Size(42, 71);
+            this.slot1minandavrg.Size = new System.Drawing.Size(51, 71);
             this.slot1minandavrg.TabIndex = 58;
             this.slot1minandavrg.Text = "";
             // 
             // slot2minandavrg
             // 
-            this.slot2minandavrg.Location = new System.Drawing.Point(233, 433);
+            this.slot2minandavrg.Location = new System.Drawing.Point(227, 433);
             this.slot2minandavrg.Name = "slot2minandavrg";
-            this.slot2minandavrg.Size = new System.Drawing.Size(42, 71);
+            this.slot2minandavrg.Size = new System.Drawing.Size(51, 71);
             this.slot2minandavrg.TabIndex = 59;
             this.slot2minandavrg.Text = "";
             // 
             // txtBoxUpdateThread
             // 
-            this.txtBoxUpdateThread.Location = new System.Drawing.Point(223, 33);
+            this.txtBoxUpdateThread.Location = new System.Drawing.Point(227, 33);
             this.txtBoxUpdateThread.Name = "txtBoxUpdateThread";
             this.txtBoxUpdateThread.ReadOnly = true;
-            this.txtBoxUpdateThread.Size = new System.Drawing.Size(190, 20);
+            this.txtBoxUpdateThread.Size = new System.Drawing.Size(186, 20);
             this.txtBoxUpdateThread.TabIndex = 60;
             // 
             // label1
@@ -672,7 +677,7 @@ namespace ItemWatcher2
             // lblUpdatedTime1
             // 
             this.lblUpdatedTime1.AutoSize = true;
-            this.lblUpdatedTime1.Location = new System.Drawing.Point(281, 162);
+            this.lblUpdatedTime1.Location = new System.Drawing.Point(290, 162);
             this.lblUpdatedTime1.Name = "lblUpdatedTime1";
             this.lblUpdatedTime1.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime1.TabIndex = 62;
@@ -681,7 +686,7 @@ namespace ItemWatcher2
             // lblUpdatedTime2
             // 
             this.lblUpdatedTime2.AutoSize = true;
-            this.lblUpdatedTime2.Location = new System.Drawing.Point(281, 297);
+            this.lblUpdatedTime2.Location = new System.Drawing.Point(290, 297);
             this.lblUpdatedTime2.Name = "lblUpdatedTime2";
             this.lblUpdatedTime2.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime2.TabIndex = 63;
@@ -690,7 +695,7 @@ namespace ItemWatcher2
             // lblUpdatedTime3
             // 
             this.lblUpdatedTime3.AutoSize = true;
-            this.lblUpdatedTime3.Location = new System.Drawing.Point(281, 433);
+            this.lblUpdatedTime3.Location = new System.Drawing.Point(290, 434);
             this.lblUpdatedTime3.Name = "lblUpdatedTime3";
             this.lblUpdatedTime3.Size = new System.Drawing.Size(46, 13);
             this.lblUpdatedTime3.TabIndex = 64;
@@ -698,7 +703,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe1
             // 
-            this.btnRefreshPoe1.Location = new System.Drawing.Point(278, 183);
+            this.btnRefreshPoe1.Location = new System.Drawing.Point(284, 181);
             this.btnRefreshPoe1.Name = "btnRefreshPoe1";
             this.btnRefreshPoe1.Size = new System.Drawing.Size(62, 23);
             this.btnRefreshPoe1.TabIndex = 65;
@@ -708,7 +713,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe2
             // 
-            this.btnRefreshPoe2.Location = new System.Drawing.Point(276, 317);
+            this.btnRefreshPoe2.Location = new System.Drawing.Point(282, 317);
             this.btnRefreshPoe2.Name = "btnRefreshPoe2";
             this.btnRefreshPoe2.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe2.TabIndex = 66;
@@ -718,7 +723,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe3
             // 
-            this.btnRefreshPoe3.Location = new System.Drawing.Point(276, 449);
+            this.btnRefreshPoe3.Location = new System.Drawing.Point(282, 450);
             this.btnRefreshPoe3.Name = "btnRefreshPoe3";
             this.btnRefreshPoe3.Size = new System.Drawing.Size(64, 23);
             this.btnRefreshPoe3.TabIndex = 67;
@@ -738,7 +743,7 @@ namespace ItemWatcher2
             // 
             // btnOverride1
             // 
-            this.btnOverride1.Location = new System.Drawing.Point(278, 208);
+            this.btnOverride1.Location = new System.Drawing.Point(284, 208);
             this.btnOverride1.Name = "btnOverride1";
             this.btnOverride1.Size = new System.Drawing.Size(62, 23);
             this.btnOverride1.TabIndex = 69;
@@ -748,7 +753,7 @@ namespace ItemWatcher2
             // 
             // btnOverride2
             // 
-            this.btnOverride2.Location = new System.Drawing.Point(276, 346);
+            this.btnOverride2.Location = new System.Drawing.Point(282, 346);
             this.btnOverride2.Name = "btnOverride2";
             this.btnOverride2.Size = new System.Drawing.Size(64, 23);
             this.btnOverride2.TabIndex = 70;
@@ -758,7 +763,7 @@ namespace ItemWatcher2
             // 
             // btnOverride3
             // 
-            this.btnOverride3.Location = new System.Drawing.Point(276, 478);
+            this.btnOverride3.Location = new System.Drawing.Point(282, 479);
             this.btnOverride3.Name = "btnOverride3";
             this.btnOverride3.Size = new System.Drawing.Size(64, 23);
             this.btnOverride3.TabIndex = 71;
@@ -897,7 +902,7 @@ namespace ItemWatcher2
             // btnBlock1
             // 
             this.btnBlock1.Location = new System.Drawing.Point(9, 183);
-            this.btnBlock1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBlock1.Margin = new System.Windows.Forms.Padding(2);
             this.btnBlock1.Name = "btnBlock1";
             this.btnBlock1.Size = new System.Drawing.Size(78, 19);
             this.btnBlock1.TabIndex = 88;
@@ -908,7 +913,7 @@ namespace ItemWatcher2
             // btnBlock2
             // 
             this.btnBlock2.Location = new System.Drawing.Point(9, 317);
-            this.btnBlock2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBlock2.Margin = new System.Windows.Forms.Padding(2);
             this.btnBlock2.Name = "btnBlock2";
             this.btnBlock2.Size = new System.Drawing.Size(78, 19);
             this.btnBlock2.TabIndex = 89;
@@ -919,7 +924,7 @@ namespace ItemWatcher2
             // btnBlock3
             // 
             this.btnBlock3.Location = new System.Drawing.Point(9, 452);
-            this.btnBlock3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBlock3.Margin = new System.Windows.Forms.Padding(2);
             this.btnBlock3.Name = "btnBlock3";
             this.btnBlock3.Size = new System.Drawing.Size(78, 19);
             this.btnBlock3.TabIndex = 90;
@@ -927,44 +932,89 @@ namespace ItemWatcher2
             this.btnBlock3.UseVisualStyleBackColor = true;
             this.btnBlock3.Click += new System.EventHandler(this.btnBlock3_Click);
             // 
-            // checkBox7
+            // chkEnchanted3
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(146, 486);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(78, 17);
-            this.checkBox7.TabIndex = 91;
-            this.checkBox7.Text = "Enchanted";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.chkEnchanted3.AutoSize = true;
+            this.chkEnchanted3.Location = new System.Drawing.Point(146, 486);
+            this.chkEnchanted3.Name = "chkEnchanted3";
+            this.chkEnchanted3.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted3.TabIndex = 91;
+            this.chkEnchanted3.Text = "Enchanted";
+            this.chkEnchanted3.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // chkEnchanted2
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(146, 350);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(78, 17);
-            this.checkBox8.TabIndex = 92;
-            this.checkBox8.Text = "Enchanted";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.chkEnchanted2.AutoSize = true;
+            this.chkEnchanted2.Location = new System.Drawing.Point(146, 350);
+            this.chkEnchanted2.Name = "chkEnchanted2";
+            this.chkEnchanted2.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted2.TabIndex = 92;
+            this.chkEnchanted2.Text = "Enchanted";
+            this.chkEnchanted2.UseVisualStyleBackColor = true;
             // 
-            // checkBox9
+            // chkEnchanted1
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(146, 212);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(78, 17);
-            this.checkBox9.TabIndex = 93;
-            this.checkBox9.Text = "Enchanted";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.chkEnchanted1.AutoSize = true;
+            this.chkEnchanted1.Location = new System.Drawing.Point(146, 212);
+            this.chkEnchanted1.Name = "chkEnchanted1";
+            this.chkEnchanted1.Size = new System.Drawing.Size(78, 17);
+            this.chkEnchanted1.TabIndex = 93;
+            this.chkEnchanted1.Text = "Enchanted";
+            this.chkEnchanted1.UseVisualStyleBackColor = true;
+            // 
+            // lblLinks1
+            // 
+            this.lblLinks1.AutoSize = true;
+            this.lblLinks1.Location = new System.Drawing.Point(92, 186);
+            this.lblLinks1.Name = "lblLinks1";
+            this.lblLinks1.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks1.TabIndex = 94;
+            this.lblLinks1.Text = "Links";
+            // 
+            // lblLinks2
+            // 
+            this.lblLinks2.AutoSize = true;
+            this.lblLinks2.Location = new System.Drawing.Point(92, 320);
+            this.lblLinks2.Name = "lblLinks2";
+            this.lblLinks2.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks2.TabIndex = 95;
+            this.lblLinks2.Text = "Links";
+            // 
+            // lblLinks3
+            // 
+            this.lblLinks3.AutoSize = true;
+            this.lblLinks3.Location = new System.Drawing.Point(92, 455);
+            this.lblLinks3.Name = "lblLinks3";
+            this.lblLinks3.Size = new System.Drawing.Size(32, 13);
+            this.lblLinks3.TabIndex = 96;
+            this.lblLinks3.Text = "Links";
+            // 
+  // ex_ratio
+            // 
+            this.ex_ratio.AutoSize = true;
+            // lblDebug
+            // 
+            this.lblDebug.AutoSize = true;
+            this.lblDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDebug.Location = new System.Drawing.Point(593, 65);
+            this.lblDebug.Name = "lblDebug";
+            this.lblDebug.Size = new System.Drawing.Size(76, 26);
+            this.lblDebug.TabIndex = 97;
+            this.lblDebug.Text = "Debug";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 656);
-            this.Controls.Add(this.checkBox9);
-            this.Controls.Add(this.checkBox8);
-            this.Controls.Add(this.checkBox7);
+            this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.lblDebug);
+            this.Controls.Add(this.ex_ratio);
+            this.Controls.Add(this.lblLinks3);
+            this.Controls.Add(this.lblLinks2);
+            this.Controls.Add(this.lblLinks1);
+            this.Controls.Add(this.chkEnchanted1);
+            this.Controls.Add(this.chkEnchanted2);
+            this.Controls.Add(this.chkEnchanted3);
             this.Controls.Add(this.btnBlock3);
             this.Controls.Add(this.btnBlock2);
             this.Controls.Add(this.btnBlock1);
@@ -1149,9 +1199,14 @@ namespace ItemWatcher2
         private System.Windows.Forms.Button btnBlock1;
         private System.Windows.Forms.Button btnBlock2;
         private System.Windows.Forms.Button btnBlock3;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox chkEnchanted3;
+        private System.Windows.Forms.CheckBox chkEnchanted2;
+        private System.Windows.Forms.CheckBox chkEnchanted1;
+        private System.Windows.Forms.Label lblLinks1;
+        private System.Windows.Forms.Label lblLinks2;
+        private System.Windows.Forms.Label lblLinks3;
+private System.Windows.Forms.Label ex_ratio;
+        private System.Windows.Forms.Label lblDebug;
     }
 }
 

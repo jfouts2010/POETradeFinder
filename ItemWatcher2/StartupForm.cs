@@ -62,7 +62,7 @@ namespace ItemWatcher2
 
                 
             config.alch_ratio = Convert.ToDecimal(this.txtAlch.Text);
-            config.exalt_ratio = Convert.ToInt32(this.txtExalt.Text);
+            config.exalt_ratio = Convert.ToDecimal(this.txtExalt.Text);
             config.fusing_ratio = Convert.ToDecimal(this.txtFuse.Text);
 
             config.profit_percent = Convert.ToDecimal(this.txtProfitPercent.Text);

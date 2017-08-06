@@ -13,7 +13,7 @@ namespace ItemWatcher2
         public static string rareFileName = "rareWatcheItems.json";
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
-        public static string baseTimesStringFilename = "AllBaseTypesStrings.json";
+        public static string baseTypesStringFilename = "AllBaseTypesStrings.json";
         public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
     }
@@ -34,8 +34,21 @@ namespace ItemWatcher2
                 name += " " + uniqueItem.base_type;
             else
                 name = uniqueItem.name;
-
         }
+        public NinjaItem CreateNinja()
+        {
+            NinjaItem nj = new NinjaItem()
+            {
+                base_type = type.ToString(),
+                chaos_value = estimated_value,
+                Explicits = mods.Keys.ToList(),
+                name = "",
+                tradeConfig = this
+
+            };
+            return nj;
+        }
+
         public string league { get; set; }
         public string name { get; set; }
         public BaseType type { get; set; }
@@ -61,7 +74,7 @@ namespace ItemWatcher2
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
 
-        public int estimated_value { get; set; }
+        public decimal estimated_value { get; set; }
 
         public override string ToString()
         {
@@ -156,20 +169,41 @@ namespace ItemWatcher2
         {
             try
             {
+                if (itemProp.frameType >= 4 && itemProp.frameType != 9)
+                    return false;
+                if (conf.rarity != POETradeConfig.Rarity.none && (int)conf.rarity != itemProp.frameType)
+                    return false;
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
                     baseType = itemProp.properties.First()["name"].ToString();
+                string typeLine = itemProp.typeLine;
 
-                if (!baseStrings.ContainsKey(itemProp.typeLine))
+                typeLine = typeLine.Replace("Superior ", "");
+                if (itemProp.frameType == 1)
+                {
+                    
+                    typeLine = typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
+                    if(typeLine.Contains("Map"))
+                    {
+                        int x = 5;
+                    }
+                    if (typeLine.Split(' ').Count() >= 3)
+                    {
+                        typeLine = typeLine.Substring(typeLine.IndexOf(' ')).Trim();
+                    }
+                }
+                if (!baseStrings.ContainsKey(typeLine) || baseStrings.Where(p => typeLine.Contains(typeLine)).Count() == 0)
                 {
                     if (!string.IsNullOrEmpty(baseType))
                     {
-                        baseStrings.Add(itemProp.typeLine, "Weapon");
+                        if (typeLine.ToLower().Contains("leaguestone"))
+                            return false;
+                        baseStrings.Add(typeLine, "Weapon");
                         NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                     }
                     else
                     {
-                        string[] halves = itemProp.typeLine.Split(' ');
+                        string[] halves = typeLine.Split(' ');
                         if (halves.Count() > 1)
                         {
                             List<string> allKeys = baseStrings.Keys.ToList();
@@ -178,7 +212,9 @@ namespace ItemWatcher2
                             {
                                 if (halves.Last() == key.Split(' ').Last())
                                 {
-                                    baseStrings.Add(itemProp.typeLine, baseStrings[key]);
+                                    string value = baseStrings[key];
+
+                                    baseStrings.Add(typeLine, value);
                                     NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                     found = true;
                                     break;
@@ -186,12 +222,16 @@ namespace ItemWatcher2
                             }
                             if (!found)
                             {
-                                string last_try = NinjaPoETradeMethods.FindBaseType(itemProp.typeLine);
+                                string last_try = NinjaPoETradeMethods.FindBaseType(typeLine);
                                 if (last_try == "idk")
+                                {
+                                    baseStrings.Add(typeLine, "IDK");
+                                    NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                     return false;
+                                }
                                 else
                                 {
-                                    baseStrings.Add(itemProp.typeLine, last_try);
+                                    baseStrings.Add(typeLine, last_try);
                                     NinjaPoETradeMethods.SaveBaseStrings(baseStrings);
                                 }
                             }
@@ -200,7 +240,15 @@ namespace ItemWatcher2
                             return false;
                     }
                 }
-                string generalBase = baseStrings[itemProp.typeLine];
+                string generalBase = "";
+                try
+                {
+                    generalBase = baseStrings[typeLine];
+                }
+                catch
+                {
+                    generalBase = baseStrings.FirstOrDefault(p => typeLine.Contains(p.Key)).Value;
+                }
 
                 if (generalBase == "Weapon")
                     if (itemProp.properties.First()["type"] == null)
@@ -379,6 +427,14 @@ namespace ItemWatcher2
                                 totalRes += FinalMods[lightningres];
                             if (totalRes < Convert.ToDecimal(conf.mods[mod]))
                                 return false;
+                            else
+                            {
+                                string[] temparray = new string[itemProp.explicitMods.Count() + 1];
+                                for (int i = 0; i < itemProp.explicitMods.Count(); i++)
+                                    temparray[i] = itemProp.explicitMods[i];
+                                temparray[itemProp.explicitMods.Count()] = "(Calc) Total Ele Res: " + totalRes;
+                                itemProp.explicitMods = temparray;
+                            }
                         }
                         else
                         {
@@ -399,6 +455,7 @@ namespace ItemWatcher2
             }
             catch (Exception e)
             {
+
                 int x = 5;
                 return false;
             }
@@ -411,6 +468,8 @@ namespace ItemWatcher2
         public static decimal GetValueOrAvgValue(string input)
         {
             string value = new string(input.Where(c => char.IsDigit(c) || c == ' ' || c == '.').ToArray()).Trim();
+            if (string.IsNullOrEmpty(value))
+                return 0;
             if (value.Contains(" "))
             {
                 decimal total = 0;
@@ -454,6 +513,7 @@ namespace ItemWatcher2
         public bool is_weapon { get; set; }
         public decimal minPdps { get; set; }
         public decimal maxPdps { get; set; }
+        public POETradeConfig tradeConfig { get; set; }
 
         public override string ToString()
         {
@@ -484,7 +544,21 @@ namespace ItemWatcher2
         public string league { get; set; }
         public string id { get; set; }
         public string[] enchantMods { get; set; }
-        //public string[] sockets { get; set; }
+        public JArray sockets { get; set; }
+        public int Links
+        {
+            get
+            {
+                int count = 0;
+                foreach (JObject jo in sockets.Children())
+                {
+                    count++;
+                    if (jo["group"].ToString() != "0")
+                        return count;
+                }
+                return count;
+            }
+        }
         public string name { get; set; }
         public string typeLine { get; set; }
         public string identified { get; set; }
