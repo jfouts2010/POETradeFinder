@@ -55,11 +55,12 @@ namespace ItemWatcher2
                 config.blocked_accounts = new List<string>();
             config.autoCopy = chkAutoCopy.Checked;
             config.tul_value = Convert.ToDecimal(txtTul.Text);
-            config.do_breachstones = this.chkDoBreach.Checked;
+            config.do_watch_rares = this.chkDoWatchNames.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
             config.do_all_uniques_with_ranges = this.chkUniqueRanges.Checked;
-            config.do_watch_list = this.chkDoWatchlist.Checked;
+            config.do_watch_list = this.chkDoWatchRares.Checked;
 
+            config.account_name = this.txtAccountName.Text;
                 
             config.alch_ratio = Convert.ToDecimal(this.txtAlch.Text);
             config.exalt_ratio = Convert.ToDecimal(this.txtExalt.Text);
@@ -98,7 +99,7 @@ namespace ItemWatcher2
                 {
                     do_all_uniques = true,
                     do_all_uniques_with_ranges = false,
-                    do_breachstones = true,
+                    do_watch_rares = true,
                     do_watch_list = true,
                     esh_value = 3,
                     tul_value = 16,
@@ -117,8 +118,8 @@ namespace ItemWatcher2
             this.txtEsh.Text = config.esh_value.ToString();
             this.txtXoph.Text = config.xoph_value.ToString();
             this.txtTul.Text = config.tul_value.ToString();
-            this.chkDoBreach.Checked = config.do_breachstones;
-            this.chkDoWatchlist.Checked = config.do_watch_list;
+            this.chkDoWatchNames.Checked = config.do_watch_rares;
+            this.chkDoWatchRares.Checked = config.do_watch_list;
             this.chkDoUniques.Checked = config.do_all_uniques;
             this.chkUniqueRanges.Checked = config.do_all_uniques_with_ranges;
             this.txtExalt.Text = config.exalt_ratio.ToString();
@@ -131,6 +132,7 @@ namespace ItemWatcher2
             this.txtYourNumber.Text = config.my_number.ToString();
             this.txtRefreshHours.Text = config.refresh_minutes.ToString();
             this.chkAutoCopy.Checked = config.autoCopy;
+            this.txtAccountName.Text = config.account_name;
         }
 
         private void btnAddNewClick(object sender, EventArgs e)

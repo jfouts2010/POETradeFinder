@@ -206,6 +206,8 @@ namespace ItemWatcher2
                                 List<JToken> stash = jt.Children().ToList();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
+                                if (accName.ToLower() == config.account_name.ToLower())
+                                    PlayItsMeSound();
                                 if (config.blocked_accounts.Contains(accName))
                                     continue;
                                 List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
@@ -305,128 +307,32 @@ namespace ItemWatcher2
                                                     SetSlots(Slots);
                                                 }
                                             }
-                                            if (false && watchedRares.Count > 0)//is rare
-                                            {
-                                                foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
-                                                {
-                                                    if (POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types) && rare.estimated_value * config.profit_percent > itemValue)
-                                                    {
-
-                                                        Slot s = new Slot();
-                                                        NinjaItem fakeNinja = new NinjaItem();
-                                                        fakeNinja.name = "Rare:" + rare.type.ToString();
-                                                        fakeNinja.chaos_value = rare.estimated_value;
-                                                        foreach (KeyValuePair<string, string> kvp in rare.mods)
-                                                            fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
-                                                        s.BaseItem = fakeNinja;
-                                                        s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-
-                                                        s.is_mine = true;
-                                                        s.SellItem = itemProp;
-                                                        s.account_name = accName;
-                                                        s.name = name;
-                                                        if (Slots.Count == 3)
-                                                            Slots.RemoveAt(2);
-                                                        Slots.Insert(0, s);
-                                                        SetSlots(Slots);
-                                                    }
-                                                }
-                                            }
                                         }
-                                        if (config.do_breachstones)
+                                        if (config.do_watch_rares && watchedRares.Count > 0)//is rare
                                         {
-
-                                            //old
-                                            if (item.Where(p => p.Path.EndsWith(".properties")).Count() > 0 && (itemProp.typeLine.Contains("Breach Leaguestone") || itemProp.typeLine.Contains("Talisman Leaguestone")))
+                                            foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
                                             {
-                                                string what = item.First(p => p.Path.EndsWith(".properties")).First.First.Children().ToList()[1].First.Children().ToList()[0].First.ToString();
-                                                if (what == "5" && !itemProp.typeLine.Contains("Unburdened"))
+                                                if (rare.estimated_value * config.profit_percent > itemValue && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
                                                 {
-                                                    /*
-                                                    if (itemProp.typeLine.Contains("Talisman Leaguestone of Terror") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
 
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 60c");
+                                                    Slot s = new Slot();
+                                                    NinjaItem fakeNinja = new NinjaItem();
+                                                    fakeNinja.name = "Rare:" + rare.type.ToString();
+                                                    fakeNinja.chaos_value = rare.estimated_value;
+                                                    
+                                                    foreach (KeyValuePair<string, string> kvp in rare.mods)
+                                                        fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
+                                                    s.BaseItem = fakeNinja;
+                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
-
-                                                        }
-                                                    }
-                                                    else if (itemProp.typeLine.Contains("Talisman Leaguestone of Fear") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 7)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 7c");
-
-                                                        }
-                                                    }
-                                                    */
-                                                    //2.1 per breach * 5 * 3 = 31c
-                                                    if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 31c");
-
-                                                        }
-                                                    }
-                                                    //2.1 per breach * 5 * 2 = 21c
-                                                    else if (itemProp.typeLine.Contains("Ample Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 12)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 21c");
-
-                                                        }
-                                                    }
-                                                    //1.26 per breach * 5 * 3 = 19c
-                                                    else if (itemProp.typeLine.Contains("Plentiful Breach Leaguestone") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 19c");
-
-                                                        }
-                                                    }
-                                                    //2.1 per breach * 5 = 10c
-                                                    else if (itemProp.typeLine.Contains("Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 8)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 10c");
-
-                                                        }
-                                                    }
-                                                    //1.26 per breach * 5 * 2 = 12c
-                                                    /*else if (itemProp.typeLine.Contains("Ample Breach") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 6)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 12c");
-
-                                                        }
-                                                    }*/
-                                                    //1c per splinter * 10 * 5 = 50c
-                                                    if (itemProp.typeLine.Contains("Dreaming Breach Leaguestone of Splinters") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 35)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 50c");
-
-                                                        }
-                                                    }
-                                                    //1c per splinter * 6 * 5 = 30c
-                                                    else if (itemProp.typeLine.Contains("Dreaming Breach") && itemProp.league == "Harbinger" && Convert.ToInt32(itemProp.ilvl) > 65)
-                                                    {
-                                                        if (itemProp.note != null && itemProp.note.Contains("chaos") && itemValue < 20)
-                                                        {
-                                                            SetLeaguestoneSlots(LeaguestoneSlots, itemProp, name, " worth 30c");
-
-                                                        }
-                                                    }
+                                                    s.is_mine = true;
+                                                    s.SellItem = itemProp;
+                                                    s.account_name = accName;
+                                                    s.name = name;
+                                                    if (Slots.Count == 3)
+                                                        Slots.RemoveAt(2);
+                                                    Slots.Insert(0, s);
+                                                    SetSlots(Slots);
                                                 }
                                             }
                                         }
@@ -477,6 +383,15 @@ namespace ItemWatcher2
             }
             return Explicits;
         }
+        [STAThread]
+        private void PlayItsMeSound()
+        {
+            SoundPlayer player = new SoundPlayer();
+
+            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Mario.wav";
+            player.Play();
+        }
+
         [STAThread]
         private string SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
         {
@@ -1288,14 +1203,18 @@ namespace ItemWatcher2
 
         private void button22_Click(object sender, EventArgs e)
         {
-            if (Slots[0].BaseItem != null)
+            if (!string.IsNullOrEmpty(Slots[0].url))
+            {
+                System.Diagnostics.Process.Start(Slots[0].url);
+            }
+            else if (Slots[0].BaseItem != null)
             {
                 string rarity = "unique";
                 if (Slots[0].BaseItem.type == "9")
                     rarity = "relic";
                 else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6")
                     rarity = "";
-                string redirectUrl = "";
+                
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                 request23.Method = "POST";
                 request23.KeepAlive = true;
@@ -1312,7 +1231,11 @@ namespace ItemWatcher2
 
         private void button23_Click(object sender, EventArgs e)
         {
-            if (Slots[1].BaseItem != null)
+            if(!string.IsNullOrEmpty(Slots[1].url))
+            {
+                System.Diagnostics.Process.Start(Slots[1].url);
+            }
+            else if (Slots[1].BaseItem != null)
             {
                 string rarity = "unique";
                 if (Slots[1].BaseItem.type == "9")
@@ -1336,7 +1259,11 @@ namespace ItemWatcher2
 
         private void button24_Click(object sender, EventArgs e)
         {
-            if (Slots[2].BaseItem != null)
+            if (!string.IsNullOrEmpty(Slots[2].url))
+            {
+                System.Diagnostics.Process.Start(Slots[2].url);
+            }
+            else if (Slots[2].BaseItem != null)
             {
                 string rarity = "unique";
                 if (Slots[2].BaseItem.type == "9")

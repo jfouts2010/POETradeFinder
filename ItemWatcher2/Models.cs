@@ -74,7 +74,9 @@ namespace ItemWatcher2
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
 
+        //Calculated later
         public decimal estimated_value { get; set; }
+        public string url { get; set; }
 
         public override string ToString()
         {
@@ -344,12 +346,16 @@ namespace ItemWatcher2
                     string lightningres = "+ to lightning resistance";
                     foreach (string ex in itemProp.explicitMods)
                     {
+                        if (ex.ToLower().Contains("(calc"))
+                            continue;
                         string key = ConvertToCommonForm(ex);
                         decimal value = GetValueOrAvgValue(ex);
                         initialMods.Add(key, value);
                     }
                     foreach (string ex in itemProp.implicitMods)
                     {
+                        if (string.IsNullOrEmpty(ex))
+                            continue;
                         string key = ConvertToCommonForm(ex);
                         decimal value = GetValueOrAvgValue(ex);
 
@@ -534,6 +540,7 @@ namespace ItemWatcher2
         public string worth;
         public bool is_mine { get; set; }
         public string account_name { get; set; }
+        public string url { get; set; }
     }
     public class Item
     {
@@ -593,7 +600,7 @@ namespace ItemWatcher2
         public decimal xoph_value { get; set; }
         public decimal tul_value { get; set; }
 
-        public bool do_breachstones { get; set; }
+        public bool do_watch_rares { get; set; }
         public bool do_watch_list { get; set; }
         public bool do_all_uniques { get; set; }
         public bool do_all_uniques_with_ranges { get; set; }
@@ -607,6 +614,8 @@ namespace ItemWatcher2
         public int min_profit_range { get; set; }
         public int my_number { get; set; }
         public int number_of_people { get; set; }
+
+        public string account_name { get; set; }
 
         public List<NinjaItem> SavedItems { get; set; }
         public List<string> avaliableExplicits { get; set; }

@@ -837,6 +837,7 @@ namespace ItemWatcher2
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
                 // Get the response stream  
+                tradeConfig.url = response2.ResponseUri.ToString();
                 using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                 {
                     string s = reader.ReadToEnd();
