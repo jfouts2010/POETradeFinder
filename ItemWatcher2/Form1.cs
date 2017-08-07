@@ -208,6 +208,10 @@ namespace ItemWatcher2
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
                                 if (accName.ToLower() == config.account_name.ToLower())
                                     PlayItsMeSound();
+                                if(accName.ToLower().Contains("wyoian"))
+                                {
+                                    int x = 5;
+                                }
                                 if (config.blocked_accounts.Contains(accName))
                                     continue;
                                 List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
@@ -290,7 +294,7 @@ namespace ItemWatcher2
                                             {
                                                 NinjaItem localitem = watched_items.Where(p => itemProp.
                                                 name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
-                                                if (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue)
+                                                if (localitem.chaos_value % 1==.01m && localitem.chaos_value >= itemValue || (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue))
                                                 {
                                                     Slot s = new Slot();
                                                     s.BaseItem = localitem;
@@ -308,7 +312,7 @@ namespace ItemWatcher2
                                                 }
                                             }
                                         }
-                                        if (config.do_watch_rares && watchedRares.Count > 0)//is rare
+                                        if (false && config.do_watch_rares && watchedRares.Count > 0)//is rare
                                         {
                                             foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
                                             {
@@ -345,9 +349,9 @@ namespace ItemWatcher2
                                 }
                             }
                         }
-                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < 1)
+                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < .3)
                         {
-                            System.Threading.Thread.Sleep(1000);
+                            System.Threading.Thread.Sleep(300);
                         }
                     }
                 }
