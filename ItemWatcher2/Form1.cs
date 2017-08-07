@@ -326,6 +326,7 @@ namespace ItemWatcher2
                                                     s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
                                                     s.is_mine = true;
+                                                    s.url = rare.url;
                                                     s.SellItem = itemProp;
                                                     s.account_name = accName;
                                                     s.name = name;
