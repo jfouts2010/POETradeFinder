@@ -196,8 +196,13 @@ namespace ItemWatcher2
                             {
                                 textBox1.Text = "Parsing " + stashes.Count + " stashes";
                             });
+                            int counter = 0;
                             foreach (JToken jt in stashes)
                             {
+                                textBox1.Invoke((MethodInvoker)delegate
+                                {
+                                    textBox1.Text = "Parsing " + counter++ + " / " + stashes.Count;
+                                });
                                 List<JToken> stash = jt.Children().ToList();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
@@ -286,8 +291,13 @@ namespace ItemWatcher2
                                                 if (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue)
                                                 {
                                                     Slot s = new Slot();
-
                                                     s.BaseItem = localitem;
+                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+
+                                                    s.is_mine = true;
+                                                    s.SellItem = itemProp;
+                                                    s.account_name = accName;
+                                                    s.name = name;
                                                     s.SellItem = itemProp;
                                                     if (Slots.Count == 3)
                                                         Slots.RemoveAt(2);
@@ -295,7 +305,7 @@ namespace ItemWatcher2
                                                     SetSlots(Slots);
                                                 }
                                             }
-                                            if (watchedRares.Count > 0)//is rare
+                                            if (false && watchedRares.Count > 0)//is rare
                                             {
                                                 foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
                                                 {
@@ -1156,7 +1166,7 @@ namespace ItemWatcher2
             }
             try
             {
-                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTimesStringFilename));
+                all_base_types = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(System.IO.File.ReadAllText(FinalVariables.baseTypesStringFilename));
             }
             catch (Exception e)
             {

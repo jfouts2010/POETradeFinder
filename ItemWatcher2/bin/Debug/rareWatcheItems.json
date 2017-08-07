@@ -27,7 +27,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 114
+    "estimated_value": 86.0
   },
   {
     "league": "Harbinger",
@@ -57,7 +57,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 41
+    "estimated_value": 28.0
   },
   {
     "league": "Harbinger",
@@ -87,7 +87,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 11
+    "estimated_value": 9.0
   },
   {
     "league": "Harbinger",
@@ -117,7 +117,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 2
+    "estimated_value": 5.0
   },
   {
     "league": "Harbinger",
@@ -147,7 +147,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 1
+    "estimated_value": 3.0
   },
   {
     "league": "Harbinger",
@@ -178,7 +178,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 15
+    "estimated_value": 12.0
   },
   {
     "league": "Harbinger",
@@ -209,7 +209,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 2
+    "estimated_value": 7.0
   },
   {
     "league": "Harbinger",
@@ -240,7 +240,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 68
+    "estimated_value": 61.0
   },
   {
     "league": "Harbinger",
@@ -271,7 +271,7 @@
     "normalize_q": null,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 196
+    "estimated_value": 410.0
   },
   {
     "league": "Harbinger",
@@ -298,7 +298,7 @@
     "normalize_q": true,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 3
+    "estimated_value": 17.0
   },
   {
     "league": "Harbinger",
@@ -325,7 +325,7 @@
     "normalize_q": true,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 316
+    "estimated_value": 117.0
   },
   {
     "league": "Harbinger",
@@ -352,7 +352,7 @@
     "normalize_q": true,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 862
+    "estimated_value": 334.0
   },
   {
     "league": "Harbinger",
@@ -379,6 +379,36 @@
     "normalize_q": true,
     "crafted": null,
     "enchanted": null,
-    "estimated_value": 960
+    "estimated_value": 390.0
+  },
+  {
+    "league": "Harbinger",
+    "name": "",
+    "type": 14,
+    "baseType": "",
+    "damage": "",
+    "aps": "",
+    "crit_chance": "",
+    "dps": "",
+    "edps": "",
+    "pdps": "",
+    "armour": "",
+    "evasion": "",
+    "shield": "",
+    "sockets": "",
+    "links": "",
+    "mods": {
+      "(pseudo) +#% total Elemental Resistance": "80",
+      "(pseudo) (total) +# to maximum Life": "80"
+    },
+    "quality": "",
+    "level": "",
+    "ilvl": "",
+    "rarity": 0,
+    "corrupted": null,
+    "normalize_q": null,
+    "crafted": null,
+    "enchanted": null,
+    "estimated_value": 15.0
   }
 ]

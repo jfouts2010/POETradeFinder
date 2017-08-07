@@ -105,11 +105,22 @@ namespace ItemWatcher2
 
         public static void SaveBaseStrings(Dictionary<string, string> baseTypes)
         {
-            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(baseTypes);
-            JObject ja = JObject.Parse(serialized);
-            serialized = ja.ToString();
-            System.IO.File.Delete("AllBaseTypesStrings.json");
-            System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
+            while(true)
+            {
+                try
+                {
+                    string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(baseTypes);
+                    JObject ja = JObject.Parse(serialized);
+                    serialized = ja.ToString();
+                    System.IO.File.Delete("AllBaseTypesStrings.json");
+                    System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    System.Threading.Thread.Sleep(5000);
+                }
+            }
         }
 
         public static int GetDdpsOfLocalWeapon(Item item)//godamn "items"
