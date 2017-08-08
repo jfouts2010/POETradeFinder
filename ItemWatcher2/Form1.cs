@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +35,8 @@ namespace ItemWatcher2
         public Form1()
         {
             LoadBasicInfo();
-            TestPoeTradeConfig();
+            if (config.do_watch_rares)
+                TestPoeTradeConfig();
             //GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
@@ -152,6 +154,8 @@ namespace ItemWatcher2
                     changeID = jo.Children().ToList()[1].First.ToString();
                 }
             }
+            int lastll = int.Parse(changeID.Split('-').Last());
+            changeID = changeID.Substring(0, 36) + (lastll + 1300);
             // Create the web request  
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -176,45 +180,81 @@ namespace ItemWatcher2
                     }
                     */
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
-                    textBox1.Invoke((MethodInvoker)delegate
-                    {
-                        textBox1.Text = "Waiting for POE Change Response";
-                    });
+                    //textBox1.Invoke((MethodInvoker)delegate
+                    //{
+                    //    textBox1.Text = "Waiting for POE Change Response";
+                    //});
                     // Get response  
+                    DateTime now = DateTime.Now;
+
                     using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
                         // Get the response stream  
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        using (Stream stream = response.GetResponseStream())
                         {
-                            // Console application output  
+                            
+                            double seconds0 = (DateTime.Now - now).TotalSeconds;
+                            JEnumerable<JToken> jo;
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                // Console application output  
+
+                                double secondsToResponse = (DateTime.Now - now).TotalSeconds;
+                                char[] buffer = new char[65];
+                                reader.ReadBlock(buffer, 0, 64);
+                                string newstring = new string(buffer);
+                                string newchange = JObject.Parse(newstring+"}")["next_change_id"].ToString();
+                                if (newchange == changeID)
+                                {
+                                    int x = 5;
+                                }
+                                changeID = newchange;
+                                textBox1.Invoke((MethodInvoker)delegate
+                                {
+                                    textBox1.Text = changeID.Split('-').Last();
+                                });
+                                double secondsToChangeID = (DateTime.Now - now).TotalSeconds;
+                                string line = String.Empty;
+                                while ((line = reader.ReadLine()) != null)
+                                {
+                                    newstring += line;
+                                }
+                                double secondsToDataGrab = (DateTime.Now - now).TotalSeconds;
+                                jo = JObject.Parse(newstring).Children();
+                            }
+                            
+                            
+                            
+                           
+                            double secondsToJSonParse = (DateTime.Now - now).TotalSeconds;
 
                             lastTimeAPIcalled = DateTime.Now;
-                            List<JToken> jo = JObject.Parse(reader.ReadToEnd()).Children().ToList();
-                            changeID = jo[0].First.ToString();
-                            List<JToken> stashes = jo[1].First.Children().ToList();
-                            textBox1.Invoke((MethodInvoker)delegate
-                            {
-                                textBox1.Text = "Parsing " + stashes.Count + " stashes";
-                            });
+                            
+                            JEnumerable<JToken> stashes = jo[1].First().Children();
+                            double seconds4 = (DateTime.Now - now).TotalSeconds;
+                            //textBox1.Invoke((MethodInvoker)delegate
+                            //{
+                            //    textBox1.Text = "Parsing " + stashes.Count + " stashes";
+                            //});
                             int counter = 0;
                             foreach (JToken jt in stashes)
                             {
-                                textBox1.Invoke((MethodInvoker)delegate
-                                {
-                                    textBox1.Text = "Parsing " + counter++ + " / " + stashes.Count;
-                                });
-                                List<JToken> stash = jt.Children().ToList();
+                                //textBox1.Invoke((MethodInvoker)delegate
+                                //{
+                                //    textBox1.Text = "Parsing " + counter++ + " / " + stashes.Count;
+                                //});
+                                JEnumerable<JToken> stash = jt.Children();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
                                 if (accName.ToLower() == config.account_name.ToLower())
                                     PlayItsMeSound();
-                                if(accName.ToLower().Contains("wyoian"))
+                                if (accName.ToLower().Contains("wyoian") || name.ToLower().Contains("gotta_slay_fast"))
                                 {
                                     int x = 5;
                                 }
                                 if (config.blocked_accounts.Contains(accName))
                                     continue;
-                                List<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children().ToList();
+                                JEnumerable<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children();
                                 foreach (JToken item in items)
                                 {
                                     try
@@ -294,7 +334,7 @@ namespace ItemWatcher2
                                             {
                                                 NinjaItem localitem = watched_items.Where(p => itemProp.
                                                 name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
-                                                if (localitem.chaos_value % 1==.01m && localitem.chaos_value >= itemValue || (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue))
+                                                if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemValue || (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue))
                                                 {
                                                     Slot s = new Slot();
                                                     s.BaseItem = localitem;
@@ -323,7 +363,7 @@ namespace ItemWatcher2
                                                     NinjaItem fakeNinja = new NinjaItem();
                                                     fakeNinja.name = "Rare:" + rare.type.ToString();
                                                     fakeNinja.chaos_value = rare.estimated_value;
-                                                    
+
                                                     foreach (KeyValuePair<string, string> kvp in rare.mods)
                                                         fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
                                                     s.BaseItem = fakeNinja;
@@ -348,6 +388,7 @@ namespace ItemWatcher2
                                     }
                                 }
                             }
+
                         }
                         if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < .3)
                         {
@@ -1102,6 +1143,34 @@ namespace ItemWatcher2
             System.IO.File.WriteAllText(FinalVariables.rareFileName, serialized);
         }
 
+        public static JEnumerable<JToken> DeserializeFromStream(Stream stream)
+        {
+            var serializer = new JsonSerializer();
+
+            using (var sr = new StreamReader(stream))
+            using (var jsonTextReader = new JsonTextReader(sr))
+            {
+                JToken jo = JObject.ReadFrom(jsonTextReader);
+                return jo.Children();
+            }
+        }
+        private static MemoryStream CopyAndClose(Stream inputStream)
+        {
+            const int readSize = 256;
+            byte[] buffer = new byte[readSize];
+            MemoryStream ms = new MemoryStream();
+
+            int count = inputStream.Read(buffer, 0, readSize);
+            while (count > 0)
+            {
+                ms.Write(buffer, 0, count);
+                count = inputStream.Read(buffer, 0, readSize);
+            }
+            ms.Position = 0;
+            inputStream.Close();
+            return ms;
+        }
+
         public static bool isFileOpen(FileInfo file)
         {
             FileStream stream = null;
@@ -1219,7 +1288,7 @@ namespace ItemWatcher2
                     rarity = "relic";
                 else if (Slots[0].BaseItem.item_class == 6 || Slots[0].BaseItem.type == "6")
                     rarity = "";
-                
+
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
                 request23.Method = "POST";
                 request23.KeepAlive = true;
@@ -1236,7 +1305,7 @@ namespace ItemWatcher2
 
         private void button23_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(Slots[1].url))
+            if (!string.IsNullOrEmpty(Slots[1].url))
             {
                 System.Diagnostics.Process.Start(Slots[1].url);
             }

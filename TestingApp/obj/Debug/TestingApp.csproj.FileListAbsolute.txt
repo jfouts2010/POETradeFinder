@@ -1,0 +1,5 @@
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\bin\Debug\TestingApp.exe.config
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\bin\Debug\TestingApp.exe
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\bin\Debug\TestingApp.pdb
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\obj\Debug\TestingApp.exe
+C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\obj\Debug\TestingApp.pdb
