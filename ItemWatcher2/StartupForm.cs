@@ -54,6 +54,7 @@ namespace ItemWatcher2
             if (config.blocked_accounts == null)
                 config.blocked_accounts = new List<string>();
             config.autoCopy = chkAutoCopy.Checked;
+            config.johnsounds = JohnSounds.Checked;
             config.tul_value = Convert.ToDecimal(txtTul.Text);
             config.do_watch_rares = this.chkDoWatchNames.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
@@ -132,6 +133,7 @@ namespace ItemWatcher2
             this.txtYourNumber.Text = config.my_number.ToString();
             this.txtRefreshHours.Text = config.refresh_minutes.ToString();
             this.chkAutoCopy.Checked = config.autoCopy;
+            this.JohnSounds.Checked = config.johnsounds;
             this.txtAccountName.Text = config.account_name;
         }
 
@@ -190,6 +192,16 @@ namespace ItemWatcher2
         }
 
         private void label15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkAutoCopy_CheckedChanged(object sender, EventArgs e)
         {
 
         }

@@ -49,7 +49,7 @@ namespace ItemWatcher2
             bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
-            
+
             bgw3.RunWorkerAsync();
         }
 
@@ -81,7 +81,7 @@ namespace ItemWatcher2
         }
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
-           
+
             while (true)
             {
                 if (RealChangeId == "")
@@ -100,15 +100,15 @@ namespace ItemWatcher2
                 {
                     // Get the response stream  
                     using (Stream stream = response.GetResponseStream())
-                    {                        
+                    {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                           
+
                             char[] buffer = new char[100];
                             reader.ReadBlock(buffer, 0, 100);
                             string newstring = new string(buffer);
                             newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
-                            newstring= JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                            newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                             int newchange = int.Parse(newstring.Split('-').Last());
                             int oldchange = int.Parse(RealChangeId.Split('-').Last());
                             if (newchange - oldchange < 50)
@@ -166,7 +166,7 @@ namespace ItemWatcher2
                                 List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
                                 string x = "";
                                 foreach (int i in intsold)
-                                    x += "-" + (i-400);
+                                    x += "-" + (i - 400);
                                 tempChangeID = x.Substring(1);
                                 RealChangeId = tempChangeID;
                                 return tempChangeID;
@@ -175,11 +175,11 @@ namespace ItemWatcher2
                             {
                                 List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
                                 List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                for(int i = 0; i < ints.Count; i++)
+                                for (int i = 0; i < ints.Count; i++)
                                 {
                                     if (ints[i] > intsold[i])
                                         ints[i] += 400;
-                                    
+
                                 }
                                 string x = "";
                                 foreach (int i in ints)
@@ -273,7 +273,7 @@ namespace ItemWatcher2
                     changeID = jo.Children().ToList()[1].First.ToString();
                 }
             }*/
-            
+
             // Create the web request  
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -317,7 +317,7 @@ namespace ItemWatcher2
                         // Get the response stream  
                         using (Stream stream = response.GetResponseStream())
                         {
-                            
+
                             double seconds0 = (DateTime.Now - now).TotalSeconds;
                             List<JToken> jo;
                             using (StreamReader reader = new StreamReader(stream))
@@ -328,7 +328,7 @@ namespace ItemWatcher2
                                 char[] buffer = new char[65];
                                 reader.ReadBlock(buffer, 0, 64);
                                 string newstring = new string(buffer);
-                                string newchange = JObject.Parse(newstring+"}")["next_change_id"].ToString();
+                                string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                                 if (newchange == changeID)
                                 {
                                     int x = 5;
@@ -347,13 +347,13 @@ namespace ItemWatcher2
                                 double secondsToDataGrab = (DateTime.Now - now).TotalSeconds;
                                 jo = JObject.Parse(newstring).Children().ToList();
                             }
-                            
-                            
-                            
-                           
+
+
+
+
                             double secondsToJSonParse = (DateTime.Now - now).TotalSeconds;
 
-                            
+
 
                             List<JToken> stashes = jo[1].First().Children().ToList();
                             double seconds4 = (DateTime.Now - now).TotalSeconds;
@@ -674,12 +674,20 @@ namespace ItemWatcher2
                 Slot localslot = Slots[0];
                 SoundPlayer player = new SoundPlayer();
                 if (localslot.is_mine)
-                    player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\cartoon022.wav";
+                {
+                    if (!config.johnsounds)
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\cartoon022.wav";
+                    else
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+                }
                 else
                     player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
                 if (localslot.BaseItem.chaos_value - Convert.ToDecimal(GetPriceInChaos(localslot.SellItem.note)) > 30)
                 {
-                    player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\mine.wav";
+                    if (!config.johnsounds)
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\mine.wav";
+                    else
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
                 }
                 player.Play();
 
