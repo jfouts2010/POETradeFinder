@@ -49,6 +49,7 @@ namespace ItemWatcher2
             bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
+            
             bgw3.RunWorkerAsync();
         }
 
@@ -80,21 +81,14 @@ namespace ItemWatcher2
         }
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
-            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
-
-
-            // Get response  
-            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
-            {
-                // Get the response stream  
-                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
-                {
-                    JObject jo = JObject.Parse(reader.ReadToEnd());
-                    RealChangeId = jo.Children().ToList()[1].First.ToString();
-                }
-            }
+           
             while (true)
             {
+                if (RealChangeId == "")
+                {
+                    System.Threading.Thread.Sleep(5000);
+                    continue;
+                }
                 HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
                 //textBox1.Invoke((MethodInvoker)delegate
                 //{
@@ -110,10 +104,10 @@ namespace ItemWatcher2
                         using (StreamReader reader = new StreamReader(stream))
                         {
                            
-                            char[] buffer = new char[65];
-                            reader.ReadBlock(buffer, 0, 64);
+                            char[] buffer = new char[100];
+                            reader.ReadBlock(buffer, 0, 100);
                             string newstring = new string(buffer);
-                            
+                            newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
                             newstring= JObject.Parse(newstring + "}")["next_change_id"].ToString();
                             int newchange = int.Parse(newstring.Split('-').Last());
                             int oldchange = int.Parse(RealChangeId.Split('-').Last());
@@ -125,6 +119,75 @@ namespace ItemWatcher2
                                 txtBoxFasterSearch.Text = RealChangeId.Split('-').Last();
                             });
                             RealChangeId = newstring;
+                        }
+                    }
+                }
+            }
+        }
+        public static string FindCurrentHead()
+        {
+            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
+
+            string tempChangeID = "";
+            // Get response  
+            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    JObject jo = JObject.Parse(reader.ReadToEnd());
+                    tempChangeID = jo.Children().ToList()[1].First.ToString();
+                }
+            }
+            while (true)
+            {
+                HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + tempChangeID) as HttpWebRequest;
+                //textBox1.Invoke((MethodInvoker)delegate
+                //{
+                //    textBox1.Text = "Waiting for POE Change Response";
+                //});
+                // Get response  
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+
+                            char[] buffer = new char[65];
+                            reader.ReadBlock(buffer, 0, 64);
+                            string newstring = new string(buffer);
+
+                            newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                            if (newstring.Equals(tempChangeID))
+                            {
+                                List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                string x = "";
+                                foreach (int i in intsold)
+                                    x += "-" + (i-400);
+                                tempChangeID = x.Substring(1);
+                                RealChangeId = tempChangeID;
+                                return tempChangeID;
+                            }
+                            else
+                            {
+                                List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
+                                List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                for(int i = 0; i < ints.Count; i++)
+                                {
+                                    if (ints[i] > intsold[i])
+                                        ints[i] += 400;
+                                    
+                                }
+                                string x = "";
+                                foreach (int i in ints)
+                                    x += "-" + i;
+                                tempChangeID = x.Substring(1);
+                                System.Threading.Thread.Sleep(500);
+
+                            }
                         }
                     }
                 }
@@ -199,9 +262,9 @@ namespace ItemWatcher2
 
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
-            string changeID = "48923177-51911962-48505106-56446125-56515275";
+            string changeID = Form1.FindCurrentHead();
             // Get response  
-            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+            /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
                 // Get the response stream  
                 using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
@@ -209,9 +272,8 @@ namespace ItemWatcher2
                     JObject jo = JObject.Parse(reader.ReadToEnd());
                     changeID = jo.Children().ToList()[1].First.ToString();
                 }
-            }
-            int lastll = int.Parse(changeID.Split('-').Last());
-            changeID = changeID.Substring(0, 36) + (lastll + 1300);
+            }*/
+            
             // Create the web request  
             textBox1.Invoke((MethodInvoker)delegate
             {
