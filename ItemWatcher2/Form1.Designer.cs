@@ -123,13 +123,14 @@ namespace ItemWatcher2
             this.lblLinks1 = new System.Windows.Forms.Label();
             this.lblLinks2 = new System.Windows.Forms.Label();
             this.lblLinks3 = new System.Windows.Forms.Label();
- this.ex_ratio = new System.Windows.Forms.Label();
+            this.ex_ratio = new System.Windows.Forms.Label();
             this.lblDebug = new System.Windows.Forms.Label();
+            this.txtBoxFasterSearch = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 33);
+            this.textBox1.Location = new System.Drawing.Point(13, 30);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(190, 20);
@@ -989,9 +990,14 @@ namespace ItemWatcher2
             this.lblLinks3.TabIndex = 96;
             this.lblLinks3.Text = "Links";
             // 
-  // ex_ratio
+            // ex_ratio
             // 
             this.ex_ratio.AutoSize = true;
+            this.ex_ratio.Location = new System.Drawing.Point(0, 0);
+            this.ex_ratio.Name = "ex_ratio";
+            this.ex_ratio.Size = new System.Drawing.Size(0, 13);
+            this.ex_ratio.TabIndex = 98;
+            // 
             // lblDebug
             // 
             this.lblDebug.AutoSize = true;
@@ -1002,11 +1008,20 @@ namespace ItemWatcher2
             this.lblDebug.TabIndex = 97;
             this.lblDebug.Text = "Debug";
             // 
+            // txtBoxFasterSearch
+            // 
+            this.txtBoxFasterSearch.Location = new System.Drawing.Point(13, 52);
+            this.txtBoxFasterSearch.Name = "txtBoxFasterSearch";
+            this.txtBoxFasterSearch.ReadOnly = true;
+            this.txtBoxFasterSearch.Size = new System.Drawing.Size(190, 20);
+            this.txtBoxFasterSearch.TabIndex = 99;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.txtBoxFasterSearch);
             this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.ex_ratio);
             this.Controls.Add(this.lblLinks3);
@@ -1207,6 +1222,7 @@ namespace ItemWatcher2
         private System.Windows.Forms.Label lblLinks3;
 private System.Windows.Forms.Label ex_ratio;
         private System.Windows.Forms.Label lblDebug;
+        private System.Windows.Forms.TextBox txtBoxFasterSearch;
     }
 }
 

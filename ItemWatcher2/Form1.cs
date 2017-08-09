@@ -28,6 +28,7 @@ namespace ItemWatcher2
 
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
+        private static string RealChangeId = "";
         public static List<Slot> Slots = new List<Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
@@ -43,9 +44,12 @@ namespace ItemWatcher2
             bgw = new BackgroundWorker();
             bgw.DoWork += DoBackgroundWork;
             BackgroundWorker bgw2 = new BackgroundWorker();
+            BackgroundWorker bgw3 = new BackgroundWorker();
+            bgw3.DoWork += StayUpToDateWithPoe;
             bgw2.DoWork += SyncNinja;
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
+            bgw3.RunWorkerAsync();
         }
 
 
@@ -72,6 +76,58 @@ namespace ItemWatcher2
                 else
                     System.Threading.Thread.Sleep(1000);
                 LoadBasicInfo();
+            }
+        }
+        private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
+        {
+            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
+
+
+            // Get response  
+            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    JObject jo = JObject.Parse(reader.ReadToEnd());
+                    RealChangeId = jo.Children().ToList()[1].First.ToString();
+                }
+            }
+            while (true)
+            {
+                HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
+                //textBox1.Invoke((MethodInvoker)delegate
+                //{
+                //    textBox1.Text = "Waiting for POE Change Response";
+                //});
+                // Get response  
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    using (Stream stream = response.GetResponseStream())
+                    {                        
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                           
+                            char[] buffer = new char[65];
+                            reader.ReadBlock(buffer, 0, 64);
+                            string newstring = new string(buffer);
+                            
+                            newstring= JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                            int newchange = int.Parse(newstring.Split('-').Last());
+                            int oldchange = int.Parse(RealChangeId.Split('-').Last());
+                            if (newchange - oldchange < 50)
+                                System.Threading.Thread.Sleep(500);
+                            //System.Threading.Thread.Sleep(100);
+                            txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                            {
+                                txtBoxFasterSearch.Text = RealChangeId.Split('-').Last();
+                            });
+                            RealChangeId = newstring;
+                        }
+                    }
+                }
             }
         }
         [STAThread]
@@ -179,6 +235,13 @@ namespace ItemWatcher2
                         refreshConfig = DateTime.Now;
                     }
                     */
+                    //detect if change is too old
+
+                    int currchange = int.Parse(changeID.Split('-').Last());
+                    int otherchange = int.Parse(RealChangeId.Split('-').Last());
+                    if (otherchange - currchange >= 400)
+                        changeID = changeID.Substring(0, 36) + otherchange;
+
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
                     //textBox1.Invoke((MethodInvoker)delegate
                     //{
@@ -186,7 +249,7 @@ namespace ItemWatcher2
                     //});
                     // Get response  
                     DateTime now = DateTime.Now;
-
+                    lastTimeAPIcalled = DateTime.Now;
                     using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
                         // Get the response stream  
@@ -194,7 +257,7 @@ namespace ItemWatcher2
                         {
                             
                             double seconds0 = (DateTime.Now - now).TotalSeconds;
-                            JEnumerable<JToken> jo;
+                            List<JToken> jo;
                             using (StreamReader reader = new StreamReader(stream))
                             {
                                 // Console application output  
@@ -220,7 +283,7 @@ namespace ItemWatcher2
                                     newstring += line;
                                 }
                                 double secondsToDataGrab = (DateTime.Now - now).TotalSeconds;
-                                jo = JObject.Parse(newstring).Children();
+                                jo = JObject.Parse(newstring).Children().ToList();
                             }
                             
                             
@@ -228,9 +291,9 @@ namespace ItemWatcher2
                            
                             double secondsToJSonParse = (DateTime.Now - now).TotalSeconds;
 
-                            lastTimeAPIcalled = DateTime.Now;
                             
-                            JEnumerable<JToken> stashes = jo[1].First().Children();
+
+                            List<JToken> stashes = jo[1].First().Children().ToList();
                             double seconds4 = (DateTime.Now - now).TotalSeconds;
                             //textBox1.Invoke((MethodInvoker)delegate
                             //{
