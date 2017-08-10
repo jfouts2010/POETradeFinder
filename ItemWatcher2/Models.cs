@@ -629,6 +629,7 @@ namespace ItemWatcher2
         public bool update_ninja_when_manul_refresh { get; set; }
         public List<string> blocked_accounts { get; set; }
         public bool autoCopy { get; set; }
+        public bool johnsounds { get; set; }
     }
 
     public class NotChaosCurrencyConversion

@@ -72,6 +72,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.txtRefreshHours = new System.Windows.Forms.TextBox();
             this.chkAutoCopy = new System.Windows.Forms.CheckBox();
+            this.JohnSounds = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -185,21 +186,21 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // chkDoBreach
+            // chkDoWatchNames
             // 
             this.chkDoWatchNames.AutoSize = true;
             this.chkDoWatchNames.Location = new System.Drawing.Point(12, 337);
-            this.chkDoWatchNames.Name = "chkDoBreach";
+            this.chkDoWatchNames.Name = "chkDoWatchNames";
             this.chkDoWatchNames.Size = new System.Drawing.Size(117, 17);
             this.chkDoWatchNames.TabIndex = 13;
             this.chkDoWatchNames.Text = "Do Rare WatchList";
             this.chkDoWatchNames.UseVisualStyleBackColor = true;
             // 
-            // chkDoWatchlist
+            // chkDoWatchRares
             // 
             this.chkDoWatchRares.AutoSize = true;
             this.chkDoWatchRares.Location = new System.Drawing.Point(132, 337);
-            this.chkDoWatchRares.Name = "chkDoWatchlist";
+            this.chkDoWatchRares.Name = "chkDoWatchRares";
             this.chkDoWatchRares.Size = new System.Drawing.Size(87, 17);
             this.chkDoWatchRares.TabIndex = 14;
             this.chkDoWatchRares.Text = "Do Watchlist";
@@ -450,12 +451,25 @@
             this.chkAutoCopy.TabIndex = 43;
             this.chkAutoCopy.Text = "AutoCopy";
             this.chkAutoCopy.UseVisualStyleBackColor = true;
+            this.chkAutoCopy.CheckedChanged += new System.EventHandler(this.chkAutoCopy_CheckedChanged);
+            // 
+            // JohnSounds
+            // 
+            this.JohnSounds.AutoSize = true;
+            this.JohnSounds.Location = new System.Drawing.Point(327, 369);
+            this.JohnSounds.Name = "JohnSounds";
+            this.JohnSounds.Size = new System.Drawing.Size(88, 17);
+            this.JohnSounds.TabIndex = 44;
+            this.JohnSounds.Text = "John Sounds";
+            this.JohnSounds.UseVisualStyleBackColor = true;
+            this.JohnSounds.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.JohnSounds);
             this.Controls.Add(this.chkAutoCopy);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.txtRefreshHours);
@@ -554,5 +568,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox txtRefreshHours;
         private System.Windows.Forms.CheckBox chkAutoCopy;
+        private System.Windows.Forms.CheckBox JohnSounds;
     }
 }
