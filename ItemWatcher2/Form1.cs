@@ -559,8 +559,8 @@ namespace ItemWatcher2
         [STAThread]
         private void SetjustTextSlots(Slot s)
         {
-           if(s!=null)
-            { 
+            if (s != null)
+            {
                 if (justTextSlots.Count == 3)
                     justTextSlots.RemoveAt(2);
                 justTextSlots.Insert(0, s);
@@ -678,12 +678,20 @@ namespace ItemWatcher2
                 Slot localslot = Slots[0];
                 SoundPlayer player = new SoundPlayer();
                 if (localslot.is_mine)
-                    player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\cartoon022.wav";
+                {
+                    if (!config.johnsounds)
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\cartoon022.wav";
+                    else
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+                }
                 else
                     player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
                 if (localslot.BaseItem.chaos_value - Convert.ToDecimal(GetPriceInChaos(localslot.SellItem.note)) > 30)
                 {
-                    player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\mine.wav";
+                    if (!config.johnsounds)
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\mine.wav";
+                    else
+                        player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
                 }
                 player.Play();
 
