@@ -272,6 +272,7 @@ namespace ItemWatcher2
                                     x += "-" + (i - 400);
                                 tempChangeID = x.Substring(1);
                                 RealChangeId = tempChangeID;
+                                System.Threading.Thread.Sleep(3000);
                                 return tempChangeID;
                             }
                             else
@@ -288,7 +289,7 @@ namespace ItemWatcher2
                                 foreach (int i in ints)
                                     x += "-" + i;
                                 tempChangeID = x.Substring(1);
-                                System.Threading.Thread.Sleep(500);
+                                System.Threading.Thread.Sleep(1000);
 
                             }
                         }
