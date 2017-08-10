@@ -50,7 +50,7 @@ namespace ItemWatcher2
             bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
             bgw3.DoWork += StayUpToDateWithPoe;
-            bgw4.DoWork += RunRareSecondThread;
+            bgw4.DoWork += ProcessItems;
 
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
@@ -85,7 +85,7 @@ namespace ItemWatcher2
             }
         }
 
-        private void RunRareSecondThread(object sender, DoWorkEventArgs e)
+        private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(40000);
             if (config.do_watch_rares && watchedRares.Count > 0)
@@ -186,7 +186,7 @@ namespace ItemWatcher2
                                     s.url = rare.url;
                                     s.SellItem = itemProp;
                                     s.account_name = itemProp.acc_name;
-                                    s.name = itemProp.name;
+                                    s.name = itemProp.char_name;
                                     if (Slots.Count == 3)
                                         Slots.RemoveAt(2);
                                     Slots.Insert(0, s);
