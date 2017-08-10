@@ -30,6 +30,7 @@ namespace ItemWatcher2
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
         private static string RealChangeId = "";
+        private static string UsedChangeId = "";
         public static List<Slot> Slots = new List<Slot>();
         public static List<Slot> LeaguestoneSlots = new List<Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
@@ -242,15 +243,18 @@ namespace ItemWatcher2
                                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                                     {
                                         txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
+                                        txtBoxFasterSearch.ForeColor = Color.Black;
                                     });
                                     RealChangeId = newstring;
                                 }catch
                                 {
                                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                                     {
-                                        txtBoxFasterSearch.Text = "waiting 5s";
+                                        txtBoxFasterSearch.Text = "waiting 5m";
+                                        txtBoxFasterSearch.ForeColor = Color.Red;
                                     });
-                                    System.Threading.Thread.Sleep(5000);
+                                    System.Threading.Thread.Sleep(5*60*1000);
+                                    RealChangeId = UsedChangeId + "";
                                 }
                             }
                         }
@@ -395,7 +399,7 @@ namespace ItemWatcher2
 
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
-            string changeID = Form1.FindCurrentHead();
+            UsedChangeId= Form1.FindCurrentHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -432,12 +436,12 @@ namespace ItemWatcher2
                     */
                     //detect if change is too old
 
-                    int currchange = int.Parse(changeID.Split('-').Last());
+                    int currchange = int.Parse(UsedChangeId.Split('-').Last());
                     int otherchange = int.Parse(RealChangeId.Split('-').Last());
                     if (otherchange - currchange >= 400)
-                        changeID = changeID.Substring(0, 36) + otherchange;
+                        UsedChangeId = UsedChangeId.Substring(0, 36) + otherchange;
 
-                    HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + changeID) as HttpWebRequest;
+                    HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + UsedChangeId) as HttpWebRequest;
                     //textBox1.Invoke((MethodInvoker)delegate
                     //{
                     //    textBox1.Text = "Waiting for POE Change Response";
@@ -462,14 +466,11 @@ namespace ItemWatcher2
                                 reader.ReadBlock(buffer, 0, 64);
                                 string newstring = new string(buffer);
                                 string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                                if (newchange == changeID)
-                                {
-                                    int x = 5;
-                                }
-                                changeID = newchange;
+                                
+                                UsedChangeId = newchange;
                                 textBox1.Invoke((MethodInvoker)delegate
                                 {
-                                    textBox1.Text = changeID.Split('-').Last();
+                                    textBox1.Text = UsedChangeId.Split('-').Last();
                                 });
                                 double secondsToChangeID = (DateTime.Now - now).TotalSeconds;
                                 string line = String.Empty;
