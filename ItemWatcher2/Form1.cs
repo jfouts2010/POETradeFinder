@@ -506,6 +506,10 @@ namespace ItemWatcher2
                                     }
                                 }
                             }
+                            txtQueueCurrent.Invoke((MethodInvoker)delegate
+                            {
+                                txtQueueCurrent.Text = "Running";
+                            });
 
                         }
                         if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < .3)
@@ -516,7 +520,10 @@ namespace ItemWatcher2
                 }
                 catch (Exception eee)
                 {
-                    int x = 5;
+                    txtQueueCurrent.Invoke((MethodInvoker)delegate
+                    {
+                        txtQueueCurrent.Text = "Failed";
+                    });
                 }
 
             }
@@ -570,7 +577,7 @@ namespace ItemWatcher2
 
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.Text = justTextSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[0].SellItem.note) + " chaos:" + justTextSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[0].name;
+                    richTxtBox8Rep.Text = justTextSlots[0].SellItem.name+ " " +justTextSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[0].SellItem.note) + " chaos: " + justTextSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[0].name;
                     richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
@@ -582,14 +589,14 @@ namespace ItemWatcher2
             {
                 textBox9.Invoke((MethodInvoker)delegate
                 {
-                    textBox9.Text = justTextSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[1].SellItem.note) + " chaos:" + justTextSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[1].name;
+                    textBox9.Text = justTextSlots[1].SellItem.name + " " + justTextSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[1].SellItem.note) + " chaos: " + justTextSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[1].name;
                 });
             }
             if (justTextSlots[2].SellItem != null)
             {
                 textBox10.Invoke((MethodInvoker)delegate
                 {
-                    textBox10.Text = justTextSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[2].SellItem.note) + " chaos:" + justTextSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[2].name;
+                    textBox10.Text = justTextSlots[2].SellItem.name + " " + justTextSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[2].SellItem.note) + " chaos: " + justTextSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[2].name;
                 });
             }
         }
@@ -660,9 +667,7 @@ namespace ItemWatcher2
                 s.is_mine = x == config.my_number;
                 s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
-                if (Slots.Count == 3)
-                    Slots.RemoveAt(2);
-                Slots.Insert(0, s);
+                
                 if (Slots.Count == 3)
                 {
                     SetjustTextSlots(Slots[2]);
