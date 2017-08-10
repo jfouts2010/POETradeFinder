@@ -557,23 +557,10 @@ namespace ItemWatcher2
         }
 
         [STAThread]
-        private void SetjustTextSlots(Item itemProp, string name, string value)
+        private void SetjustTextSlots(Slot s)
         {
-            if (itemProp != null)
-            {
-                Slot s = new Slot();
-                s.SellItem = itemProp;
-                s.name = name;
-                s.worth = value;
-
-                s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-
-                SoundPlayer player = new SoundPlayer();
-
-                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-                player.Play();
-
-
+           if(s!=null)
+            { 
                 if (justTextSlots.Count == 3)
                     justTextSlots.RemoveAt(2);
                 justTextSlots.Insert(0, s);
@@ -678,7 +665,7 @@ namespace ItemWatcher2
                 Slots.Insert(0, s);
                 if (Slots.Count == 3)
                 {
-                    SetjustTextSlots(Slots[2].SellItem, Slots[0].name, Slots[0].worth);
+                    SetjustTextSlots(Slots[2]);
                     Slots.RemoveAt(2);
                 }
                 Slots.Insert(0, s);
