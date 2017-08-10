@@ -32,7 +32,7 @@ namespace ItemWatcher2
         private static string RealChangeId = "";
         private static string UsedChangeId = "";
         public static List<Slot> Slots = new List<Slot>();
-        public static List<Slot> LeaguestoneSlots = new List<Slot>();
+        public static List<Slot> justTextSlots = new List<Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
         public static DateTime last_time_clicked { get; set; }
         public Form1()
@@ -89,7 +89,7 @@ namespace ItemWatcher2
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(40000);
-            if (config.do_watch_rares && watchedRares.Count > 0)
+            //if (config.do_watch_rares && watchedRares.Count > 0)
                 while (true)
                 {
                     Item itemProp = null;
@@ -246,14 +246,15 @@ namespace ItemWatcher2
                                         txtBoxFasterSearch.ForeColor = Color.Black;
                                     });
                                     RealChangeId = newstring;
-                                }catch
+                                }
+                                catch
                                 {
                                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                                     {
                                         txtBoxFasterSearch.Text = "waiting 5m";
                                         txtBoxFasterSearch.ForeColor = Color.Red;
                                     });
-                                    System.Threading.Thread.Sleep(5*60*1000);
+                                    System.Threading.Thread.Sleep(5 * 60 * 1000);
                                     RealChangeId = UsedChangeId + "";
                                 }
                             }
@@ -376,9 +377,9 @@ namespace ItemWatcher2
             Slots.Add(new Slot());
             Slots.Add(new Slot());
             Slots.Add(new Slot());
-            LeaguestoneSlots.Add(new Slot());
-            LeaguestoneSlots.Add(new Slot());
-            LeaguestoneSlots.Add(new Slot());
+            justTextSlots.Add(new Slot());
+            justTextSlots.Add(new Slot());
+            justTextSlots.Add(new Slot());
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
@@ -399,7 +400,7 @@ namespace ItemWatcher2
 
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
-            UsedChangeId= Form1.FindCurrentHead();
+            UsedChangeId = Form1.FindCurrentHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -466,7 +467,7 @@ namespace ItemWatcher2
                                 reader.ReadBlock(buffer, 0, 64);
                                 string newstring = new string(buffer);
                                 string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                                
+
                                 UsedChangeId = newchange;
                                 textBox1.Invoke((MethodInvoker)delegate
                                 {
@@ -591,7 +592,7 @@ namespace ItemWatcher2
         }
 
         [STAThread]
-        private string SetLeaguestoneSlots(List<Slot> LeaguestoneSlots, Item itemProp, string name, string value)
+        private string SetjustTextSlots(Item itemProp, string name, string value)
         {
             Slot s = new Slot();
             s.SellItem = itemProp;
@@ -606,15 +607,15 @@ namespace ItemWatcher2
             player.Play();
 
 
-            if (LeaguestoneSlots.Count == 3)
-                LeaguestoneSlots.RemoveAt(2);
-            LeaguestoneSlots.Insert(0, s);
-            if (LeaguestoneSlots[0].SellItem != null)
+            if (justTextSlots.Count == 3)
+                justTextSlots.RemoveAt(2);
+            justTextSlots.Insert(0, s);
+            if (justTextSlots[0].SellItem != null)
             {
 
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.Text = LeaguestoneSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[0].SellItem.note) + " chaos:" + LeaguestoneSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[0].name;
+                    richTxtBox8Rep.Text = justTextSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[0].SellItem.note) + " chaos:" + justTextSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[0].name;
                     richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
@@ -622,18 +623,18 @@ namespace ItemWatcher2
             {
                 richtxtBox2Rep.ForeColor = Color.Black;
             });
-            if (LeaguestoneSlots[1].SellItem != null)
+            if (justTextSlots[1].SellItem != null)
             {
                 textBox9.Invoke((MethodInvoker)delegate
                 {
-                    textBox9.Text = LeaguestoneSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[1].SellItem.note) + " chaos:" + LeaguestoneSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[1].name;
+                    textBox9.Text = justTextSlots[1].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[1].SellItem.note) + " chaos:" + justTextSlots[1].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[1].name;
                 });
             }
-            if (LeaguestoneSlots[2].SellItem != null)
+            if (justTextSlots[2].SellItem != null)
             {
                 textBox10.Invoke((MethodInvoker)delegate
                 {
-                    textBox10.Text = LeaguestoneSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(LeaguestoneSlots[2].SellItem.note) + " chaos:" + LeaguestoneSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + LeaguestoneSlots[2].name;
+                    textBox10.Text = justTextSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[2].SellItem.note) + " chaos:" + justTextSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[2].name;
                 });
             }
             return s.Message;
@@ -690,9 +691,14 @@ namespace ItemWatcher2
             else return Color.Red;
         }
         [STAThread]
-        public void SetSlots(List<Slot> Slots)
+        public void SetSlots(Item item)
         {
-
+            if (Slots.Count == 3)
+            {
+                SetjustTextSlots(Slots[2].SellItem, Slots[0].name, Slots[0].worth);
+                Slots.RemoveAt(2);
+            }
+            Slots.Insert(0, s);
 
 
             if (Slots[0].BaseItem != null)
@@ -1399,9 +1405,9 @@ namespace ItemWatcher2
 
         private void button18_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(LeaguestoneSlots[0].Message))
+            if (!string.IsNullOrEmpty(justTextSlots[0].Message))
             {
-                string s = LeaguestoneSlots[0].Message;
+                string s = justTextSlots[0].Message;
                 last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
@@ -1409,9 +1415,9 @@ namespace ItemWatcher2
 
         private void button19_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(LeaguestoneSlots[1].Message))
+            if (!string.IsNullOrEmpty(justTextSlots[1].Message))
             {
-                string s = LeaguestoneSlots[1].Message;
+                string s = justTextSlots[1].Message;
                 last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
@@ -1419,9 +1425,9 @@ namespace ItemWatcher2
 
         private void button20_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(LeaguestoneSlots[2].Message))
+            if (!string.IsNullOrEmpty(justTextSlots[2].Message))
             {
-                string s = LeaguestoneSlots[2].Message;
+                string s = justTextSlots[2].Message;
                 last_time_clicked = DateTime.Now;
                 Clipboard.SetText(s);
             }
