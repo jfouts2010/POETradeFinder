@@ -49,13 +49,14 @@ namespace ItemWatcher2
             System.IO.File.Delete(itemfilename);
             System.IO.File.WriteAllText(itemfilename, serialized);
             
-            config.esh_value = Convert.ToDecimal(txtEsh.Text);
-            config.xoph_value = Convert.ToDecimal(txtXoph.Text);
+            
             if (config.blocked_accounts == null)
                 config.blocked_accounts = new List<string>();
             config.autoCopy = chkAutoCopy.Checked;
             config.johnsounds = JohnSounds.Checked;
-            config.tul_value = Convert.ToDecimal(txtTul.Text);
+            config.do_catchup_thread = chkBoxCatchup.Checked;
+
+
             config.do_watch_rares = this.chkDoWatchNames.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
             config.do_all_uniques_with_ranges = this.chkUniqueRanges.Checked;
@@ -102,9 +103,7 @@ namespace ItemWatcher2
                     do_all_uniques_with_ranges = false,
                     do_watch_rares = true,
                     do_watch_list = true,
-                    esh_value = 3,
-                    tul_value = 16,
-                    xoph_value = 6,
+                    
                     exalt_ratio = 68,
                     alch_ratio = .333M,
                     fusing_ratio = .444M,
@@ -114,11 +113,10 @@ namespace ItemWatcher2
                        my_number=1,
                         max_price=100,
                          profit_percent=.9M,
+                         
                 };
             }
-            this.txtEsh.Text = config.esh_value.ToString();
-            this.txtXoph.Text = config.xoph_value.ToString();
-            this.txtTul.Text = config.tul_value.ToString();
+            
             this.chkDoWatchNames.Checked = config.do_watch_rares;
             this.chkDoWatchRares.Checked = config.do_watch_list;
             this.chkDoUniques.Checked = config.do_all_uniques;
@@ -135,6 +133,7 @@ namespace ItemWatcher2
             this.chkAutoCopy.Checked = config.autoCopy;
             this.JohnSounds.Checked = config.johnsounds;
             this.txtAccountName.Text = config.account_name;
+            this.chkBoxCatchup.Checked = config.do_catchup_thread;
         }
 
         private void btnAddNewClick(object sender, EventArgs e)

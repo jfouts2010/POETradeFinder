@@ -202,51 +202,51 @@ namespace ItemWatcher2
 
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
-
-            while (true)
-            {
-                if (RealChangeId == "")
+            if (config.do_catchup_thread)
+                while (true)
                 {
-                    System.Threading.Thread.Sleep(5000);
-                    continue;
-                }
-                HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
-                //textBox1.Invoke((MethodInvoker)delegate
-                //{
-                //    textBox1.Text = "Waiting for POE Change Response";
-                //});
-                // Get response  
-
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                {
-                    // Get the response stream  
-                    using (Stream stream = response.GetResponseStream())
+                    if (RealChangeId == "")
                     {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
+                        System.Threading.Thread.Sleep(5000);
+                        continue;
+                    }
+                    HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
+                    //textBox1.Invoke((MethodInvoker)delegate
+                    //{
+                    //    textBox1.Text = "Waiting for POE Change Response";
+                    //});
+                    // Get response  
 
-                            char[] buffer = new char[100];
-                            reader.ReadBlock(buffer, 0, 100);
-                            string newstring = new string(buffer);
-                            newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
-                            newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                            int newchange = int.Parse(newstring.Split('-').Last());
-                            int oldchange = int.Parse(RealChangeId.Split('-').Last());
-                            int difference = newchange - oldchange;
-                            if (difference < 50)
-                                System.Threading.Thread.Sleep(1500);
-                            else
-                                System.Threading.Thread.Sleep(400);
-                            //System.Threading.Thread.Sleep(100);
-                            txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                    {
+                        // Get the response stream  
+                        using (Stream stream = response.GetResponseStream())
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
                             {
-                                txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
-                            });
-                            RealChangeId = newstring;
+
+                                char[] buffer = new char[100];
+                                reader.ReadBlock(buffer, 0, 100);
+                                string newstring = new string(buffer);
+                                newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
+                                newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                int newchange = int.Parse(newstring.Split('-').Last());
+                                int oldchange = int.Parse(RealChangeId.Split('-').Last());
+                                int difference = newchange - oldchange;
+                                if (difference < 50)
+                                    System.Threading.Thread.Sleep(1500);
+                                else
+                                    System.Threading.Thread.Sleep(400);
+                                //System.Threading.Thread.Sleep(100);
+                                txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                {
+                                    txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
+                                });
+                                RealChangeId = newstring;
+                            }
                         }
                     }
                 }
-            }
         }
         public static string FindCurrentHead()
         {

@@ -600,9 +600,7 @@ namespace ItemWatcher2
     [Serializable]
     public class ItemWatchConfig
     {
-        public decimal esh_value { get; set; }
-        public decimal xoph_value { get; set; }
-        public decimal tul_value { get; set; }
+        public bool do_catchup_thread { get; set; }
 
         public bool do_watch_rares { get; set; }
         public bool do_watch_list { get; set; }

@@ -45,14 +45,7 @@
             this.chkDoWatchRares = new System.Windows.Forms.CheckBox();
             this.chkDoUniques = new System.Windows.Forms.CheckBox();
             this.chkUniqueRanges = new System.Windows.Forms.CheckBox();
-            this.txtEsh = new System.Windows.Forms.TextBox();
-            this.txtXoph = new System.Windows.Forms.TextBox();
-            this.txtTul = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.txtFuse = new System.Windows.Forms.TextBox();
@@ -73,6 +66,7 @@
             this.txtRefreshHours = new System.Windows.Forms.TextBox();
             this.chkAutoCopy = new System.Windows.Forms.CheckBox();
             this.JohnSounds = new System.Windows.Forms.CheckBox();
+            this.chkBoxCatchup = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -226,56 +220,6 @@
             this.chkUniqueRanges.Text = "Do Unique Ranges";
             this.chkUniqueRanges.UseVisualStyleBackColor = true;
             // 
-            // txtEsh
-            // 
-            this.txtEsh.Location = new System.Drawing.Point(19, 414);
-            this.txtEsh.Name = "txtEsh";
-            this.txtEsh.Size = new System.Drawing.Size(40, 20);
-            this.txtEsh.TabIndex = 17;
-            this.txtEsh.TextChanged += new System.EventHandler(this.txtEsh_TextChanged);
-            // 
-            // txtXoph
-            // 
-            this.txtXoph.Location = new System.Drawing.Point(89, 414);
-            this.txtXoph.Name = "txtXoph";
-            this.txtXoph.Size = new System.Drawing.Size(40, 20);
-            this.txtXoph.TabIndex = 18;
-            // 
-            // txtTul
-            // 
-            this.txtTul.Location = new System.Drawing.Point(166, 414);
-            this.txtTul.Name = "txtTul";
-            this.txtTul.Size = new System.Drawing.Size(40, 20);
-            this.txtTul.TabIndex = 19;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(22, 398);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(25, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Esh";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(88, 398);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(32, 13);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "Xoph";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(163, 398);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(22, 13);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Tul";
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(245, 447);
@@ -285,15 +229,6 @@
             this.button1.Text = "Continue";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(79, 372);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(99, 13);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Splinters Per Chaos";
             // 
             // label10
             // 
@@ -464,11 +399,22 @@
             this.JohnSounds.UseVisualStyleBackColor = true;
             this.JohnSounds.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // chkBoxCatchup
+            // 
+            this.chkBoxCatchup.AutoSize = true;
+            this.chkBoxCatchup.Location = new System.Drawing.Point(12, 369);
+            this.chkBoxCatchup.Name = "chkBoxCatchup";
+            this.chkBoxCatchup.Size = new System.Drawing.Size(126, 17);
+            this.chkBoxCatchup.TabIndex = 45;
+            this.chkBoxCatchup.Text = "Run Catchup Thread";
+            this.chkBoxCatchup.UseVisualStyleBackColor = true;
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.chkBoxCatchup);
             this.Controls.Add(this.JohnSounds);
             this.Controls.Add(this.chkAutoCopy);
             this.Controls.Add(this.label18);
@@ -489,14 +435,7 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtTul);
-            this.Controls.Add(this.txtXoph);
-            this.Controls.Add(this.txtEsh);
             this.Controls.Add(this.chkUniqueRanges);
             this.Controls.Add(this.chkDoUniques);
             this.Controls.Add(this.chkDoWatchRares);
@@ -541,14 +480,7 @@
         private System.Windows.Forms.CheckBox chkDoWatchRares;
         private System.Windows.Forms.CheckBox chkDoUniques;
         private System.Windows.Forms.CheckBox chkUniqueRanges;
-        private System.Windows.Forms.TextBox txtEsh;
-        private System.Windows.Forms.TextBox txtXoph;
-        private System.Windows.Forms.TextBox txtTul;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtFuse;
@@ -569,5 +501,6 @@
         private System.Windows.Forms.TextBox txtRefreshHours;
         private System.Windows.Forms.CheckBox chkAutoCopy;
         private System.Windows.Forms.CheckBox JohnSounds;
+        private System.Windows.Forms.CheckBox chkBoxCatchup;
     }
 }

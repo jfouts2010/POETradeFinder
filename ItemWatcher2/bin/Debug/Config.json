@@ -1,7 +1,5 @@
 {
-  "esh_value": 3.5,
-  "xoph_value": 6.0,
-  "tul_value": 16.0,
+  "do_catchup_thread": true,
   "do_watch_rares": true,
   "do_watch_list": true,
   "do_all_uniques": true,
@@ -34687,5 +34685,6 @@
   "refresh_items": false,
   "update_ninja_when_manul_refresh": false,
   "blocked_accounts": [],
-  "autoCopy": false
+  "autoCopy": false,
+  "johnsounds": false
 }
