@@ -224,25 +224,34 @@ namespace ItemWatcher2
                         {
                             using (StreamReader reader = new StreamReader(stream))
                             {
-
-                                char[] buffer = new char[100];
-                                reader.ReadBlock(buffer, 0, 100);
-                                string newstring = new string(buffer);
-                                newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
-                                newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                                int newchange = int.Parse(newstring.Split('-').Last());
-                                int oldchange = int.Parse(RealChangeId.Split('-').Last());
-                                int difference = newchange - oldchange;
-                                if (difference < 50)
-                                    System.Threading.Thread.Sleep(1500);
-                                else
-                                    System.Threading.Thread.Sleep(400);
-                                //System.Threading.Thread.Sleep(100);
-                                txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                try
                                 {
-                                    txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
-                                });
-                                RealChangeId = newstring;
+                                    char[] buffer = new char[100];
+                                    reader.ReadBlock(buffer, 0, 100);
+                                    string newstring = new string(buffer);
+                                    newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
+                                    newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                    int newchange = int.Parse(newstring.Split('-').Last());
+                                    int oldchange = int.Parse(RealChangeId.Split('-').Last());
+                                    int difference = newchange - oldchange;
+                                    if (difference < 50)
+                                        System.Threading.Thread.Sleep(1500);
+                                    else
+                                        System.Threading.Thread.Sleep(400);
+                                    //System.Threading.Thread.Sleep(100);
+                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                    {
+                                        txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
+                                    });
+                                    RealChangeId = newstring;
+                                }catch
+                                {
+                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                    {
+                                        txtBoxFasterSearch.Text = "waiting 5s";
+                                    });
+                                    System.Threading.Thread.Sleep(5000);
+                                }
                             }
                         }
                     }
