@@ -552,7 +552,10 @@ namespace ItemWatcher2
         {
             SoundPlayer player = new SoundPlayer();
 
-            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Mario.wav";
+            if (!config.johnsounds)
+                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Mario.wav";
+            else
+                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
             player.Play();
         }
 
