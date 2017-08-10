@@ -138,7 +138,7 @@ namespace ItemWatcher2
                             name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
                             if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemProp.value || (localitem.chaos_value * config.profit_percent > itemProp.value && localitem.chaos_value - config.min_profit_range > itemProp.value))
                             {
-                                
+
                                 SetSlots(itemProp, localitem);
                             }
                         }
@@ -155,8 +155,8 @@ namespace ItemWatcher2
                                 fakeNinja.name = "Rare:" + rare.type.ToString();
                                 fakeNinja.chaos_value = rare.estimated_value;
 
-                                
-                                SetSlots(itemProp,fakeNinja);
+
+                                SetSlots(itemProp, fakeNinja);
                             }
                         }
                     }
@@ -557,24 +557,27 @@ namespace ItemWatcher2
         }
 
         [STAThread]
-        private string SetjustTextSlots(Item itemProp, string name, string value)
+        private void SetjustTextSlots(Item itemProp, string name, string value)
         {
-            Slot s = new Slot();
-            s.SellItem = itemProp;
-            s.name = name;
-            s.worth = value;
+            if (itemProp != null)
+            {
+                Slot s = new Slot();
+                s.SellItem = itemProp;
+                s.name = name;
+                s.worth = value;
 
-            s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+                s.Message = "@" + name + " Hi, I would like to buy your " + s.SellItem.typeLine + " listed for " + GetOriginalPrice(s.SellItem.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
-            SoundPlayer player = new SoundPlayer();
+                SoundPlayer player = new SoundPlayer();
 
-            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
-            player.Play();
+                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+                player.Play();
 
 
-            if (justTextSlots.Count == 3)
-                justTextSlots.RemoveAt(2);
-            justTextSlots.Insert(0, s);
+                if (justTextSlots.Count == 3)
+                    justTextSlots.RemoveAt(2);
+                justTextSlots.Insert(0, s);
+            }
             if (justTextSlots[0].SellItem != null)
             {
 
@@ -602,7 +605,6 @@ namespace ItemWatcher2
                     textBox10.Text = justTextSlots[2].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[2].SellItem.note) + " chaos:" + justTextSlots[2].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[2].name;
                 });
             }
-            return s.Message;
         }
         public void SetTimeseconds(List<Slot> slots)
         {
@@ -666,6 +668,7 @@ namespace ItemWatcher2
                 s.BaseItem = ninja;
                 s.SellItem = itemProp;
                 s.name = itemProp.char_name;
+                s.worth = ninja.chaos_value.ToString();
                 int x = findWhoGets(itemProp.id, config.number_of_people);
                 s.is_mine = x == config.my_number;
                 s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
@@ -1501,19 +1504,19 @@ namespace ItemWatcher2
         private void btnRefreshPoe1_Click(object sender, EventArgs e)
         {
             NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[0].BaseItem, true);
-            SetSlots(null,null);
+            SetSlots(null, null);
         }
 
         private void btnRefreshPoe2_Click(object sender, EventArgs e)
         {
             NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[1].BaseItem, true);
-            SetSlots(null,null);
+            SetSlots(null, null);
         }
 
         private void btnRefreshPoe3_Click(object sender, EventArgs e)
         {
             NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[2].BaseItem, true);
-            SetSlots(null,null);
+            SetSlots(null, null);
         }
 
         private void btnRefreshPoe_Click(object sender, EventArgs e)
@@ -1531,7 +1534,7 @@ namespace ItemWatcher2
             int avg = (int)(total / localslot.BaseItem.Top5Sells.Count);
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
-            SetSlots(null,null);
+            SetSlots(null, null);
             SaveNames();
         }
 
