@@ -126,6 +126,8 @@ namespace ItemWatcher2
             this.ex_ratio = new System.Windows.Forms.Label();
             this.lblDebug = new System.Windows.Forms.Label();
             this.txtBoxFasterSearch = new System.Windows.Forms.TextBox();
+            this.txtQueueTotal = new System.Windows.Forms.TextBox();
+            this.txtQueueCurrent = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -133,7 +135,7 @@ namespace ItemWatcher2
             this.textBox1.Location = new System.Drawing.Point(13, 30);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(190, 20);
+            this.textBox1.Size = new System.Drawing.Size(98, 20);
             this.textBox1.TabIndex = 0;
             // 
             // button1
@@ -660,7 +662,7 @@ namespace ItemWatcher2
             // 
             // txtBoxUpdateThread
             // 
-            this.txtBoxUpdateThread.Location = new System.Drawing.Point(227, 33);
+            this.txtBoxUpdateThread.Location = new System.Drawing.Point(224, 30);
             this.txtBoxUpdateThread.Name = "txtBoxUpdateThread";
             this.txtBoxUpdateThread.ReadOnly = true;
             this.txtBoxUpdateThread.Size = new System.Drawing.Size(186, 20);
@@ -734,7 +736,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe
             // 
-            this.btnRefreshPoe.Location = new System.Drawing.Point(421, 33);
+            this.btnRefreshPoe.Location = new System.Drawing.Point(416, 30);
             this.btnRefreshPoe.Name = "btnRefreshPoe";
             this.btnRefreshPoe.Size = new System.Drawing.Size(87, 23);
             this.btnRefreshPoe.TabIndex = 68;
@@ -1013,14 +1015,32 @@ namespace ItemWatcher2
             this.txtBoxFasterSearch.Location = new System.Drawing.Point(13, 52);
             this.txtBoxFasterSearch.Name = "txtBoxFasterSearch";
             this.txtBoxFasterSearch.ReadOnly = true;
-            this.txtBoxFasterSearch.Size = new System.Drawing.Size(190, 20);
+            this.txtBoxFasterSearch.Size = new System.Drawing.Size(98, 20);
             this.txtBoxFasterSearch.TabIndex = 99;
+            // 
+            // txtQueueTotal
+            // 
+            this.txtQueueTotal.Location = new System.Drawing.Point(117, 52);
+            this.txtQueueTotal.Name = "txtQueueTotal";
+            this.txtQueueTotal.ReadOnly = true;
+            this.txtQueueTotal.Size = new System.Drawing.Size(98, 20);
+            this.txtQueueTotal.TabIndex = 101;
+            // 
+            // txtQueueCurrent
+            // 
+            this.txtQueueCurrent.Location = new System.Drawing.Point(117, 30);
+            this.txtQueueCurrent.Name = "txtQueueCurrent";
+            this.txtQueueCurrent.ReadOnly = true;
+            this.txtQueueCurrent.Size = new System.Drawing.Size(98, 20);
+            this.txtQueueCurrent.TabIndex = 100;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.txtQueueTotal);
+            this.Controls.Add(this.txtQueueCurrent);
             this.Controls.Add(this.txtBoxFasterSearch);
             this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.ex_ratio);
@@ -1223,6 +1243,8 @@ namespace ItemWatcher2
 private System.Windows.Forms.Label ex_ratio;
         private System.Windows.Forms.Label lblDebug;
         private System.Windows.Forms.TextBox txtBoxFasterSearch;
+        private System.Windows.Forms.TextBox txtQueueTotal;
+        private System.Windows.Forms.TextBox txtQueueCurrent;
     }
 }
 

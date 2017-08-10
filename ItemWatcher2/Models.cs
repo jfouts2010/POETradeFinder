@@ -580,6 +580,10 @@ namespace ItemWatcher2
         public string[] implicitMods { get; set; }
         public string[] explicitMods { get; set; }
         public int pdps { get; set; }
+        //added later
+        public decimal value { get; set; }
+        public string char_name { get; set; }
+        public string acc_name { get; set; }
         public JArray properties { get; set; }
         public override bool Equals(object obj)
         {

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,7 +25,7 @@ namespace ItemWatcher2
         public static List<POETradeConfig> watchedRares;
         public static Dictionary<string, string> all_base_types;
         public static ItemWatchConfig config;
-
+        public static ConcurrentQueue<Item> raresQueue = new ConcurrentQueue<Item>();
 
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
@@ -41,16 +42,20 @@ namespace ItemWatcher2
             //GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
-            bgw = new BackgroundWorker();
-            bgw.DoWork += DoBackgroundWork;
+            BackgroundWorker bgw = new BackgroundWorker();
             BackgroundWorker bgw2 = new BackgroundWorker();
             BackgroundWorker bgw3 = new BackgroundWorker();
-            bgw3.DoWork += StayUpToDateWithPoe;
+            BackgroundWorker bgw4 = new BackgroundWorker();
+
+            bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
+            bgw3.DoWork += StayUpToDateWithPoe;
+            bgw4.DoWork += RunRareSecondThread;
+
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
-            
             bgw3.RunWorkerAsync();
+            bgw4.RunWorkerAsync();
         }
 
 
@@ -79,9 +84,125 @@ namespace ItemWatcher2
                 LoadBasicInfo();
             }
         }
+
+        private void RunRareSecondThread(object sender, DoWorkEventArgs e)
+        {
+            System.Threading.Thread.Sleep(40000);
+            if (config.do_watch_rares && watchedRares.Count > 0)
+                while (true)
+                {
+                    Item itemProp = null;
+                    while (raresQueue.TryDequeue(out itemProp))
+                    {
+                        if (itemProp.implicitMods == null)
+                            itemProp.implicitMods = new string[] { "" };
+                        if (itemProp.explicitMods == null)
+                            itemProp.explicitMods = new string[] { "" };
+
+                        txtQueueTotal.Invoke((MethodInvoker)delegate
+                        {
+                            txtQueueTotal.Text = "Queue: " + raresQueue.Count;
+                        });
+                        if (itemProp.value > config.max_price)
+                            continue;
+                        itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                        itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                        if (config.do_all_uniques)
+                        {
+                            if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
+                            {
+                                NinjaItem NinjaItem = new NinjaItem(); ;
+                                if (itemProp.frameType != 6)
+                                    NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                else
+                                    NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
+
+                                if (NinjaItem.chaos_value > 15)
+                                    GetExplicitFields(NinjaItem, itemProp);
+                                if (NinjaItem.chaos_value * config.profit_percent > itemProp.value && NinjaItem.chaos_value - config.min_profit_range > itemProp.value)
+                                {
+                                    if (NinjaItem.is_weapon)
+                                        itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
+
+                                    Slot s = new Slot();
+
+                                    s.account_name = itemProp.acc_name;
+                                    s.BaseItem = NinjaItem;
+                                    s.SellItem = itemProp;
+                                    s.name = itemProp.char_name;
+                                    int x = findWhoGets(itemProp.id, config.number_of_people);
+                                    s.is_mine = x == config.my_number;
+                                    s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+
+                                    if (Slots.Count == 3)
+                                        Slots.RemoveAt(2);
+                                    Slots.Insert(0, s);
+                                    SetSlots(Slots);
+                                }
+                            }
+                        }
+                        if (config.do_watch_list)
+                        {
+                            if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
+                            {
+                                NinjaItem localitem = watched_items.Where(p => itemProp.
+                                name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
+                                if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemProp.value || (localitem.chaos_value * config.profit_percent > itemProp.value && localitem.chaos_value - config.min_profit_range > itemProp.value))
+                                {
+                                    Slot s = new Slot();
+                                    s.BaseItem = localitem;
+                                    s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+
+                                    s.is_mine = true;
+                                    s.SellItem = itemProp;
+                                    s.account_name = itemProp.acc_name;
+                                    s.name = itemProp.name;
+                                    s.SellItem = itemProp;
+                                    if (Slots.Count == 3)
+                                        Slots.RemoveAt(2);
+                                    Slots.Insert(0, s);
+                                    SetSlots(Slots);
+                                }
+                            }
+                        }
+                        if (config.do_watch_rares && watchedRares.Count > 0)//is rare
+                        {
+                            foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
+                            {
+                                if (rare.estimated_value * config.profit_percent > itemProp.value && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
+                                {
+
+                                    Slot s = new Slot();
+                                    NinjaItem fakeNinja = new NinjaItem();
+                                    fakeNinja.name = "Rare:" + rare.type.ToString();
+                                    fakeNinja.chaos_value = rare.estimated_value;
+
+                                    foreach (KeyValuePair<string, string> kvp in rare.mods)
+                                        fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
+                                    s.BaseItem = fakeNinja;
+                                    s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+
+                                    s.is_mine = true;
+                                    s.url = rare.url;
+                                    s.SellItem = itemProp;
+                                    s.account_name = itemProp.acc_name;
+                                    s.name = itemProp.name;
+                                    if (Slots.Count == 3)
+                                        Slots.RemoveAt(2);
+                                    Slots.Insert(0, s);
+                                    SetSlots(Slots);
+                                }
+                            }
+                        }
+                    }
+                    System.Threading.Thread.Sleep(4000);
+
+                }
+        }
+
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
-           
+
             while (true)
             {
                 if (RealChangeId == "")
@@ -100,23 +221,26 @@ namespace ItemWatcher2
                 {
                     // Get the response stream  
                     using (Stream stream = response.GetResponseStream())
-                    {                        
+                    {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                           
+
                             char[] buffer = new char[100];
                             reader.ReadBlock(buffer, 0, 100);
                             string newstring = new string(buffer);
                             newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
-                            newstring= JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                            newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                             int newchange = int.Parse(newstring.Split('-').Last());
                             int oldchange = int.Parse(RealChangeId.Split('-').Last());
-                            if (newchange - oldchange < 50)
-                                System.Threading.Thread.Sleep(500);
+                            int difference = newchange - oldchange;
+                            if (difference < 50)
+                                System.Threading.Thread.Sleep(1500);
+                            else
+                                System.Threading.Thread.Sleep(400);
                             //System.Threading.Thread.Sleep(100);
                             txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                             {
-                                txtBoxFasterSearch.Text = RealChangeId.Split('-').Last();
+                                txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
                             });
                             RealChangeId = newstring;
                         }
@@ -166,7 +290,7 @@ namespace ItemWatcher2
                                 List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
                                 string x = "";
                                 foreach (int i in intsold)
-                                    x += "-" + (i-400);
+                                    x += "-" + (i - 400);
                                 tempChangeID = x.Substring(1);
                                 RealChangeId = tempChangeID;
                                 return tempChangeID;
@@ -175,11 +299,11 @@ namespace ItemWatcher2
                             {
                                 List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
                                 List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                for(int i = 0; i < ints.Count; i++)
+                                for (int i = 0; i < ints.Count; i++)
                                 {
                                     if (ints[i] > intsold[i])
                                         ints[i] += 400;
-                                    
+
                                 }
                                 string x = "";
                                 foreach (int i in ints)
@@ -273,7 +397,7 @@ namespace ItemWatcher2
                     changeID = jo.Children().ToList()[1].First.ToString();
                 }
             }*/
-            
+
             // Create the web request  
             textBox1.Invoke((MethodInvoker)delegate
             {
@@ -317,7 +441,7 @@ namespace ItemWatcher2
                         // Get the response stream  
                         using (Stream stream = response.GetResponseStream())
                         {
-                            
+
                             double seconds0 = (DateTime.Now - now).TotalSeconds;
                             List<JToken> jo;
                             using (StreamReader reader = new StreamReader(stream))
@@ -328,7 +452,7 @@ namespace ItemWatcher2
                                 char[] buffer = new char[65];
                                 reader.ReadBlock(buffer, 0, 64);
                                 string newstring = new string(buffer);
-                                string newchange = JObject.Parse(newstring+"}")["next_change_id"].ToString();
+                                string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                                 if (newchange == changeID)
                                 {
                                     int x = 5;
@@ -344,24 +468,17 @@ namespace ItemWatcher2
                                 {
                                     newstring += line;
                                 }
-                                double secondsToDataGrab = (DateTime.Now - now).TotalSeconds;
+
                                 jo = JObject.Parse(newstring).Children().ToList();
                             }
-                            
-                            
-                            
-                           
-                            double secondsToJSonParse = (DateTime.Now - now).TotalSeconds;
-
-                            
 
                             List<JToken> stashes = jo[1].First().Children().ToList();
-                            double seconds4 = (DateTime.Now - now).TotalSeconds;
+
                             //textBox1.Invoke((MethodInvoker)delegate
                             //{
                             //    textBox1.Text = "Parsing " + stashes.Count + " stashes";
                             //});
-                            int counter = 0;
+
                             foreach (JToken jt in stashes)
                             {
                                 //textBox1.Invoke((MethodInvoker)delegate
@@ -402,110 +519,10 @@ namespace ItemWatcher2
                                         {
                                             seenItems.Add(itemProp.id, itemValue);
                                         }
-
-                                        /*if (config.number_of_people > 1)
-                                        {
-                                            int whogot = findWhoGets(itemProp.id, config.number_of_people);
-                                            if (config.my_number != whogot)
-                                                continue;
-                                        }*/
-                                        if (itemProp.implicitMods == null)
-                                            itemProp.implicitMods = new string[] { "" };
-                                        if (itemProp.explicitMods == null)
-                                            itemProp.explicitMods = new string[] { "" };
-
-
-                                        if (itemValue > config.max_price)
-                                            continue;
-                                        itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                                        itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                                        if (config.do_all_uniques)
-                                        {
-                                            if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
-                                            {
-                                                NinjaItem NinjaItem = new NinjaItem(); ;
-                                                if (itemProp.frameType != 6)
-                                                    NinjaItem = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
-                                                else
-                                                    NinjaItem = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
-
-                                                if (NinjaItem.chaos_value > 15)
-                                                    GetExplicitFields(NinjaItem, itemProp);
-                                                if (NinjaItem.chaos_value * config.profit_percent > itemValue && NinjaItem.chaos_value - config.min_profit_range > itemValue)
-                                                {
-                                                    if (NinjaItem.is_weapon)
-                                                        itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
-
-                                                    Slot s = new Slot();
-
-                                                    s.account_name = accName;
-                                                    s.BaseItem = NinjaItem;
-                                                    s.SellItem = itemProp;
-                                                    s.name = name;
-                                                    int x = findWhoGets(itemProp.id, config.number_of_people);
-                                                    s.is_mine = x == config.my_number;
-                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-
-                                                    if (Slots.Count == 3)
-                                                        Slots.RemoveAt(2);
-                                                    Slots.Insert(0, s);
-                                                    SetSlots(Slots);
-                                                }
-                                            }
-                                        }
-                                        if (config.do_watch_list)
-                                        {
-                                            if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
-                                            {
-                                                NinjaItem localitem = watched_items.Where(p => itemProp.
-                                                name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
-                                                if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemValue || (localitem.chaos_value * config.profit_percent > itemValue && localitem.chaos_value - config.min_profit_range > itemValue))
-                                                {
-                                                    Slot s = new Slot();
-                                                    s.BaseItem = localitem;
-                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-
-                                                    s.is_mine = true;
-                                                    s.SellItem = itemProp;
-                                                    s.account_name = accName;
-                                                    s.name = name;
-                                                    s.SellItem = itemProp;
-                                                    if (Slots.Count == 3)
-                                                        Slots.RemoveAt(2);
-                                                    Slots.Insert(0, s);
-                                                    SetSlots(Slots);
-                                                }
-                                            }
-                                        }
-                                        if (false && config.do_watch_rares && watchedRares.Count > 0)//is rare
-                                        {
-                                            foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
-                                            {
-                                                if (rare.estimated_value * config.profit_percent > itemValue && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
-                                                {
-
-                                                    Slot s = new Slot();
-                                                    NinjaItem fakeNinja = new NinjaItem();
-                                                    fakeNinja.name = "Rare:" + rare.type.ToString();
-                                                    fakeNinja.chaos_value = rare.estimated_value;
-
-                                                    foreach (KeyValuePair<string, string> kvp in rare.mods)
-                                                        fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
-                                                    s.BaseItem = fakeNinja;
-                                                    s.Message = "@" + name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
-
-                                                    s.is_mine = true;
-                                                    s.url = rare.url;
-                                                    s.SellItem = itemProp;
-                                                    s.account_name = accName;
-                                                    s.name = name;
-                                                    if (Slots.Count == 3)
-                                                        Slots.RemoveAt(2);
-                                                    Slots.Insert(0, s);
-                                                    SetSlots(Slots);
-                                                }
-                                            }
-                                        }
+                                        itemProp.value = itemValue;
+                                        itemProp.char_name = name;
+                                        itemProp.acc_name = accName;
+                                        raresQueue.Enqueue(itemProp);
                                     }
                                     catch (Exception othere)
                                     {
