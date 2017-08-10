@@ -1,10 +1,10 @@
 {
   "do_catchup_thread": true,
-  "do_watch_rares": false,
-  "do_watch_list": false,
+  "do_watch_rares": true,
+  "do_watch_list": true,
   "do_all_uniques": true,
   "do_all_uniques_with_ranges": true,
-  "exalt_ratio": 41.0,
+  "exalt_ratio": 48.0,
   "fusing_ratio": 0.444,
   "alch_ratio": 0.333,
   "max_price": 250,
@@ -34662,5 +34662,5 @@
   "update_ninja_when_manul_refresh": false,
   "blocked_accounts": [],
   "autoCopy": false,
-  "johnsounds": true
+  "johnsounds": false
 }
