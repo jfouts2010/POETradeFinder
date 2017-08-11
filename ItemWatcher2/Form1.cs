@@ -341,17 +341,18 @@ namespace ItemWatcher2
                                 {
                                     List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
                                     List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                                    {
-                                        txtBoxFasterSearch.Text = ints.Last().ToString();
-                                        txtBoxFasterSearch.ForeColor = Color.Red;
-                                    });
                                     for (int i = 0; i < ints.Count; i++)
                                     {
                                         if (ints[i] > intsold[i])
                                             ints[i] += changeby;
 
                                     }
+                                    
+                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                    {
+                                        txtBoxFasterSearch.Text = ints.Last().ToString();
+                                        txtBoxFasterSearch.ForeColor = Color.Red;
+                                    });
                                     string x = "";
                                     foreach (int i in ints)
                                         x += "-" + i;
