@@ -89,88 +89,110 @@ namespace ItemWatcher2
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(15000);
+            Queue<Item> secondrareQueue = new Queue<Item>();
             //if (config.do_watch_rares && watchedRares.Count > 0)
             while (true)
             {
-                Item itemProp = null;
-                while (raresQueue.TryDequeue(out itemProp))
+                try
                 {
-                    if (itemProp.implicitMods == null)
-                        itemProp.implicitMods = new string[] { "" };
-                    if (itemProp.explicitMods == null)
-                        itemProp.explicitMods = new string[] { "" };
-
-                    txtQueueTotal.Invoke((MethodInvoker)delegate
+                    Item itemProp = null;
+                    while (raresQueue.TryDequeue(out itemProp))
                     {
-                        txtQueueTotal.Text = "Queue: " + raresQueue.Count;
-                    });
-                    if (itemProp.value > config.max_price)
-                        continue;
-                    itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                    itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                    if (config.do_all_uniques)
-                    {
-                        if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
-                        {
-                            NinjaItem ninja = new NinjaItem();
-                            if (itemProp.frameType != 6)
-                                ninja = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
-                            else
-                                ninja = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
-
-                            if (ninja.chaos_value > 15)
-                                GetExplicitFields(ninja, itemProp);
-                            if (ninja.chaos_value * config.profit_percent > itemProp.value && ninja.chaos_value - config.min_profit_range > itemProp.value)
+                        if (itemProp.implicitMods == null)
+                            itemProp.implicitMods = new string[] { "" };
+                        if (itemProp.explicitMods == null)
+                            itemProp.explicitMods = new string[] { "" };
+                        if (raresQueue.Count % 5 == 0)
+                            txtUniqueStatus.Invoke((MethodInvoker)delegate
                             {
-                                if (ninja.is_weapon)
-                                    itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
+                                txtUniqueStatus.Text = "Queue: " + raresQueue.Count;
+                            });
+                        if (itemProp.value > config.max_price)
+                            continue;
+                        itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                        itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
+                        if (config.do_all_uniques)
+                        {
+                            if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
+                            {
+                                NinjaItem ninja = new NinjaItem();
+                                if (itemProp.frameType != 6)
+                                    ninja = ninjaItems.First(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine);
+                                else
+                                    ninja = ninjaItems.First(p => p.name == itemProp.typeLine && p.type == itemProp.frameType.ToString());
+
+                                if (ninja.chaos_value > 15)
+                                    GetExplicitFields(ninja, itemProp);
+                                if (ninja.chaos_value * config.profit_percent > itemProp.value && ninja.chaos_value - config.min_profit_range > itemProp.value)
+                                {
+                                    if (ninja.is_weapon)
+                                        itemProp.pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
 
 
-                                SetSlots(itemProp, ninja);
+                                    SetSlots(itemProp, ninja);
+                                }
+                            }
+                        }
+                        if (config.do_watch_list)
+                        {
+                            if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
+                            {
+                                NinjaItem localitem = watched_items.Where(p => itemProp.
+                                name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
+                                if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemProp.value || (localitem.chaos_value * config.profit_percent > itemProp.value && localitem.chaos_value - config.min_profit_range > itemProp.value))
+                                {
+
+                                    SetSlots(itemProp, localitem);
+                                }
+                            }
+                        }
+
+                        secondrareQueue.Enqueue(itemProp);
+                    }
+                    Item rareItemProp = null;
+                    while (raresQueue.Count == 0 && secondrareQueue.Count > 0)
+                    {
+                        //System.Threading.Thread.Sleep(1000);
+                        if (raresQueue.Count % 5 == 0)
+                            txtRareStatus.Invoke((MethodInvoker)delegate
+                            {
+                                txtRareStatus.Text = "Queue: " + secondrareQueue.Count;
+                            });
+                        rareItemProp = secondrareQueue.Dequeue();
+                        if (config.do_watch_rares && watchedRares.Count > 0)//is rare
+                        {
+                            foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
+                            {
+                                if (rare.estimated_value * config.profit_percent > rareItemProp.value && POETradeConfig.SeeIfItemMatchesRare(rare, rareItemProp, all_base_types))
+                                {
+
+
+                                    NinjaItem fakeNinja = new NinjaItem();
+                                    fakeNinja.name = "Rare:" + rare.type.ToString();
+                                    fakeNinja.chaos_value = rare.estimated_value;
+                                    foreach (KeyValuePair<string, string> kvp in rare.mods)
+                                        fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
+
+
+
+                                    SetSlots(rareItemProp, fakeNinja, rare.url);
+                                }
                             }
                         }
                     }
-                    if (config.do_watch_list)
-                    {
-                        if (watched_items.Where(p => itemProp.name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).Count() > 0)
-                        {
-                            NinjaItem localitem = watched_items.Where(p => itemProp.
-                            name.ToLower().Contains(p.name.ToLower()) || itemProp.typeLine.ToLower().Contains(p.name.ToLower())).OrderByDescending(p => p.name.Length).FirstOrDefault();
-                            if (localitem.chaos_value % 1 == .01m && localitem.chaos_value >= itemProp.value || (localitem.chaos_value * config.profit_percent > itemProp.value && localitem.chaos_value - config.min_profit_range > itemProp.value))
-                            {
 
-                                SetSlots(itemProp, localitem);
-                            }
-                        }
-                    }
-                    if (config.do_watch_rares && watchedRares.Count > 0)//is rare
-                    {
-                        foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
-                        {
-                            if (rare.estimated_value * config.profit_percent > itemProp.value && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
-                            {
-
-                                
-                                NinjaItem fakeNinja = new NinjaItem();
-                                fakeNinja.name = "Rare:" + rare.type.ToString();
-                                fakeNinja.chaos_value = rare.estimated_value;
-                                foreach (KeyValuePair<string, string> kvp in rare.mods)
-                                    fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
-                                
-                               
-
-                                SetSlots(itemProp, fakeNinja, rare.url);
-                            }
-                        }
-                    }
                 }
-                System.Threading.Thread.Sleep(4000);
+                catch (Exception eee)
+                {
+                    PlayErrorSound();
+                }
 
             }
         }
 
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
+            System.Threading.Thread.Sleep(200*1000);
             if (config.do_catchup_thread)
                 while (true)
                 {
@@ -178,7 +200,7 @@ namespace ItemWatcher2
                     {
                         txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                         {
-                            txtBoxFasterSearch.Text = "Catch up in : " + (300 - i * 5) + "s";
+                            txtBoxFasterSearch.Text = "Run in: " + (300 - i * 5) + "s";
                             txtBoxFasterSearch.ForeColor = Color.Black;
                         });
                         System.Threading.Thread.Sleep(5 * 1000);
@@ -186,10 +208,10 @@ namespace ItemWatcher2
 
                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                     {
-                        txtBoxFasterSearch.Text = "Catching Up to Head";
-                        txtBoxFasterSearch.ForeColor = Color.Black;
+                        txtBoxFasterSearch.Text = "Running";
+                        txtBoxFasterSearch.ForeColor = Color.Red;
                     });
-                    string tempid = FindCurrentHead(UsedChangeId);
+                    string tempid = FindCurrentHead(UsedChangeId,true);
                     int newchange = int.Parse(tempid.Split('-').Last());
                     int oldchange = int.Parse(RealChangeId.Split('-').Last());
                     int difference = newchange - oldchange;
@@ -252,7 +274,7 @@ namespace ItemWatcher2
                     */
                 }
         }
-        public static string FindCurrentHead(string tempChangeID = "")
+        private string FindCurrentHead(string tempChangeID = "", bool secondaryRun = false)
         {
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
@@ -276,50 +298,77 @@ namespace ItemWatcher2
                 //    textBox1.Text = "Waiting for POE Change Response";
                 //});
                 // Get response  
-
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                int changeby = 10000;
+                try
                 {
-                    // Get the response stream  
-                    using (Stream stream = response.GetResponseStream())
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
-                        using (StreamReader reader = new StreamReader(stream))
+                        // Get the response stream  
+                        using (Stream stream = response.GetResponseStream())
                         {
-
-                            char[] buffer = new char[65];
-                            reader.ReadBlock(buffer, 0, 64);
-                            string newstring = new string(buffer);
-
-                            newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                            if (newstring.Equals(tempChangeID))
+                            using (StreamReader reader = new StreamReader(stream))
                             {
-                                List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                string x = "";
-                                foreach (int i in intsold)
-                                    x += "-" + (i - 250);
-                                tempChangeID = x.Substring(1);
-                                RealChangeId = tempChangeID;
-                                System.Threading.Thread.Sleep(3000);
-                                return tempChangeID;
-                            }
-                            else
-                            {
-                                List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
-                                List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                for (int i = 0; i < ints.Count; i++)
+
+                                char[] buffer = new char[65];
+                                reader.ReadBlock(buffer, 0, 64);
+                                string newstring = new string(buffer);
+
+                                newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                if (newstring.Equals(tempChangeID))
                                 {
-                                    if (ints[i] > intsold[i])
-                                        ints[i] += 250;
+                                    if (changeby == 400)
+                                    {
+                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                        string x = "";
+                                        foreach (int i in intsold)
+                                            x += "-" + (i - changeby);
+                                        tempChangeID = x.Substring(1);
+                                        RealChangeId = tempChangeID;
+                                        System.Threading.Thread.Sleep(3000);
+                                        return tempChangeID;
+                                    }
+                                    else
+                                    {
+                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                        string x = "";
+                                        foreach (int i in intsold)
+                                            x += "-" + (i - changeby);
+                                        tempChangeID = x.Substring(1);
+                                        changeby = changeby / 50;
+                                    }
+                                }
+                                else
+                                {
+                                    List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
+                                    List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                    {
+                                        txtBoxFasterSearch.Text = ints.Last().ToString();
+                                        txtBoxFasterSearch.ForeColor = Color.Red;
+                                    });
+                                    for (int i = 0; i < ints.Count; i++)
+                                    {
+                                        if (ints[i] > intsold[i])
+                                            ints[i] += changeby;
+
+                                    }
+                                    string x = "";
+                                    foreach (int i in ints)
+                                        x += "-" + i;
+                                    tempChangeID = x.Substring(1);
+                                    if(secondaryRun)
+                                        System.Threading.Thread.Sleep(config.number_of_people * 2000);
+                                    else
+                                        System.Threading.Thread.Sleep(config.number_of_people * 1000);
 
                                 }
-                                string x = "";
-                                foreach (int i in ints)
-                                    x += "-" + i;
-                                tempChangeID = x.Substring(1);
-                                System.Threading.Thread.Sleep(config.number_of_people * 2000);
-
                             }
                         }
                     }
+                }
+                catch
+                {
+                    PlayErrorSound();
                 }
             }
         }
@@ -391,8 +440,11 @@ namespace ItemWatcher2
             });
 
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
-
-            UsedChangeId = Form1.FindCurrentHead();
+            textBox1.Invoke((MethodInvoker)delegate
+            {
+                textBox1.Text = "Locating Head";
+            });
+            UsedChangeId = FindCurrentHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -405,10 +457,7 @@ namespace ItemWatcher2
             }*/
 
             // Create the web request  
-            textBox1.Invoke((MethodInvoker)delegate
-            {
-                textBox1.Text = "Running";
-            });
+            
             while (true)
             {
                 try
@@ -533,9 +582,9 @@ namespace ItemWatcher2
                                     }
                                 }
                             }
-                            txtQueueCurrent.Invoke((MethodInvoker)delegate
+                            txtMainStatus.Invoke((MethodInvoker)delegate
                             {
-                                txtQueueCurrent.Text = "Running";
+                                txtMainStatus.Text = "Running";
                             });
 
                         }
@@ -548,10 +597,11 @@ namespace ItemWatcher2
                 }
                 catch (Exception eee)
                 {
-                    txtQueueCurrent.Invoke((MethodInvoker)delegate
+                    txtMainStatus.Invoke((MethodInvoker)delegate
                     {
-                        txtQueueCurrent.Text = "Failed";
+                        txtMainStatus.Text = "Failed";
                     });
+                    PlayErrorSound();
                 }
 
             }
@@ -594,14 +644,10 @@ namespace ItemWatcher2
             player.Play();
         }
         [STAThread]
-        private void PlayItsMeSound()
+        private void PlayErrorSound()
         {
             SoundPlayer player = new SoundPlayer();
-
-            if (!config.johnsounds)
-                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Mario.wav";
-            else
-                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Error.wav";
             player.Play();
         }
 
@@ -1646,5 +1692,7 @@ namespace ItemWatcher2
             config.blocked_accounts.Add(Slots[2].account_name);
             SaveNames();
         }
+
+
     }
 }

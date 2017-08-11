@@ -126,13 +126,19 @@ namespace ItemWatcher2
             this.ex_ratio = new System.Windows.Forms.Label();
             this.lblDebug = new System.Windows.Forms.Label();
             this.txtBoxFasterSearch = new System.Windows.Forms.TextBox();
-            this.txtQueueTotal = new System.Windows.Forms.TextBox();
-            this.txtQueueCurrent = new System.Windows.Forms.TextBox();
+            this.txtRareStatus = new System.Windows.Forms.TextBox();
+            this.txtUniqueStatus = new System.Windows.Forms.TextBox();
+            this.txtMainStatus = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 30);
+            this.textBox1.Location = new System.Drawing.Point(43, 30);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(98, 20);
@@ -662,7 +668,7 @@ namespace ItemWatcher2
             // 
             // txtBoxUpdateThread
             // 
-            this.txtBoxUpdateThread.Location = new System.Drawing.Point(224, 30);
+            this.txtBoxUpdateThread.Location = new System.Drawing.Point(397, 52);
             this.txtBoxUpdateThread.Name = "txtBoxUpdateThread";
             this.txtBoxUpdateThread.ReadOnly = true;
             this.txtBoxUpdateThread.Size = new System.Drawing.Size(186, 20);
@@ -671,7 +677,7 @@ namespace ItemWatcher2
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(230, 9);
+            this.label1.Location = new System.Drawing.Point(397, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 61;
@@ -736,7 +742,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe
             // 
-            this.btnRefreshPoe.Location = new System.Drawing.Point(416, 30);
+            this.btnRefreshPoe.Location = new System.Drawing.Point(509, 23);
             this.btnRefreshPoe.Name = "btnRefreshPoe";
             this.btnRefreshPoe.Size = new System.Drawing.Size(87, 23);
             this.btnRefreshPoe.TabIndex = 68;
@@ -788,7 +794,7 @@ namespace ItemWatcher2
             // 
             this.lblCopyLock.AutoSize = true;
             this.lblCopyLock.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCopyLock.Location = new System.Drawing.Point(593, 30);
+            this.lblCopyLock.Location = new System.Drawing.Point(784, 42);
             this.lblCopyLock.Name = "lblCopyLock";
             this.lblCopyLock.Size = new System.Drawing.Size(70, 26);
             this.lblCopyLock.TabIndex = 73;
@@ -1004,7 +1010,7 @@ namespace ItemWatcher2
             // 
             this.lblDebug.AutoSize = true;
             this.lblDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDebug.Location = new System.Drawing.Point(593, 65);
+            this.lblDebug.Location = new System.Drawing.Point(784, 77);
             this.lblDebug.Name = "lblDebug";
             this.lblDebug.Size = new System.Drawing.Size(76, 26);
             this.lblDebug.TabIndex = 97;
@@ -1012,35 +1018,94 @@ namespace ItemWatcher2
             // 
             // txtBoxFasterSearch
             // 
-            this.txtBoxFasterSearch.Location = new System.Drawing.Point(13, 52);
+            this.txtBoxFasterSearch.Location = new System.Drawing.Point(43, 52);
             this.txtBoxFasterSearch.Name = "txtBoxFasterSearch";
             this.txtBoxFasterSearch.ReadOnly = true;
             this.txtBoxFasterSearch.Size = new System.Drawing.Size(98, 20);
             this.txtBoxFasterSearch.TabIndex = 99;
             // 
-            // txtQueueTotal
+            // txtRareStatus
             // 
-            this.txtQueueTotal.Location = new System.Drawing.Point(117, 52);
-            this.txtQueueTotal.Name = "txtQueueTotal";
-            this.txtQueueTotal.ReadOnly = true;
-            this.txtQueueTotal.Size = new System.Drawing.Size(98, 20);
-            this.txtQueueTotal.TabIndex = 101;
+            this.txtRareStatus.Location = new System.Drawing.Point(193, 52);
+            this.txtRareStatus.Name = "txtRareStatus";
+            this.txtRareStatus.ReadOnly = true;
+            this.txtRareStatus.Size = new System.Drawing.Size(98, 20);
+            this.txtRareStatus.TabIndex = 101;
             // 
-            // txtQueueCurrent
+            // txtUniqueStatus
             // 
-            this.txtQueueCurrent.Location = new System.Drawing.Point(117, 30);
-            this.txtQueueCurrent.Name = "txtQueueCurrent";
-            this.txtQueueCurrent.ReadOnly = true;
-            this.txtQueueCurrent.Size = new System.Drawing.Size(98, 20);
-            this.txtQueueCurrent.TabIndex = 100;
+            this.txtUniqueStatus.Location = new System.Drawing.Point(193, 30);
+            this.txtUniqueStatus.Name = "txtUniqueStatus";
+            this.txtUniqueStatus.ReadOnly = true;
+            this.txtUniqueStatus.Size = new System.Drawing.Size(98, 20);
+            this.txtUniqueStatus.TabIndex = 100;
+            // 
+            // txtMainStatus
+            // 
+            this.txtMainStatus.Location = new System.Drawing.Point(293, 52);
+            this.txtMainStatus.Name = "txtMainStatus";
+            this.txtMainStatus.ReadOnly = true;
+            this.txtMainStatus.Size = new System.Drawing.Size(98, 20);
+            this.txtMainStatus.TabIndex = 102;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(5, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.TabIndex = 103;
+            this.label3.Text = "Status";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 104;
+            this.label4.Text = "Catch";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(143, 33);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(46, 13);
+            this.label5.TabIndex = 105;
+            this.label5.Text = "Uniques";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(150, 55);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.TabIndex = 106;
+            this.label8.Text = "Rares";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(297, 33);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(67, 13);
+            this.label9.TabIndex = 107;
+            this.label9.Text = "Main Thread";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 656);
-            this.Controls.Add(this.txtQueueTotal);
-            this.Controls.Add(this.txtQueueCurrent);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtMainStatus);
+            this.Controls.Add(this.txtRareStatus);
+            this.Controls.Add(this.txtUniqueStatus);
             this.Controls.Add(this.txtBoxFasterSearch);
             this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.ex_ratio);
@@ -1243,8 +1308,14 @@ namespace ItemWatcher2
 private System.Windows.Forms.Label ex_ratio;
         private System.Windows.Forms.Label lblDebug;
         private System.Windows.Forms.TextBox txtBoxFasterSearch;
-        private System.Windows.Forms.TextBox txtQueueTotal;
-        private System.Windows.Forms.TextBox txtQueueCurrent;
+        private System.Windows.Forms.TextBox txtRareStatus;
+        private System.Windows.Forms.TextBox txtUniqueStatus;
+        private System.Windows.Forms.TextBox txtMainStatus;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }
 
