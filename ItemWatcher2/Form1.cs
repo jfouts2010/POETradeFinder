@@ -88,7 +88,7 @@ namespace ItemWatcher2
 
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
-            System.Threading.Thread.Sleep(40000);
+            System.Threading.Thread.Sleep(15000);
             //if (config.do_watch_rares && watchedRares.Count > 0)
             while (true)
             {
@@ -150,13 +150,16 @@ namespace ItemWatcher2
                             if (rare.estimated_value * config.profit_percent > itemProp.value && POETradeConfig.SeeIfItemMatchesRare(rare, itemProp, all_base_types))
                             {
 
-                                Slot s = new Slot();
+                                
                                 NinjaItem fakeNinja = new NinjaItem();
                                 fakeNinja.name = "Rare:" + rare.type.ToString();
                                 fakeNinja.chaos_value = rare.estimated_value;
+                                foreach (KeyValuePair<string, string> kvp in rare.mods)
+                                    fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
+                                
+                               
 
-
-                                SetSlots(itemProp, fakeNinja);
+                                SetSlots(itemProp, fakeNinja, rare.url);
                             }
                         }
                     }
@@ -171,11 +174,32 @@ namespace ItemWatcher2
             if (config.do_catchup_thread)
                 while (true)
                 {
-                    if (RealChangeId == "")
+                    for (int i = 0; i < 60; i++)
                     {
-                        System.Threading.Thread.Sleep(5000);
-                        continue;
+                        txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                        {
+                            txtBoxFasterSearch.Text = "Catch up in : " + (300 - i * 5) + "s";
+                            txtBoxFasterSearch.ForeColor = Color.Black;
+                        });
+                        System.Threading.Thread.Sleep(5 * 1000);
                     }
+
+                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxFasterSearch.Text = "Catching Up to Head";
+                        txtBoxFasterSearch.ForeColor = Color.Black;
+                    });
+                    string tempid = FindCurrentHead(UsedChangeId);
+                    int newchange = int.Parse(tempid.Split('-').Last());
+                    int oldchange = int.Parse(RealChangeId.Split('-').Last());
+                    int difference = newchange - oldchange;
+                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxFasterSearch.Text = tempid.Split('-').Last() + " : " + difference;
+                        txtBoxFasterSearch.ForeColor = Color.Black;
+                    });
+                    RealChangeId = tempid;
+                    /*
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
                     //textBox1.Invoke((MethodInvoker)delegate
                     //{
@@ -200,8 +224,8 @@ namespace ItemWatcher2
                                     int newchange = int.Parse(newstring.Split('-').Last());
                                     int oldchange = int.Parse(RealChangeId.Split('-').Last());
                                     int difference = newchange - oldchange;
-                                    if (difference < 50)
-                                        System.Threading.Thread.Sleep(1500);
+                                    if (difference < 40)
+                                        System.Threading.Thread.Sleep(2000);
                                     else
                                         System.Threading.Thread.Sleep(400);
                                     //System.Threading.Thread.Sleep(100);
@@ -225,23 +249,25 @@ namespace ItemWatcher2
                             }
                         }
                     }
+                    */
                 }
         }
-        public static string FindCurrentHead()
+        public static string FindCurrentHead(string tempChangeID = "")
         {
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
-            string tempChangeID = "";
+
             // Get response  
-            using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
-            {
-                // Get the response stream  
-                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+            if (string.IsNullOrEmpty(tempChangeID))
+                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
                 {
-                    JObject jo = JObject.Parse(reader.ReadToEnd());
-                    tempChangeID = jo.Children().ToList()[1].First.ToString();
+                    // Get the response stream  
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    {
+                        JObject jo = JObject.Parse(reader.ReadToEnd());
+                        tempChangeID = jo.Children().ToList()[1].First.ToString();
+                    }
                 }
-            }
             while (true)
             {
                 HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + tempChangeID) as HttpWebRequest;
@@ -269,7 +295,7 @@ namespace ItemWatcher2
                                 List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
                                 string x = "";
                                 foreach (int i in intsold)
-                                    x += "-" + (i - 400);
+                                    x += "-" + (i - 250);
                                 tempChangeID = x.Substring(1);
                                 RealChangeId = tempChangeID;
                                 System.Threading.Thread.Sleep(3000);
@@ -282,14 +308,14 @@ namespace ItemWatcher2
                                 for (int i = 0; i < ints.Count; i++)
                                 {
                                     if (ints[i] > intsold[i])
-                                        ints[i] += 400;
+                                        ints[i] += 250;
 
                                 }
                                 string x = "";
                                 foreach (int i in ints)
                                     x += "-" + i;
                                 tempChangeID = x.Substring(1);
-                                System.Threading.Thread.Sleep(1000);
+                                System.Threading.Thread.Sleep(config.number_of_people * 2000);
 
                             }
                         }
@@ -513,9 +539,10 @@ namespace ItemWatcher2
                             });
 
                         }
-                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < .3)
+                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people)
                         {
-                            System.Threading.Thread.Sleep(300);
+
+                            System.Threading.Thread.Sleep((int)(config.number_of_people - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 1000);
                         }
                     }
                 }
@@ -566,6 +593,17 @@ namespace ItemWatcher2
                 player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
             player.Play();
         }
+        [STAThread]
+        private void PlayItsMeSound()
+        {
+            SoundPlayer player = new SoundPlayer();
+
+            if (!config.johnsounds)
+                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Mario.wav";
+            else
+                player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\ding.wav";
+            player.Play();
+        }
 
         [STAThread]
         private void SetjustTextSlots(Slot s)
@@ -581,7 +619,7 @@ namespace ItemWatcher2
 
                 richTxtBox8Rep.Invoke((MethodInvoker)delegate
                 {
-                    richTxtBox8Rep.Text = justTextSlots[0].SellItem.name+ " " +justTextSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[0].SellItem.note) + " chaos: " + justTextSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[0].name;
+                    richTxtBox8Rep.Text = justTextSlots[0].SellItem.name + " " + justTextSlots[0].SellItem.typeLine + " for " + GetPriceInChaos(justTextSlots[0].SellItem.note) + " chaos: " + justTextSlots[0].worth + " : " + DateTime.Now.ToShortTimeString() + " " + justTextSlots[0].name;
                     richTxtBox8Rep.ForeColor = Color.DarkGreen;
                 });
             }
@@ -656,7 +694,7 @@ namespace ItemWatcher2
             else return Color.Red;
         }
         [STAThread]
-        public void SetSlots(Item itemProp, NinjaItem ninja)
+        public void SetSlots(Item itemProp, NinjaItem ninja, string url = "")
         {
             if (itemProp != null)
             {
@@ -669,9 +707,10 @@ namespace ItemWatcher2
                 s.worth = ninja.chaos_value.ToString();
                 int x = findWhoGets(itemProp.id, config.number_of_people);
                 s.is_mine = x == config.my_number;
+                s.url = url;
                 s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
-                
+
                 if (Slots.Count == 3)
                 {
                     SetjustTextSlots(Slots[2]);
@@ -1507,19 +1546,28 @@ namespace ItemWatcher2
 
         private void btnRefreshPoe1_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[0].BaseItem, true);
+            if (string.IsNullOrEmpty(Slots[0].url))
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[0].BaseItem, true);
+            else
+                NinjaPoETradeMethods.GetLowestPricesForRares(Slots[0]);
             SetSlots(null, null);
         }
 
         private void btnRefreshPoe2_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[1].BaseItem, true);
+            if (string.IsNullOrEmpty(Slots[1].url))
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[1].BaseItem, true);
+            else
+                NinjaPoETradeMethods.GetLowestPricesForRares(Slots[1]);
             SetSlots(null, null);
         }
 
         private void btnRefreshPoe3_Click(object sender, EventArgs e)
         {
-            NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[2].BaseItem, true);
+            if (string.IsNullOrEmpty(Slots[2].url))
+                NinjaPoETradeMethods.ItemExplicitFieldSearch(Slots[2].BaseItem, true);
+            else
+                NinjaPoETradeMethods.GetLowestPricesForRares(Slots[2]);
             SetSlots(null, null);
         }
 

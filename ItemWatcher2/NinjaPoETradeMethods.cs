@@ -761,6 +761,59 @@ namespace ItemWatcher2
             System.IO.File.WriteAllText("AllBaseTypesStrings.json", serialized);
         }
 
+        public static List<decimal> GetLowestPricesForRares(Slot s)
+        {
+            List<decimal> prices = GetLowestPricesWithUrl(s.url).OrderBy(p => p).ToList();
+            s.BaseItem.MinSell = prices.First();
+            s.BaseItem.Top5Sells = prices;
+            s.BaseItem.MinAverage = prices.Average();
+            return prices;
+        }
+
+        public static List<decimal> GetLowestPricesWithUrl(string url)
+        {
+            try
+            {
+                int count = 0;
+                List<decimal> Top5Prices = new List<decimal>();
+                HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create(url);
+                using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
+                {   
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    {
+                        string s = reader.ReadToEnd();
+                        HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                        htmlDoc.LoadHtml(s);
+                        var inputs = htmlDoc.DocumentNode.Descendants("tbody");
+
+                        foreach (var input in inputs)
+                        {
+                            if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("chaos") || input.Attributes["data-buyout"].Value.Contains("exalted")))
+                            {
+                                Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio) : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if (Top5Prices.Count > 0)
+                {
+                    decimal last = Top5Prices.First();
+                    for (int i = 0; i < Top5Prices.Count; i++)
+                    {
+                        decimal current = Top5Prices[i];
+                        if (last * 2 - current < 0)
+                            Top5Prices[i] = last * 1.5M;
+                        last = Top5Prices[i];
+                    }
+                }
+                return Top5Prices;
+            }catch
+            {
+                return null;
+            }
+        }
+
         public static List<int> GetPoeLowest5Prices(POETradeConfig tradeConfig)
         {
             HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
