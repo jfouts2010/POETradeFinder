@@ -150,14 +150,16 @@ namespace ItemWatcher2
                         secondrareQueue.Enqueue(itemProp);
                     }
                     Item rareItemProp = null;
-                    while (raresQueue.Count == 0 && secondrareQueue.Count > 0)
+                    while (raresQueue.Count <10 && secondrareQueue.Count > 0)
                     {
-                        //System.Threading.Thread.Sleep(1000);
-                        if (raresQueue.Count % 5 == 0)
+                        
+                        if (secondrareQueue.Count % 5 == 0)
                             txtRareStatus.Invoke((MethodInvoker)delegate
                             {
                                 txtRareStatus.Text = "Queue: " + secondrareQueue.Count;
                             });
+                        if (secondrareQueue.Count > 10000)
+                            secondrareQueue = new Queue<Item>();
                         rareItemProp = secondrareQueue.Dequeue();
                         if (config.do_watch_rares && watchedRares.Count > 0)//is rare
                         {
@@ -165,8 +167,6 @@ namespace ItemWatcher2
                             {
                                 if (rare.estimated_value * config.profit_percent > rareItemProp.value && POETradeConfig.SeeIfItemMatchesRare(rare, rareItemProp, all_base_types))
                                 {
-
-
                                     NinjaItem fakeNinja = new NinjaItem();
                                     fakeNinja.name = "Rare:" + rare.type.ToString();
                                     fakeNinja.chaos_value = rare.estimated_value;
@@ -180,13 +180,12 @@ namespace ItemWatcher2
                             }
                         }
                     }
-
                 }
                 catch (Exception eee)
                 {
                     PlayErrorSound();
+                    System.Threading.Thread.Sleep(5000);
                 }
-
             }
         }
 
@@ -290,6 +289,7 @@ namespace ItemWatcher2
                         tempChangeID = jo.Children().ToList()[1].First.ToString();
                     }
                 }
+            int changeby = 10000;
             while (true)
             {
                 HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + tempChangeID) as HttpWebRequest;
@@ -298,7 +298,11 @@ namespace ItemWatcher2
                 //    textBox1.Text = "Waiting for POE Change Response";
                 //});
                 // Get response  
-                int changeby = 10000;
+                if (secondaryRun)
+                    System.Threading.Thread.Sleep(config.number_of_people * 2000);
+                else
+                    System.Threading.Thread.Sleep(config.number_of_people * 1000);
+
                 try
                 {
                     using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -334,7 +338,7 @@ namespace ItemWatcher2
                                         foreach (int i in intsold)
                                             x += "-" + (i - changeby);
                                         tempChangeID = x.Substring(1);
-                                        changeby = changeby / 50;
+                                        changeby = changeby / 5;
                                     }
                                 }
                                 else
@@ -357,10 +361,6 @@ namespace ItemWatcher2
                                     foreach (int i in ints)
                                         x += "-" + i;
                                     tempChangeID = x.Substring(1);
-                                    if(secondaryRun)
-                                        System.Threading.Thread.Sleep(config.number_of_people * 2000);
-                                    else
-                                        System.Threading.Thread.Sleep(config.number_of_people * 1000);
 
                                 }
                             }
@@ -422,6 +422,7 @@ namespace ItemWatcher2
             justTextSlots.Add(new Slot());
             justTextSlots.Add(new Slot());
             justTextSlots.Add(new Slot());
+            System.Threading.Thread.Sleep(1000);
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
@@ -458,7 +459,10 @@ namespace ItemWatcher2
             }*/
 
             // Create the web request  
-            
+            textBox1.Invoke((MethodInvoker)delegate
+            {
+                textBox1.Text = "Found Head";
+            });
             while (true)
             {
                 try
@@ -580,6 +584,7 @@ namespace ItemWatcher2
                                     catch (Exception othere)
                                     {
                                         int x = 5;
+                                        PlayErrorSound();
                                     }
                                 }
                             }
@@ -589,10 +594,10 @@ namespace ItemWatcher2
                             });
 
                         }
-                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people)
+                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people*2)
                         {
 
-                            System.Threading.Thread.Sleep((int)(config.number_of_people - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 1000);
+                            System.Threading.Thread.Sleep((int)(config.number_of_people - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 2000);
                         }
                     }
                 }
@@ -603,6 +608,7 @@ namespace ItemWatcher2
                         txtMainStatus.Text = "Failed";
                     });
                     PlayErrorSound();
+                    System.Threading.Thread.Sleep(5000);
                 }
 
             }
