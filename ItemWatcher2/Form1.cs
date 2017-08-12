@@ -191,7 +191,13 @@ namespace ItemWatcher2
 
         private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
         {
-            System.Threading.Thread.Sleep(200*1000);
+            while (true)
+            {
+                System.Threading.Thread.Sleep(5000);
+                string lower = textBox1.Text.ToLower();
+                if (lower.Contains("running") || lower.Contains("failed") || lower.Contains("found head"))
+                    break;
+            }
             if (config.do_catchup_thread)
                 while (true)
                 {
@@ -199,10 +205,10 @@ namespace ItemWatcher2
                     {
                         txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                         {
-                            txtBoxFasterSearch.Text = "Run in: " + (300 - i * 5) + "s";
+                            txtBoxFasterSearch.Text = "Run in: " + (900 - i * 15) + "s";
                             txtBoxFasterSearch.ForeColor = Color.Black;
                         });
-                        System.Threading.Thread.Sleep(5 * 1000);
+                        System.Threading.Thread.Sleep(5 * 3000);
                     }
 
                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
@@ -299,9 +305,9 @@ namespace ItemWatcher2
                 //});
                 // Get response  
                 if (secondaryRun)
-                    System.Threading.Thread.Sleep(config.number_of_people * 2000);
+                    System.Threading.Thread.Sleep(config.number_of_people * 3000);
                 else
-                    System.Threading.Thread.Sleep(config.number_of_people * 1000);
+                    System.Threading.Thread.Sleep(config.number_of_people * 1500);
 
                 try
                 {
@@ -339,6 +345,7 @@ namespace ItemWatcher2
                                             x += "-" + (i - changeby);
                                         tempChangeID = x.Substring(1);
                                         changeby = changeby / 5;
+
                                     }
                                 }
                                 else
@@ -487,7 +494,10 @@ namespace ItemWatcher2
                     int otherchange = int.Parse(RealChangeId.Split('-').Last());
                     if (otherchange - currchange >= 400)
                         UsedChangeId = UsedChangeId.Substring(0, 36) + otherchange;
-
+                    if(!txtBoxFasterSearch.Text.ToLower().Contains("run in"))
+                    {
+                        System.Threading.Thread.Sleep(5000);
+                    }
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + UsedChangeId) as HttpWebRequest;
                     //textBox1.Invoke((MethodInvoker)delegate
                     //{
