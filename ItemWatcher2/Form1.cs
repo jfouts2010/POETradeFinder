@@ -653,9 +653,9 @@ namespace ItemWatcher2
         [STAThread]
         private void PlayErrorSound()
         {
-            SoundPlayer player = new SoundPlayer();
-            player.SoundLocation = AppDomain.CurrentDomain.BaseDirectory + "\\Error.wav";
-            player.Play();
+           /* SoundPlayer player = new SoundPlayer();
+            player.SoundLocatio*n = AppDomain.CurrentDomain.BaseDirectory + "\\Error.wav";
+            player.Play();*/
         }
 
         [STAThread]
