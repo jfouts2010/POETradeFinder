@@ -607,7 +607,7 @@ namespace ItemWatcher2
                         if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people*2)
                         {
 
-                            System.Threading.Thread.Sleep((int)(config.number_of_people - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 2000);
+                            System.Threading.Thread.Sleep((int)(config.number_of_people*2 - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 2000);
                         }
                     }
                 }
