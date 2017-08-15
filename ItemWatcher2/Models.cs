@@ -14,6 +14,7 @@ namespace ItemWatcher2
         public static string itemfilename = "SavedItems.json";
         public static string currencyfilename = "SavedCurrencies.json";
         public static string baseTypesStringFilename = "AllBaseTypesStrings.json";
+        public static string craftablesFileNames = "Craftables.json";
         public static string wepBaseTypesFile = "AllBaseTypes.json";
         public static string configfile = "Config.json";
     }
@@ -26,6 +27,7 @@ namespace ItemWatcher2
             league = "Harbinger";
             normalize_q = true;
             mods = new Dictionary<string, string>();
+            id = Guid.NewGuid();
         }
 
         public POETradeConfig(NinjaItem uniqueItem) : this()
@@ -48,7 +50,7 @@ namespace ItemWatcher2
             };
             return nj;
         }
-
+        public Guid id { get; set; }
         public string league { get; set; }
         public string name { get; set; }
         public BaseType type { get; set; }
@@ -73,6 +75,8 @@ namespace ItemWatcher2
         public bool? normalize_q { get; set; }
         public bool? crafted { get; set; }
         public bool? enchanted { get; set; }
+
+        public DateTime last_time_saved { get; set; }
 
         //Calculated later
         public decimal estimated_value { get; set; }
@@ -166,6 +170,10 @@ namespace ItemWatcher2
         public static readonly string final_FireRes = "(pseudo) (total) +#% to Fire Resistance";
         public static readonly string final_ColdRes = "(pseudo) (total) +#% to Cold Resistance";
         public static readonly string final_LightningRes = "(pseudo) (total) +#% to Lightning Resistance";
+        public static readonly string final_PhysPercent = "#% increased Physical Damage";
+        public static readonly string final_PhysAdded = "Adds # to # Physical Damage";
+        public static readonly string final_AttackSpeed = "#% increased Attack Speed";
+        public static readonly string final_CritPercent = "#% increased Critical Strike Chance";
 
         public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp, Dictionary<string, string> baseStrings)
         {
@@ -488,6 +496,17 @@ namespace ItemWatcher2
         }
     }
 
+    public class POETradeCraftable : POETradeConfig
+    {
+        public POETradeCraftable() : base()
+        {
+            requiredMods = new Dictionary<string, string>();
+            craftableMods = new Dictionary<string, string>();
+        }
+        public Dictionary<string, string> requiredMods { get; set; }
+        public Dictionary<string, string> craftableMods { get; set; }
+    }
+
     [Serializable]
     public class NinjaItem
     {
@@ -622,6 +641,7 @@ namespace ItemWatcher2
         public List<NinjaItem> SavedItems { get; set; }
         public List<string> avaliableExplicits { get; set; }
         public DateTime LastSaved { get; set; }
+        public DateTime lastRareSave { get; set; }
         public double refresh_minutes { get; set; }
         public bool refresh_items { get; set; }
         public bool update_ninja_when_manul_refresh { get; set; }

@@ -1,6 +1,6 @@
 {
   "do_catchup_thread": true,
-  "do_watch_rares": false,
+  "do_watch_rares": true,
   "do_watch_list": true,
   "do_all_uniques": true,
   "do_all_uniques_with_ranges": true,
@@ -35014,6 +35014,7 @@
     ""
   ],
   "LastSaved": "2017-08-12T15:39:32.0118893-06:00",
+  "lastRareSave": "0001-01-01T00:00:00",
   "refresh_minutes": 60.0,
   "refresh_items": false,
   "update_ninja_when_manul_refresh": false,

@@ -58,6 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditCraftables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditCraftables.Designer.cs">
+      <DependentUpon>EditCraftables.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditWatchedRares.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     <Compile Include="StartupForm.Designer.cs">
       <DependentUpon>StartupForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EditCraftables.resx">
+      <DependentUpon>EditCraftables.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditWatchedRares.resx">
       <DependentUpon>EditWatchedRares.cs</DependentUpon>
     </EmbeddedResource>

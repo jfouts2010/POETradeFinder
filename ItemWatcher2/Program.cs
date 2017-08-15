@@ -22,6 +22,7 @@ namespace ItemWatcher2
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new StartupForm());
             Application.Run(new EditWatchedRares());
+            Application.Run(new EditCraftables());
             Application.Run(new Form1());
            
            

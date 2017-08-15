@@ -24,6 +24,7 @@ namespace ItemWatcher2
         public static List<WeaponBaseItem> allBaseTypes;
         public static List<POETradeConfig> watchedRares;
         public static Dictionary<string, string> all_base_types;
+        public static List<POETradeCraftable> craftables;
         public static ItemWatchConfig config;
         public static ConcurrentQueue<Item> raresQueue = new ConcurrentQueue<Item>();
 
@@ -38,8 +39,7 @@ namespace ItemWatcher2
         public Form1()
         {
             LoadBasicInfo();
-            if (config.do_watch_rares)
-                TestPoeTradeConfig();
+            
             //GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
@@ -57,6 +57,12 @@ namespace ItemWatcher2
             bgw2.RunWorkerAsync();
             bgw3.RunWorkerAsync();
             bgw4.RunWorkerAsync();
+            if (config.do_watch_rares)
+            {
+                BackgroundWorker bgw5 = new BackgroundWorker();
+                bgw5.DoWork += SyncRares;
+                bgw5.RunWorkerAsync();
+            }
         }
 
 
@@ -85,7 +91,37 @@ namespace ItemWatcher2
                 LoadBasicInfo();
             }
         }
+        private void SyncRares(object sender, DoWorkEventArgs e)
+        {
 
+            LoadBasicInfo();
+            while (true)
+            {
+                txtRareUpdateStatus.Invoke((MethodInvoker)delegate
+                {
+                    txtRareUpdateStatus.Text = "Doing Nothing";
+                });
+
+                if (config.LastSaved.AddMinutes(config.refresh_minutes*2) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
+                {
+                    txtRareUpdateStatus.Invoke((MethodInvoker)delegate
+                    {
+                        txtRareUpdateStatus.Text = "Starting Rare Update";
+                    });
+                    LoadBasicInfo();
+                    GetValuesOfWatchedRares();
+                    config.lastRareSave = DateTime.Now;
+                }
+                else
+                    System.Threading.Thread.Sleep(5000);
+                
+            }
+        }
+
+        private void SyncCraftables(object sender, DoWorkEventArgs e)
+        {
+
+        }
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(15000);
@@ -400,16 +436,26 @@ namespace ItemWatcher2
             System.IO.File.Delete(FinalVariables.itemfilename);
             System.IO.File.WriteAllText("allBaseTypes.json", serialized);
         }
-        [STAThread]
-        private void TestPoeTradeConfig()
+        
+        private void GetValuesOfWatchedRares()
         {
-            foreach (POETradeConfig rare in watchedRares)
+           
+            for(int i = 0; i < watchedRares.Count; i++)
             {
+                POETradeConfig rare = watchedRares[i];
+                if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
+                    continue;
+                txtRareUpdateStatus.Invoke((MethodInvoker)delegate
+                {
+                    txtRareUpdateStatus.Text = i+" / "+watchedRares.Count;
+                });
                 List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
                 if (prices.Count > 0)
                     rare.estimated_value = prices.Sum(p => p) / prices.Count;
                 else
                     rare.estimated_value = 10000;
+                rare.last_time_saved = DateTime.Now;
+                watchedRares[i] = rare;
             }
             saveRares();
         }
@@ -434,6 +480,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
+            
             //why even do this when we overwrite
             /*
             if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
@@ -453,6 +500,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Locating Head";
             });
+
             UsedChangeId = FindCurrentHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
@@ -1383,6 +1431,14 @@ namespace ItemWatcher2
             catch (Exception e)
             {
                 all_base_types = new Dictionary<string, string>();
+            }
+            try
+            {
+                craftables = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POETradeCraftable>>(System.IO.File.ReadAllText(FinalVariables.baseTypesStringFilename));
+            }
+            catch (Exception e)
+            {
+                craftables = new List<POETradeCraftable>();
             }
         }
         public static void saveRares()

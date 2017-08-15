@@ -134,6 +134,8 @@ namespace ItemWatcher2
             this.label5 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtRareUpdateStatus = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -742,7 +744,7 @@ namespace ItemWatcher2
             // 
             // btnRefreshPoe
             // 
-            this.btnRefreshPoe.Location = new System.Drawing.Point(509, 23);
+            this.btnRefreshPoe.Location = new System.Drawing.Point(499, 23);
             this.btnRefreshPoe.Name = "btnRefreshPoe";
             this.btnRefreshPoe.Size = new System.Drawing.Size(87, 23);
             this.btnRefreshPoe.TabIndex = 68;
@@ -1093,11 +1095,30 @@ namespace ItemWatcher2
             this.label9.TabIndex = 107;
             this.label9.Text = "Main Thread";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(589, 33);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(73, 13);
+            this.label10.TabIndex = 109;
+            this.label10.Text = "Update Rares";
+            // 
+            // txtRareUpdateStatus
+            // 
+            this.txtRareUpdateStatus.Location = new System.Drawing.Point(589, 52);
+            this.txtRareUpdateStatus.Name = "txtRareUpdateStatus";
+            this.txtRareUpdateStatus.ReadOnly = true;
+            this.txtRareUpdateStatus.Size = new System.Drawing.Size(186, 20);
+            this.txtRareUpdateStatus.TabIndex = 108;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.txtRareUpdateStatus);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
@@ -1316,6 +1337,8 @@ private System.Windows.Forms.Label ex_ratio;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtRareUpdateStatus;
     }
 }
 
