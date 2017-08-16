@@ -47,10 +47,12 @@ namespace ItemWatcher2
             BackgroundWorker bgw2 = new BackgroundWorker();
             BackgroundWorker bgw3 = new BackgroundWorker();
             BackgroundWorker bgw4 = new BackgroundWorker();
+            
 
             bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
-            bgw3.DoWork += StayUpToDateWithPoe;
+            bgw3.DoWork += SyncHead;
+            bgw4.DoWork += ProcessItems;
             bgw4.DoWork += ProcessItems;
 
             bgw.RunWorkerAsync();
@@ -63,9 +65,15 @@ namespace ItemWatcher2
                 bgw5.DoWork += SyncRares;
                 bgw5.RunWorkerAsync();
             }
+            if(config.do_craft_watch)
+            {
+                BackgroundWorker bgw6 = new BackgroundWorker();
+                bgw6.DoWork += SyncCraftables;
+                bgw6.RunWorkerAsync();
+            }
         }
 
-
+        #region Syncs
         private void SyncNinja(object sender, DoWorkEventArgs e)
         {
 
@@ -117,11 +125,241 @@ namespace ItemWatcher2
                 
             }
         }
+        private void SyncHead(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                System.Threading.Thread.Sleep(5000);
+                string lower = textBox1.Text.ToLower();
+                if (lower.Contains("running") || lower.Contains("failed") || lower.Contains("found head"))
+                    break;
+            }
+            if (config.do_catchup_thread)
+                while (true)
+                {
+                    for (int i = 0; i < 60; i++)
+                    {
+                        txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                        {
+                            txtBoxFasterSearch.Text = "Run in: " + (900 - i * 15) + "s";
+                            txtBoxFasterSearch.ForeColor = Color.Black;
+                        });
+                        System.Threading.Thread.Sleep(5 * 3000);
+                    }
 
+                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxFasterSearch.Text = "Running";
+                        txtBoxFasterSearch.ForeColor = Color.Red;
+                    });
+                    string tempid = FindHead(UsedChangeId, true);
+                    int newchange = int.Parse(tempid.Split('-').Last());
+                    int oldchange = int.Parse(RealChangeId.Split('-').Last());
+                    int difference = newchange - oldchange;
+                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                    {
+                        txtBoxFasterSearch.Text = tempid.Split('-').Last() + " : " + difference;
+                        txtBoxFasterSearch.ForeColor = Color.Black;
+                    });
+                    RealChangeId = tempid;
+                }
+        }
         private void SyncCraftables(object sender, DoWorkEventArgs e)
         {
-
+            while (true)
+            {
+                try
+                {
+                    if (DateTime.Now.Subtract(config.lastCraftableSave).TotalMinutes > config.refresh_minutes * 4)
+                    {
+                        GetValuesOfCraftables();
+                    }
+                }
+                catch { }
+            }
         }
+        #endregion
+
+        #region RunableHelpers
+        [STAThread]
+        private string FindHead(string tempChangeID = "", bool secondaryRun = false)
+        {
+            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
+
+
+            // Get response  
+            if (string.IsNullOrEmpty(tempChangeID))
+                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                    {
+                        JObject jo = JObject.Parse(reader.ReadToEnd());
+                        tempChangeID = jo.Children().ToList()[1].First.ToString();
+                    }
+                }
+            int changeby = 10000;
+            while (true)
+            {
+                HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + tempChangeID) as HttpWebRequest;
+                //textBox1.Invoke((MethodInvoker)delegate
+                //{
+                //    textBox1.Text = "Waiting for POE Change Response";
+                //});
+                // Get response  
+                if (secondaryRun)
+                    System.Threading.Thread.Sleep(config.number_of_people * 3000);
+                else
+                    System.Threading.Thread.Sleep(config.number_of_people * 1500);
+
+                try
+                {
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                    {
+                        // Get the response stream  
+                        using (Stream stream = response.GetResponseStream())
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+
+                                char[] buffer = new char[65];
+                                reader.ReadBlock(buffer, 0, 64);
+                                string newstring = new string(buffer);
+
+                                newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                if (newstring.Equals(tempChangeID))
+                                {
+                                    if (changeby == 400)
+                                    {
+                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                        string x = "";
+                                        foreach (int i in intsold)
+                                            x += "-" + (i - changeby);
+                                        tempChangeID = x.Substring(1);
+                                        RealChangeId = tempChangeID;
+                                        System.Threading.Thread.Sleep(3000);
+                                        return tempChangeID;
+                                    }
+                                    else
+                                    {
+                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                        string x = "";
+                                        foreach (int i in intsold)
+                                            x += "-" + (i - changeby);
+                                        tempChangeID = x.Substring(1);
+                                        changeby = changeby / 5;
+
+                                    }
+                                }
+                                else
+                                {
+                                    List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
+                                    List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
+                                    for (int i = 0; i < ints.Count; i++)
+                                    {
+                                        if (ints[i] > intsold[i])
+                                            ints[i] += changeby;
+
+                                    }
+
+                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
+                                    {
+                                        txtBoxFasterSearch.Text = ints.Last().ToString();
+                                        txtBoxFasterSearch.ForeColor = Color.Red;
+                                    });
+                                    string x = "";
+                                    foreach (int i in ints)
+                                        x += "-" + i;
+                                    tempChangeID = x.Substring(1);
+
+                                }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    PlayErrorSound();
+                }
+            }
+        }
+        private void GenerateAllBaseWepsFromString()
+        {
+            allBaseTypes = new List<WeaponBaseItem>();
+            Dictionary<string, string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
+            foreach (string s in allbasetypesstring.Keys)
+            {
+                if (allbasetypesstring[s] == "Weapon")
+                {
+                    WeaponBaseItem wep = NinjaPoETradeMethods.FindBaseOnHitAndAttackSpeed(s);
+                    if (wep != null)
+                        allBaseTypes.Add(wep);
+                }
+            }
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allBaseTypes);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete(FinalVariables.itemfilename);
+            System.IO.File.WriteAllText("allBaseTypes.json", serialized);
+        }
+        private void GetValuesOfCraftables()
+        {
+            foreach (POETradeCraftable craft in craftables)
+            {
+                if (DateTime.Now.Subtract(craft.last_time_saved).TotalHours < 2)
+                    continue;
+                craft.dpsBenchmarks.Clear();
+                int x = int.Parse(craft.pdps);
+                for (int i = x; i <= x * 2; i += 10)
+                {
+                    POETradeConfig temp = new POETradeConfig();
+                    temp.type = craft.type;
+                    temp.crafted = null;
+                    temp.corrupted = false;
+                    temp.pdps = i.ToString();
+                    temp.mods = craft.requiredMods;
+                    temp.rarity = POETradeConfig.Rarity.none;
+                    List<int> ret = NinjaPoETradeMethods.GetPoeLowest5Prices(temp);
+                    if (ret.Count > 0)
+                        craft.dpsBenchmarks.Add(i, (int)ret.Average());
+                    else
+                    {
+                        craft.dpsBenchmarks.Add(i, 10000);
+                        craft.last_time_saved = DateTime.Now;
+                        break;
+                    }
+                    craft.last_time_saved = DateTime.Now;
+
+                }
+            }
+            config.lastCraftableSave = DateTime.Now;
+            saveCraftables();
+            LoadBasicInfo();
+        }
+        private void GetValuesOfWatchedRares()
+        {
+
+            for (int i = 0; i < watchedRares.Count; i++)
+            {
+                POETradeConfig rare = watchedRares[i];
+                if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
+                    continue;
+                txtRareUpdateStatus.Invoke((MethodInvoker)delegate
+                {
+                    txtRareUpdateStatus.Text = i + " / " + watchedRares.Count;
+                });
+                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
+                if (prices.Count > 0)
+                    rare.estimated_value = prices.Sum(p => p) / prices.Count;
+                else
+                    rare.estimated_value = 10000;
+                rare.last_time_saved = DateTime.Now;
+                watchedRares[i] = rare;
+            }
+            saveRares();
+        }
+        #endregion
+
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(15000);
@@ -208,12 +446,13 @@ namespace ItemWatcher2
                                     fakeNinja.chaos_value = rare.estimated_value;
                                     foreach (KeyValuePair<string, string> kvp in rare.mods)
                                         fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
-
-
-
                                     SetSlots(rareItemProp, fakeNinja, rare.url);
                                 }
                             }
+                        }
+                        if(config.do_craft_watch)
+                        {
+                            //DO SHIT
                         }
                     }
                 }
@@ -224,242 +463,6 @@ namespace ItemWatcher2
                 }
             }
         }
-
-        private void StayUpToDateWithPoe(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                System.Threading.Thread.Sleep(5000);
-                string lower = textBox1.Text.ToLower();
-                if (lower.Contains("running") || lower.Contains("failed") || lower.Contains("found head"))
-                    break;
-            }
-            if (config.do_catchup_thread)
-                while (true)
-                {
-                    for (int i = 0; i < 60; i++)
-                    {
-                        txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                        {
-                            txtBoxFasterSearch.Text = "Run in: " + (900 - i * 15) + "s";
-                            txtBoxFasterSearch.ForeColor = Color.Black;
-                        });
-                        System.Threading.Thread.Sleep(5 * 3000);
-                    }
-
-                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                    {
-                        txtBoxFasterSearch.Text = "Running";
-                        txtBoxFasterSearch.ForeColor = Color.Red;
-                    });
-                    string tempid = FindCurrentHead(UsedChangeId,true);
-                    int newchange = int.Parse(tempid.Split('-').Last());
-                    int oldchange = int.Parse(RealChangeId.Split('-').Last());
-                    int difference = newchange - oldchange;
-                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                    {
-                        txtBoxFasterSearch.Text = tempid.Split('-').Last() + " : " + difference;
-                        txtBoxFasterSearch.ForeColor = Color.Black;
-                    });
-                    RealChangeId = tempid;
-                    /*
-                    HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + RealChangeId) as HttpWebRequest;
-                    //textBox1.Invoke((MethodInvoker)delegate
-                    //{
-                    //    textBox1.Text = "Waiting for POE Change Response";
-                    //});
-                    // Get response  
-
-                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                    {
-                        // Get the response stream  
-                        using (Stream stream = response.GetResponseStream())
-                        {
-                            using (StreamReader reader = new StreamReader(stream))
-                            {
-                                try
-                                {
-                                    char[] buffer = new char[100];
-                                    reader.ReadBlock(buffer, 0, 100);
-                                    string newstring = new string(buffer);
-                                    newstring = newstring.Substring(0, newstring.IndexOf("stashes") - 2);
-                                    newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                                    int newchange = int.Parse(newstring.Split('-').Last());
-                                    int oldchange = int.Parse(RealChangeId.Split('-').Last());
-                                    int difference = newchange - oldchange;
-                                    if (difference < 40)
-                                        System.Threading.Thread.Sleep(2000);
-                                    else
-                                        System.Threading.Thread.Sleep(400);
-                                    //System.Threading.Thread.Sleep(100);
-                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                                    {
-                                        txtBoxFasterSearch.Text = RealChangeId.Split('-').Last() + " : " + difference;
-                                        txtBoxFasterSearch.ForeColor = Color.Black;
-                                    });
-                                    RealChangeId = newstring;
-                                }
-                                catch
-                                {
-                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                                    {
-                                        txtBoxFasterSearch.Text = "waiting 5m";
-                                        txtBoxFasterSearch.ForeColor = Color.Red;
-                                    });
-                                    System.Threading.Thread.Sleep(5 * 60 * 1000);
-                                    RealChangeId = UsedChangeId + "";
-                                }
-                            }
-                        }
-                    }
-                    */
-                }
-        }
-        private string FindCurrentHead(string tempChangeID = "", bool secondaryRun = false)
-        {
-            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
-
-
-            // Get response  
-            if (string.IsNullOrEmpty(tempChangeID))
-                using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
-                {
-                    // Get the response stream  
-                    using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
-                    {
-                        JObject jo = JObject.Parse(reader.ReadToEnd());
-                        tempChangeID = jo.Children().ToList()[1].First.ToString();
-                    }
-                }
-            int changeby = 10000;
-            while (true)
-            {
-                HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + tempChangeID) as HttpWebRequest;
-                //textBox1.Invoke((MethodInvoker)delegate
-                //{
-                //    textBox1.Text = "Waiting for POE Change Response";
-                //});
-                // Get response  
-                if (secondaryRun)
-                    System.Threading.Thread.Sleep(config.number_of_people * 3000);
-                else
-                    System.Threading.Thread.Sleep(config.number_of_people * 1500);
-
-                try
-                {
-                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                    {
-                        // Get the response stream  
-                        using (Stream stream = response.GetResponseStream())
-                        {
-                            using (StreamReader reader = new StreamReader(stream))
-                            {
-
-                                char[] buffer = new char[65];
-                                reader.ReadBlock(buffer, 0, 64);
-                                string newstring = new string(buffer);
-
-                                newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
-                                if (newstring.Equals(tempChangeID))
-                                {
-                                    if (changeby == 400)
-                                    {
-                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                        string x = "";
-                                        foreach (int i in intsold)
-                                            x += "-" + (i - changeby);
-                                        tempChangeID = x.Substring(1);
-                                        RealChangeId = tempChangeID;
-                                        System.Threading.Thread.Sleep(3000);
-                                        return tempChangeID;
-                                    }
-                                    else
-                                    {
-                                        List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                        string x = "";
-                                        foreach (int i in intsold)
-                                            x += "-" + (i - changeby);
-                                        tempChangeID = x.Substring(1);
-                                        changeby = changeby / 5;
-
-                                    }
-                                }
-                                else
-                                {
-                                    List<int> ints = newstring.Split('-').Select(p => int.Parse(p)).ToList();
-                                    List<int> intsold = tempChangeID.Split('-').Select(p => int.Parse(p)).ToList();
-                                    for (int i = 0; i < ints.Count; i++)
-                                    {
-                                        if (ints[i] > intsold[i])
-                                            ints[i] += changeby;
-
-                                    }
-                                    
-                                    txtBoxFasterSearch.Invoke((MethodInvoker)delegate
-                                    {
-                                        txtBoxFasterSearch.Text = ints.Last().ToString();
-                                        txtBoxFasterSearch.ForeColor = Color.Red;
-                                    });
-                                    string x = "";
-                                    foreach (int i in ints)
-                                        x += "-" + i;
-                                    tempChangeID = x.Substring(1);
-
-                                }
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                    PlayErrorSound();
-                }
-            }
-        }
-        [STAThread]
-        private void GenerateAllBaseWepsFromString()
-        {
-            allBaseTypes = new List<WeaponBaseItem>();
-            Dictionary<string, string> allbasetypesstring = NinjaPoETradeMethods.LoadAllBaseWeaponTypes();
-            foreach (string s in allbasetypesstring.Keys)
-            {
-                if (allbasetypesstring[s] == "Weapon")
-                {
-                    WeaponBaseItem wep = NinjaPoETradeMethods.FindBaseOnHitAndAttackSpeed(s);
-                    if (wep != null)
-                        allBaseTypes.Add(wep);
-                }
-            }
-            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(allBaseTypes);
-            JArray ja = JArray.Parse(serialized);
-            serialized = ja.ToString();
-            System.IO.File.Delete(FinalVariables.itemfilename);
-            System.IO.File.WriteAllText("allBaseTypes.json", serialized);
-        }
-        
-        private void GetValuesOfWatchedRares()
-        {
-           
-            for(int i = 0; i < watchedRares.Count; i++)
-            {
-                POETradeConfig rare = watchedRares[i];
-                if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
-                    continue;
-                txtRareUpdateStatus.Invoke((MethodInvoker)delegate
-                {
-                    txtRareUpdateStatus.Text = i+" / "+watchedRares.Count;
-                });
-                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
-                if (prices.Count > 0)
-                    rare.estimated_value = prices.Sum(p => p) / prices.Count;
-                else
-                    rare.estimated_value = 10000;
-                rare.last_time_saved = DateTime.Now;
-                watchedRares[i] = rare;
-            }
-            saveRares();
-        }
-
 
         [STAThread]
         private void DoBackgroundWork(object sender, DoWorkEventArgs e)
@@ -501,7 +504,7 @@ namespace ItemWatcher2
                 textBox1.Text = "Locating Head";
             });
 
-            UsedChangeId = FindCurrentHead();
+            UsedChangeId = SyncHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -1368,7 +1371,7 @@ namespace ItemWatcher2
             watched_items.RemoveAt(index);
         }
 
-        public static void SaveNames()
+        public static void SaveConfigAndWatchlist()
         {
             string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(watched_items);
             JArray ja = JArray.Parse(serialized);
@@ -1434,7 +1437,7 @@ namespace ItemWatcher2
             }
             try
             {
-                craftables = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POETradeCraftable>>(System.IO.File.ReadAllText(FinalVariables.baseTypesStringFilename));
+                craftables = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POETradeCraftable>>(System.IO.File.ReadAllText(FinalVariables.craftablesFileNames));
             }
             catch (Exception e)
             {
@@ -1448,6 +1451,14 @@ namespace ItemWatcher2
             serialized = ja.ToString();
             System.IO.File.Delete(FinalVariables.rareFileName);
             System.IO.File.WriteAllText(FinalVariables.rareFileName, serialized);
+        }
+        public static void saveCraftables()
+        {
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(craftables);
+            JArray ja = JArray.Parse(serialized);
+            serialized = ja.ToString();
+            System.IO.File.Delete(FinalVariables.craftablesFileNames);
+            System.IO.File.WriteAllText(FinalVariables.craftablesFileNames, serialized);
         }
 
         public static JEnumerable<JToken> DeserializeFromStream(Stream stream)
@@ -1696,7 +1707,7 @@ namespace ItemWatcher2
         private void btnRefreshPoe_Click(object sender, EventArgs e)
         {
             config.LastSaved = DateTime.Now.AddDays(-2);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
         private void btnOverride1_Click(object sender, EventArgs e)
@@ -1709,7 +1720,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(null, null);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
         private void btnOverride2_Click(object sender, EventArgs e)
@@ -1722,7 +1733,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(null, null);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
         private void btnOverride3_Click(object sender, EventArgs e)
@@ -1735,7 +1746,7 @@ namespace ItemWatcher2
             localslot.BaseItem.chaos_value = avg;
             real.chaos_value = avg;
             SetSlots(null, null);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
         [STAThread]
         private void btnFakeFirstMsg_Click(object sender, EventArgs e)
@@ -1754,19 +1765,19 @@ namespace ItemWatcher2
         private void btnBlock1_Click(object sender, EventArgs e)
         {
             config.blocked_accounts.Add(Slots[0].account_name);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
         private void btnBlock2_Click(object sender, EventArgs e)
         {
             config.blocked_accounts.Add(Slots[1].account_name);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
         private void btnBlock3_Click(object sender, EventArgs e)
         {
             config.blocked_accounts.Add(Slots[2].account_name);
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
 
 

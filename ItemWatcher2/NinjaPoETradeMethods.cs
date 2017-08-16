@@ -98,7 +98,7 @@ namespace ItemWatcher2
             config.SavedItems = NinjaItems;
             config.LastSaved = DateTime.Now;
 
-            SaveNames();
+            SaveConfigAndWatchlist();
 
             return NinjaItems;
         }
@@ -158,7 +158,7 @@ namespace ItemWatcher2
                 }
             }
 
-            SaveNames();
+            SaveConfigAndWatchlist();
         }
         public static List<NinjaItem> DoNinjaParsing(JObject jo, int type = 0)
         {

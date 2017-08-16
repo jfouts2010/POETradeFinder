@@ -91,7 +91,7 @@ namespace ItemWatcher2
                 try
                 {
 
-                    if (p.Name != "mods" && p.Name != "rarity" && p.Name != "type" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
+                    if (p.Name != "mods" && p.Name != "rarity" && p.Name != "type" && p.Name!="id" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
                         sb.Append("  " + p.Name + ":" + p.GetValue(this).ToString());
                     if (p.Name == "mods")
                     {
@@ -502,9 +502,11 @@ namespace ItemWatcher2
         {
             requiredMods = new Dictionary<string, string>();
             craftableMods = new Dictionary<string, string>();
+            dpsBenchmarks = new Dictionary<int, int>();
         }
         public Dictionary<string, string> requiredMods { get; set; }
         public Dictionary<string, string> craftableMods { get; set; }
+        public Dictionary<int,int> dpsBenchmarks { get; set; }
     }
 
     [Serializable]
@@ -624,6 +626,7 @@ namespace ItemWatcher2
         public bool do_watch_rares { get; set; }
         public bool do_watch_list { get; set; }
         public bool do_all_uniques { get; set; }
+        public bool do_craft_watch { get;  set}
         public bool do_all_uniques_with_ranges { get; set; }
 
         public decimal exalt_ratio { get; set; }
@@ -642,6 +645,7 @@ namespace ItemWatcher2
         public List<string> avaliableExplicits { get; set; }
         public DateTime LastSaved { get; set; }
         public DateTime lastRareSave { get; set; }
+        public DateTime lastCraftableSave { get; set; }
         public double refresh_minutes { get; set; }
         public bool refresh_items { get; set; }
         public bool update_ninja_when_manul_refresh { get; set; }
