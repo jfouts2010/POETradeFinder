@@ -590,7 +590,7 @@ namespace ItemWatcher2
 
             nj.Top5Sells = Top5Prices.OrderBy(p => p).ToList();
         }
-
+        
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
             
@@ -814,7 +814,7 @@ namespace ItemWatcher2
             }
         }
 
-        public static List<int> GetPoeLowest5Prices(POETradeConfig tradeConfig)
+        public static List<int> GetPoeLowest5Prices(POETradeConfig tradeConfig, out string url)
         {
             HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create("http://poe.trade/search");
             request23.Method = "POST";
@@ -891,6 +891,7 @@ namespace ItemWatcher2
             {
                 // Get the response stream  
                 tradeConfig.url = response2.ResponseUri.ToString();
+                url = tradeConfig.url;
                 using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                 {
                     string s = reader.ReadToEnd();
@@ -903,6 +904,11 @@ namespace ItemWatcher2
                         if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("chaos") || input.Attributes["data-buyout"].Value.Contains("exalted")))
                         {
                             Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio) : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
+                            count++;
+                        }
+                        else if(input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("alchemy")))
+                            {
+                            Top5Prices.Add(GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.alch_ratio);
                             count++;
                         }
 

@@ -39,7 +39,7 @@ namespace ItemWatcher2
         public Form1()
         {
             LoadBasicInfo();
-            
+
             //GenerateAllBaseWepsFromString();
             //NinjaPoETradeMethods.CalcDPSOfAllWeps();
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace ItemWatcher2
             BackgroundWorker bgw2 = new BackgroundWorker();
             BackgroundWorker bgw3 = new BackgroundWorker();
             BackgroundWorker bgw4 = new BackgroundWorker();
-            
+
 
             bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
@@ -65,7 +65,7 @@ namespace ItemWatcher2
                 bgw5.DoWork += SyncRares;
                 bgw5.RunWorkerAsync();
             }
-            if(config.do_craft_watch)
+            if (config.do_craft_watch)
             {
                 BackgroundWorker bgw6 = new BackgroundWorker();
                 bgw6.DoWork += SyncCraftables;
@@ -110,7 +110,7 @@ namespace ItemWatcher2
                     txtRareUpdateStatus.Text = "Doing Nothing";
                 });
 
-                if (config.LastSaved.AddMinutes(config.refresh_minutes*2) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
+                if (config.lastRareSave.AddMinutes(config.refresh_minutes * 2) < DateTime.Now && textBox1.Text != "Converting Poe.Ninja Items")
                 {
                     txtRareUpdateStatus.Invoke((MethodInvoker)delegate
                     {
@@ -121,8 +121,8 @@ namespace ItemWatcher2
                     config.lastRareSave = DateTime.Now;
                 }
                 else
-                    System.Threading.Thread.Sleep(5000);
-                
+                    System.Threading.Thread.Sleep(60000);
+
             }
         }
         private void SyncHead(object sender, DoWorkEventArgs e)
@@ -176,6 +176,7 @@ namespace ItemWatcher2
                     }
                 }
                 catch { }
+                System.Threading.Thread.Sleep(60000);
             }
         }
         #endregion
@@ -304,11 +305,12 @@ namespace ItemWatcher2
         }
         private void GetValuesOfCraftables()
         {
-            foreach (POETradeCraftable craft in craftables)
+            List<POETradeCraftable> copy = craftables.ToList();
+            foreach (POETradeCraftable craft in copy)
             {
                 if (DateTime.Now.Subtract(craft.last_time_saved).TotalHours < 2)
                     continue;
-                craft.dpsBenchmarks.Clear();
+                craft.dpsBenchmarks = new Dictionary<int, ValueUrlCombo>();
                 int x = int.Parse(craft.pdps);
                 for (int i = x; i <= x * 2; i += 10)
                 {
@@ -319,20 +321,24 @@ namespace ItemWatcher2
                     temp.pdps = i.ToString();
                     temp.mods = craft.requiredMods;
                     temp.rarity = POETradeConfig.Rarity.none;
-                    List<int> ret = NinjaPoETradeMethods.GetPoeLowest5Prices(temp);
+                    string url = "";
+                    List<int> ret = NinjaPoETradeMethods.GetPoeLowest5Prices(temp, out url);
                     if (ret.Count > 0)
-                        craft.dpsBenchmarks.Add(i, (int)ret.Average());
+                        craft.dpsBenchmarks.Add(i, new ValueUrlCombo((int)ret.Average(), url));
                     else
                     {
-                        craft.dpsBenchmarks.Add(i, 10000);
+                        craft.dpsBenchmarks.Add(i, new ValueUrlCombo(10000, url));
                         craft.last_time_saved = DateTime.Now;
                         break;
                     }
-                    craft.last_time_saved = DateTime.Now;
+                    
 
                 }
+                craft.last_time_saved = DateTime.Now;
             }
             config.lastCraftableSave = DateTime.Now;
+            craftables = copy;
+            SaveConfigAndWatchlist();
             saveCraftables();
             LoadBasicInfo();
         }
@@ -348,7 +354,8 @@ namespace ItemWatcher2
                 {
                     txtRareUpdateStatus.Text = i + " / " + watchedRares.Count;
                 });
-                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare);
+                string killme = "";
+                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare,out killme );
                 if (prices.Count > 0)
                     rare.estimated_value = prices.Sum(p => p) / prices.Count;
                 else
@@ -424,9 +431,9 @@ namespace ItemWatcher2
                         secondrareQueue.Enqueue(itemProp);
                     }
                     Item rareItemProp = null;
-                    while (raresQueue.Count <10 && secondrareQueue.Count > 0)
+                    while (raresQueue.Count < 10 && secondrareQueue.Count > 0)
                     {
-                        
+
                         if (secondrareQueue.Count % 5 == 0)
                             txtRareStatus.Invoke((MethodInvoker)delegate
                             {
@@ -450,11 +457,106 @@ namespace ItemWatcher2
                                 }
                             }
                         }
-                        if(config.do_craft_watch)
+                        if (config.do_craft_watch)
                         {
-                            //DO SHIT
+                            //each craftable
+                            foreach (POETradeCraftable craft in craftables.OrderByDescending(p => p.requiredMods.Count))//order by more precice requirements. crit over non crit for same base. 
+                            {
+                                //basic check
+                                if (craft.dpsBenchmarks.Count == 0)
+                                    continue;
+                                if (POETradeCraftable.SeeIfItemMatchesRare(craft, rareItemProp, all_base_types))
+                                {
+                                    //get items mods and values
+                                   
+                                    //not full of affixes
+                                    if (rareItemProp.explicitMods.Count() < 7)
+                                    {
+                                        Dictionary<string, decimal> itemMods = POETradeConfig.GetItemMods(rareItemProp);
+                                        //if has required mods (CRIT)
+                                        if (craft.requiredMods.Count > 0 )
+                                        {
+                                            string req = POETradeConfig.ConvertToCommonForm(craft.requiredMods.FirstOrDefault().Key);
+                                            if (itemMods.ContainsKey(req))
+                                            {
+                                                if (itemMods[req] < decimal.Parse(craft.requiredMods[req]))
+                                                {
+                                                    continue;
+                                                }
+                                                else
+                                                {
+                                                    //see if any craftables are absent.
+                                                    foreach (string key in craft.craftableMods.Keys)
+                                                    {
+                                                        if (!itemMods.ContainsKey(key))
+                                                        {
+                                                            //get new item value.
+                                                            Item craftedVersion = new Item();
+                                                            itemProp.explicitMods.CopyTo(craftedVersion.explicitMods, 0);
+                                                            List<string> mods = craftedVersion.explicitMods.ToList();
+                                                            mods.Add(key.Replace("#", craft.craftableMods[key]));
+
+                                                            decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                            //YAY send item
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //see if required craft is profitable. 
+                                                Item craftedVersion = new Item();
+                                                craftedVersion.explicitMods = new string[itemProp.explicitMods.Count() + 1];
+                                                itemProp.explicitMods.CopyTo(craftedVersion.explicitMods, 0);
+                                                List<string> mods = craftedVersion.explicitMods.ToList();
+                                                mods.Add(req.Replace("#", craft.craftableMods[req]));
+                                                decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                ValueUrlCombo value = craft.dpsBenchmarks.Where(p => dps > p.Key).OrderByDescending(p => p.Value.value).FirstOrDefault().Value;
+                                                if(value.value*(1-(1-config.profit_percent)*2)>rareItemProp.value)//double profit
+                                                {
+                                                    NinjaItem fakeNinja = new NinjaItem();
+                                                    fakeNinja.name = "Craft:" + craft.type.ToString();
+                                                    fakeNinja.chaos_value = value.value;
+                                                    foreach (KeyValuePair<string, string> kvp in craft.requiredMods)
+                                                        fakeNinja.Explicits.Add(string.Format("Req : {0} : {1}", kvp.Key, kvp.Value));
+                                                    foreach (KeyValuePair<string, string> kvp in craft.craftableMods)
+                                                        fakeNinja.Explicits.Add(string.Format("Craft : {0} : {1}", kvp.Key, kvp.Value));
+                                                    SetSlots(rareItemProp, fakeNinja, value.url);
+                                                }
+                                            }
+                                            
+                                            
+                                        }
+                                        else
+                                        {
+                                            //see if any craftables are absent.
+                                            foreach (string key in craft.craftableMods.Keys)
+                                            {
+                                                if (!itemMods.ContainsKey(key))
+                                                {
+                                                    //get new item value.
+                                                    Item craftedVersion = new Item();
+                                                    itemProp.explicitMods.CopyTo(craftedVersion.explicitMods, 0);
+                                                    List<string> mods = craftedVersion.explicitMods.ToList();
+                                                    mods.Add(key.Replace("#", craft.craftableMods[key]));
+
+                                                    decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                    //YAY send item
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    
+                                }
+                            }
                         }
+
+
                     }
+
                 }
                 catch (Exception eee)
                 {
@@ -483,7 +585,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-            
+
             //why even do this when we overwrite
             /*
             if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
@@ -504,7 +606,7 @@ namespace ItemWatcher2
                 textBox1.Text = "Locating Head";
             });
 
-            UsedChangeId = SyncHead();
+            UsedChangeId = FindHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -545,7 +647,7 @@ namespace ItemWatcher2
                     int otherchange = int.Parse(RealChangeId.Split('-').Last());
                     if (otherchange - currchange >= 400)
                         UsedChangeId = UsedChangeId.Substring(0, 36) + otherchange;
-                    if(!txtBoxFasterSearch.Text.ToLower().Contains("run in"))
+                    if (!txtBoxFasterSearch.Text.ToLower().Contains("run in"))
                     {
                         System.Threading.Thread.Sleep(5000);
                     }
@@ -655,10 +757,10 @@ namespace ItemWatcher2
                             });
 
                         }
-                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people*2)
+                        if (DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds < config.number_of_people * 2)
                         {
 
-                            System.Threading.Thread.Sleep((int)(config.number_of_people*2 - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 2000);
+                            System.Threading.Thread.Sleep((int)(config.number_of_people * 2 - DateTime.Now.Subtract(lastTimeAPIcalled).TotalSeconds) * 2000);
                         }
                     }
                 }
@@ -677,9 +779,13 @@ namespace ItemWatcher2
         }
         public static List<ExplicitField> GetExplicitFields(NinjaItem nj, Item sellItem)
         {
+            return GetExplicitFields(nj.ExplicitFields, sellItem);
+        }
+        public static List<ExplicitField> GetExplicitFields(List<ExplicitField> fields, Item sellItem)
+        {
 
             List<ExplicitField> Explicits = new List<ExplicitField>();
-            foreach (ExplicitField ef in nj.ExplicitFields)
+            foreach (ExplicitField ef in fields)
             {
                 try
                 {
@@ -936,8 +1042,8 @@ namespace ItemWatcher2
                         button7.Text = "Not Mine Msg";
                         button7.ForeColor = Color.Red;
                     }
-                    //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
-                });
+                //this.button13.Font = new Font("Arial", 12, FontStyle.Bold);
+            });
                 slot0minandavrg.Invoke((MethodInvoker)delegate
                 {
                     slot0minandavrg.Lines = localslot.BaseItem.Top5Sells?.ConvertAll(p => p.ToString()).ToArray();

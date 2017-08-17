@@ -59,6 +59,7 @@ namespace ItemWatcher2
 
             config.do_watch_rares = this.chkDoWatchNames.Checked;
             config.do_all_uniques = this.chkDoUniques.Checked;
+            config.do_craft_watch = this.chkCraftables.Checked;
             config.do_all_uniques_with_ranges = this.chkUniqueRanges.Checked;
             config.do_watch_list = this.chkDoWatchRares.Checked;
 
@@ -103,7 +104,7 @@ namespace ItemWatcher2
                     do_all_uniques_with_ranges = false,
                     do_watch_rares = true,
                     do_watch_list = true,
-                    
+                    do_craft_watch=true,
                     exalt_ratio = 68,
                     alch_ratio = .333M,
                     fusing_ratio = .444M,
@@ -119,6 +120,7 @@ namespace ItemWatcher2
             
             this.chkDoWatchNames.Checked = config.do_watch_rares;
             this.chkDoWatchRares.Checked = config.do_watch_list;
+            this.chkCraftables.Checked = config.do_craft_watch;
             this.chkDoUniques.Checked = config.do_all_uniques;
             this.chkUniqueRanges.Checked = config.do_all_uniques_with_ranges;
             this.txtExalt.Text = config.exalt_ratio.ToString();

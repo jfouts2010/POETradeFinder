@@ -175,6 +175,32 @@ namespace ItemWatcher2
         public static readonly string final_AttackSpeed = "#% increased Attack Speed";
         public static readonly string final_CritPercent = "#% increased Critical Strike Chance";
 
+
+        public static Dictionary<string,decimal> GetItemMods(Item itemProp)
+        {
+            Dictionary<string, decimal> initialMods = new Dictionary<string, decimal>();
+            foreach (string ex in itemProp.explicitMods)
+            {
+                if (ex.ToLower().Contains("(calc"))
+                    continue;
+                string key = ConvertToCommonForm(ex);
+                decimal value = GetValueOrAvgValue(ex);
+                initialMods.Add(key, value);
+            }
+            foreach (string ex in itemProp.implicitMods)
+            {
+                if (string.IsNullOrEmpty(ex))
+                    continue;
+                string key = ConvertToCommonForm(ex);
+                decimal value = GetValueOrAvgValue(ex);
+
+                if (initialMods.ContainsKey(key))
+                    initialMods[key] += value;
+                else
+                    initialMods.Add(key, value);
+            }
+            return initialMods;
+        }
         public static bool SeeIfItemMatchesRare(POETradeConfig conf, Item itemProp, Dictionary<string, string> baseStrings)
         {
             try
@@ -347,31 +373,14 @@ namespace ItemWatcher2
                 }
                 if (conf.mods.Count > 0)
                 {
-                    Dictionary<string, decimal> initialMods = new Dictionary<string, decimal>();
+                    
                     Dictionary<string, decimal> FinalMods = new Dictionary<string, decimal>();
                     string coldres = "+ to cold resistance";
                     string fireres = "+ to fire resistance";
                     string lightningres = "+ to lightning resistance";
-                    foreach (string ex in itemProp.explicitMods)
-                    {
-                        if (ex.ToLower().Contains("(calc"))
-                            continue;
-                        string key = ConvertToCommonForm(ex);
-                        decimal value = GetValueOrAvgValue(ex);
-                        initialMods.Add(key, value);
-                    }
-                    foreach (string ex in itemProp.implicitMods)
-                    {
-                        if (string.IsNullOrEmpty(ex))
-                            continue;
-                        string key = ConvertToCommonForm(ex);
-                        decimal value = GetValueOrAvgValue(ex);
 
-                        if (initialMods.ContainsKey(key))
-                            initialMods[key] += value;
-                        else
-                            initialMods.Add(key, value);
-                    }
+                    Dictionary<string, decimal> initialMods = GetItemMods(itemProp);
+
                     foreach (string key in initialMods.Keys)
                         FinalMods.Add(key, initialMods[key]);
                     foreach (string expl in initialMods.Keys)
@@ -502,11 +511,24 @@ namespace ItemWatcher2
         {
             requiredMods = new Dictionary<string, string>();
             craftableMods = new Dictionary<string, string>();
-            dpsBenchmarks = new Dictionary<int, int>();
+            dpsBenchmarks = new Dictionary<int, ValueUrlCombo>();
         }
         public Dictionary<string, string> requiredMods { get; set; }
         public Dictionary<string, string> craftableMods { get; set; }
-        public Dictionary<int,int> dpsBenchmarks { get; set; }
+        public Dictionary<int,ValueUrlCombo> dpsBenchmarks { get; set; }
+
+    }
+    [Serializable]
+    public class ValueUrlCombo
+    {
+        public ValueUrlCombo(int v, string u)
+        {
+            value = v;
+            url=u;
+        }
+
+        public int value { get; set; }
+        public string url { get; set; }
     }
 
     [Serializable]
@@ -626,7 +648,7 @@ namespace ItemWatcher2
         public bool do_watch_rares { get; set; }
         public bool do_watch_list { get; set; }
         public bool do_all_uniques { get; set; }
-        public bool do_craft_watch { get;  set}
+        public bool do_craft_watch { get; set; }
         public bool do_all_uniques_with_ranges { get; set; }
 
         public decimal exalt_ratio { get; set; }

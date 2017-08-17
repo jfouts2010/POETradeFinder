@@ -67,6 +67,7 @@
             this.chkAutoCopy = new System.Windows.Forms.CheckBox();
             this.JohnSounds = new System.Windows.Forms.CheckBox();
             this.chkBoxCatchup = new System.Windows.Forms.CheckBox();
+            this.chkCraftables = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -409,11 +410,22 @@
             this.chkBoxCatchup.Text = "Run Catchup Thread";
             this.chkBoxCatchup.UseVisualStyleBackColor = true;
             // 
+            // chkCraftables
+            // 
+            this.chkCraftables.AutoSize = true;
+            this.chkCraftables.Location = new System.Drawing.Point(132, 369);
+            this.chkCraftables.Name = "chkCraftables";
+            this.chkCraftables.Size = new System.Drawing.Size(90, 17);
+            this.chkCraftables.TabIndex = 46;
+            this.chkCraftables.Text = "Do Craftables";
+            this.chkCraftables.UseVisualStyleBackColor = true;
+            // 
             // StartupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 522);
+            this.Controls.Add(this.chkCraftables);
             this.Controls.Add(this.chkBoxCatchup);
             this.Controls.Add(this.JohnSounds);
             this.Controls.Add(this.chkAutoCopy);
@@ -502,5 +514,6 @@
         private System.Windows.Forms.CheckBox chkAutoCopy;
         private System.Windows.Forms.CheckBox JohnSounds;
         private System.Windows.Forms.CheckBox chkBoxCatchup;
+        private System.Windows.Forms.CheckBox chkCraftables;
     }
 }
