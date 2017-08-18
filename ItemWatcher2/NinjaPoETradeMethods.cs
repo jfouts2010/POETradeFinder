@@ -105,7 +105,7 @@ namespace ItemWatcher2
 
         public static void SaveBaseStrings(Dictionary<string, string> baseTypes)
         {
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -125,18 +125,25 @@ namespace ItemWatcher2
 
         public static int GetDdpsOfLocalWeapon(Item item)//godamn "items"
         {
-            WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.typeLine);
-            if (baseItem == null)
-                return 0;
-            string phys = item.explicitMods.FirstOrDefault(p => p.Contains("increased Physical Damage"));
-            string flatPhys = item.explicitMods.FirstOrDefault(p => p.Contains("Adds") && p.Contains("Physical Damage"));
-            string ias = item.explicitMods.FirstOrDefault(p => p.Contains("increased Attack Speed"));
+            try
+            {
+                WeaponBaseItem baseItem = allBaseTypes.FirstOrDefault(p => p.base_name == item.typeLine);
+                if (baseItem == null)
+                    return 0;
+                string phys = item.explicitMods.Where(p => p.Contains("increased Physical Damage")).FirstOrDefault();
+                string flatPhys = item.explicitMods.Where(p => p.Contains("Adds") && p.Contains("Physical Damage")).FirstOrDefault();
+                string ias = item.explicitMods.Where(p => p.Contains("increased Attack Speed")).FirstOrDefault();
 
-            decimal physD = (GetSingleNumber(phys) ?? 0);
-            decimal flatPhysD = (GetMultipleNumbersNullable(flatPhys) ?? 0);
-            decimal iasD = (GetSingleNumber(ias) ?? 0);
-            decimal TotalDps = (baseItem.pd + flatPhysD) * (1.2M + physD / 100) * (baseItem.aps * (1 + iasD / 100));
-            return (int)TotalDps;
+                decimal physD = (GetSingleNumber(phys) ?? 0);
+                decimal flatPhysD = (GetMultipleNumbersNullable(flatPhys) ?? 0);
+                decimal iasD = (GetSingleNumber(ias) ?? 0);
+                decimal TotalDps = (baseItem.pd + flatPhysD) * (1.2M + physD / 100) * (baseItem.aps * (1 + iasD / 100));
+                return (int)TotalDps;
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
         }
 
         public static void CalcDPSOfAllWeps()
@@ -270,7 +277,7 @@ namespace ItemWatcher2
                 return "Amulet";
             else if (input.ToLower().Contains(" belt") || input.ToLower().Contains(" sash"))
                 return "Belt";
-            
+
             if (input.ToLower().Contains(" vest") || input.ToLower().Contains(" plate")
                 || input.ToLower().Contains(" jerkin") || input.ToLower().Contains(" leather")
                 || input.ToLower().Contains(" tunic") || input.ToLower().Contains(" garb")
@@ -402,7 +409,7 @@ namespace ItemWatcher2
                            sellItemEF.MinRoll = (Roll1 + Roll2) / 2;
                        }
                }*/
-            
+
         }
 
         public static void ItemExplicitFieldSearch(NinjaItem nj, bool manual = false)
@@ -503,7 +510,7 @@ namespace ItemWatcher2
                     if (nj.chaos_value > 30)
                     {
                         MinSearch(nj, modsMinSearch, explicitsToCheck);
-                        
+
                         nj.HasRolls = true;
                     }
                     else
@@ -590,10 +597,10 @@ namespace ItemWatcher2
 
             nj.Top5Sells = Top5Prices.OrderBy(p => p).ToList();
         }
-        
+
         public static decimal[] GetMinMaxPdps(NinjaItem item)
         {
-            
+
             ExplicitField phys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Physical Damage");
             ExplicitField flatPhys = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "Adds # to # Physical Damage");
             ExplicitField ias = item.ExplicitFields.FirstOrDefault(p => p.SearchField == "#% increased Attack Speed");
@@ -778,7 +785,7 @@ namespace ItemWatcher2
                 List<decimal> Top5Prices = new List<decimal>();
                 HttpWebRequest request23 = (HttpWebRequest)HttpWebRequest.Create(url);
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
-                {   
+                {
                     using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                     {
                         string s = reader.ReadToEnd();
@@ -808,7 +815,8 @@ namespace ItemWatcher2
                     }
                 }
                 return Top5Prices;
-            }catch
+            }
+            catch
             {
                 return null;
             }
@@ -906,8 +914,8 @@ namespace ItemWatcher2
                             Top5Prices.Add(input.Attributes["data-buyout"].Value.Contains("exalted") ? (GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.exalt_ratio) : GetMultipleNumbers(input.Attributes["data-buyout"].Value));
                             count++;
                         }
-                        else if(input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("alchemy")))
-                            {
+                        else if (input.Attributes.Contains("id") && input.Attributes["id"].Value.Contains("item-container-") && count < 5 && (input.Attributes["data-buyout"].Value.Contains("alchemy")))
+                        {
                             Top5Prices.Add(GetMultipleNumbers(input.Attributes["data-buyout"].Value) * config.alch_ratio);
                             count++;
                         }

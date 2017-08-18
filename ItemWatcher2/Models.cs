@@ -622,6 +622,7 @@ namespace ItemWatcher2
         //public List<Dictionary<string,string>> properties { get; set; }
         public string[] implicitMods { get; set; }
         public string[] explicitMods { get; set; }
+        public string[] craftedMods { get; set; }
         public int pdps { get; set; }
         //added later
         public decimal value { get; set; }

@@ -124,7 +124,6 @@ namespace ItemWatcher2
             this.lblLinks2 = new System.Windows.Forms.Label();
             this.lblLinks3 = new System.Windows.Forms.Label();
             this.ex_ratio = new System.Windows.Forms.Label();
-            this.lblDebug = new System.Windows.Forms.Label();
             this.txtBoxFasterSearch = new System.Windows.Forms.TextBox();
             this.txtRareStatus = new System.Windows.Forms.TextBox();
             this.txtUniqueStatus = new System.Windows.Forms.TextBox();
@@ -136,6 +135,7 @@ namespace ItemWatcher2
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.txtRareUpdateStatus = new System.Windows.Forms.TextBox();
+            this.lblDebug = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -1008,16 +1008,6 @@ namespace ItemWatcher2
             this.ex_ratio.Size = new System.Drawing.Size(0, 13);
             this.ex_ratio.TabIndex = 98;
             // 
-            // lblDebug
-            // 
-            this.lblDebug.AutoSize = true;
-            this.lblDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDebug.Location = new System.Drawing.Point(784, 77);
-            this.lblDebug.Name = "lblDebug";
-            this.lblDebug.Size = new System.Drawing.Size(76, 26);
-            this.lblDebug.TabIndex = 97;
-            this.lblDebug.Text = "Debug";
-            // 
             // txtBoxFasterSearch
             // 
             this.txtBoxFasterSearch.Location = new System.Drawing.Point(43, 52);
@@ -1112,11 +1102,20 @@ namespace ItemWatcher2
             this.txtRareUpdateStatus.Size = new System.Drawing.Size(186, 20);
             this.txtRareUpdateStatus.TabIndex = 108;
             // 
+            // lblDebug
+            // 
+            this.lblDebug.Location = new System.Drawing.Point(589, 77);
+            this.lblDebug.Name = "lblDebug";
+            this.lblDebug.ReadOnly = true;
+            this.lblDebug.Size = new System.Drawing.Size(186, 20);
+            this.lblDebug.TabIndex = 110;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 656);
+            this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtRareUpdateStatus);
             this.Controls.Add(this.label9);
@@ -1128,7 +1127,6 @@ namespace ItemWatcher2
             this.Controls.Add(this.txtRareStatus);
             this.Controls.Add(this.txtUniqueStatus);
             this.Controls.Add(this.txtBoxFasterSearch);
-            this.Controls.Add(this.lblDebug);
             this.Controls.Add(this.ex_ratio);
             this.Controls.Add(this.lblLinks3);
             this.Controls.Add(this.lblLinks2);
@@ -1327,7 +1325,6 @@ namespace ItemWatcher2
         private System.Windows.Forms.Label lblLinks2;
         private System.Windows.Forms.Label lblLinks3;
 private System.Windows.Forms.Label ex_ratio;
-        private System.Windows.Forms.Label lblDebug;
         private System.Windows.Forms.TextBox txtBoxFasterSearch;
         private System.Windows.Forms.TextBox txtRareStatus;
         private System.Windows.Forms.TextBox txtUniqueStatus;
@@ -1339,6 +1336,7 @@ private System.Windows.Forms.Label ex_ratio;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtRareUpdateStatus;
+        private System.Windows.Forms.TextBox lblDebug;
     }
 }
 
