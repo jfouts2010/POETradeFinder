@@ -514,7 +514,7 @@ namespace ItemWatcher2
                                                             mods.Add(key.Replace("#", craft.craftableMods[key]));
                                                             craftedVersion.explicitMods = mods.ToArray();
                                                             craftedVersion.typeLine = rareItemProp.typeLine;
-                                                            decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                            int dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
                                                             ValueUrlCombo value = craft.dpsBenchmarks.Where(p => dps > p.Key).OrderByDescending(p => p.Value.value).FirstOrDefault().Value;
                                                             if (value.value * (1 - (1 - config.profit_percent) * 2) > rareItemProp.value)//double profit
                                                             {
@@ -527,6 +527,7 @@ namespace ItemWatcher2
                                                                     fakeNinja.Explicits.Add(string.Format("Craft : {0} : {1}", kvp.Key, kvp.Value));
                                                                 craftedVersion.explicitMods[craftedVersion.explicitMods.Count()-1] = "Craft: " + craftedVersion.explicitMods.Last();
                                                                 rareItemProp.explicitMods = craftedVersion.explicitMods;
+                                                                rareItemProp.pdps = dps;
                                                                 SetSlots(rareItemProp, fakeNinja, value.url);
                                                             }
 
@@ -542,7 +543,7 @@ namespace ItemWatcher2
                                                 mods.Add(craft.requiredMods.FirstOrDefault().Key.Replace("#", craft.requiredMods.FirstOrDefault().Key));
                                                 craftedVersion.explicitMods = mods.ToArray();
                                                 craftedVersion.typeLine = rareItemProp.typeLine;
-                                                decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                int dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
                                                 ValueUrlCombo value = craft.dpsBenchmarks.Where(p => dps > p.Key).OrderByDescending(p => p.Value.value).FirstOrDefault().Value;
                                                 if (value.value * (1 - (1 - config.profit_percent) * 2) > rareItemProp.value)//double profit
                                                 {
@@ -553,6 +554,8 @@ namespace ItemWatcher2
                                                         fakeNinja.Explicits.Add(string.Format("Req : {0} : {1}", kvp.Key, kvp.Value));
                                                     foreach (KeyValuePair<string, string> kvp in craft.craftableMods)
                                                         fakeNinja.Explicits.Add(string.Format("Craft : {0} : {1}", kvp.Key, kvp.Value));
+                                                    craftedVersion.explicitMods[craftedVersion.explicitMods.Count() - 1] = "Craft: " + craftedVersion.explicitMods.Last();
+                                                    rareItemProp.explicitMods = craftedVersion.explicitMods;
                                                     SetSlots(rareItemProp, fakeNinja, value.url);
                                                 }
                                             }
@@ -573,7 +576,7 @@ namespace ItemWatcher2
                                                     craftedVersion.explicitMods = mods.ToArray();
                                                     craftedVersion.typeLine = rareItemProp.typeLine;
                                                     
-                                                    decimal dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
+                                                    int dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
                                                     ValueUrlCombo value = craft.dpsBenchmarks.Where(p => dps > p.Key).OrderByDescending(p => p.Value.value).FirstOrDefault().Value;
                                                     if (value.value * (1 - (1 - config.profit_percent) * 2) > rareItemProp.value)//double profit
                                                     {
@@ -584,6 +587,9 @@ namespace ItemWatcher2
                                                             fakeNinja.Explicits.Add(string.Format("Req : {0} : {1}", kvp.Key, kvp.Value));
                                                         foreach (KeyValuePair<string, string> kvp in craft.craftableMods)
                                                             fakeNinja.Explicits.Add(string.Format("Craft : {0} : {1}", kvp.Key, kvp.Value));
+                                                        craftedVersion.explicitMods[craftedVersion.explicitMods.Count() - 1] = "Craft: " + craftedVersion.explicitMods.Last();
+                                                        rareItemProp.explicitMods = craftedVersion.explicitMods;
+                                                        rareItemProp.pdps = dps;
                                                         SetSlots(rareItemProp, fakeNinja, value.url);
                                                     }
 
