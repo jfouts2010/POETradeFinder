@@ -49,7 +49,7 @@ namespace ItemWatcher2
             BackgroundWorker bgw4 = new BackgroundWorker();
 
             bgw.DoWork += DoBackgroundWork;
-            bgw2.DoWork += SyncNinja;
+            //bgw2.DoWork += SyncNinja;
             bgw3.DoWork += StayUpToDateWithPoe;
             bgw4.DoWork += ProcessItems;
 
@@ -111,7 +111,7 @@ namespace ItemWatcher2
                             continue;
                         itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                         itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                        if (config.do_all_uniques)
+                        if (false && config.do_all_uniques)
                         {
                             if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                             {
@@ -172,9 +172,6 @@ namespace ItemWatcher2
                                     fakeNinja.chaos_value = rare.estimated_value;
                                     foreach (KeyValuePair<string, string> kvp in rare.mods)
                                         fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
-
-
-
                                     SetSlots(rareItemProp, fakeNinja, rare.url);
                                 }
                             }
@@ -216,7 +213,7 @@ namespace ItemWatcher2
                         txtBoxFasterSearch.Text = "Running";
                         txtBoxFasterSearch.ForeColor = Color.Red;
                     });
-                    string tempid = FindCurrentHead(UsedChangeId,true);
+                    string tempid = FindHead(UsedChangeId,true);
                     int newchange = int.Parse(tempid.Split('-').Last());
                     int oldchange = int.Parse(RealChangeId.Split('-').Last());
                     int difference = newchange - oldchange;
@@ -279,7 +276,7 @@ namespace ItemWatcher2
                     */
                 }
         }
-        private string FindCurrentHead(string tempChangeID = "", bool secondaryRun = false)
+        private string FindHead(string tempChangeID = "", bool secondaryRun = false)
         {
             HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
 
@@ -319,10 +316,11 @@ namespace ItemWatcher2
                             using (StreamReader reader = new StreamReader(stream))
                             {
 
-                                char[] buffer = new char[65];
-                                reader.ReadBlock(buffer, 0, 64);
+                                char[] buffer = new char[100];
+                                reader.ReadBlock(buffer, 0, 99);
                                 string newstring = new string(buffer);
-
+                                int index = newstring.IndexOf("\",");
+                                newstring = newstring.Substring(0, index+1);
                                 newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                                 if (newstring.Equals(tempChangeID))
                                 {
@@ -358,7 +356,7 @@ namespace ItemWatcher2
                                             ints[i] += changeby;
 
                                     }
-                                    
+
                                     txtBoxFasterSearch.Invoke((MethodInvoker)delegate
                                     {
                                         txtBoxFasterSearch.Text = ints.Last().ToString();
@@ -374,7 +372,7 @@ namespace ItemWatcher2
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
                     PlayErrorSound();
                 }
@@ -453,7 +451,7 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Locating Head";
             });
-            UsedChangeId = FindCurrentHead();
+            UsedChangeId = FindHead();
             // Get response  
             /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
             {
@@ -519,10 +517,12 @@ namespace ItemWatcher2
                                 // Console application output  
 
                                 double secondsToResponse = (DateTime.Now - now).TotalSeconds;
-                                char[] buffer = new char[65];
-                                reader.ReadBlock(buffer, 0, 64);
+                                char[] buffer = new char[100];
+                                reader.ReadBlock(buffer, 0, 99);
                                 string newstring = new string(buffer);
-                                string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                int index = newstring.IndexOf("\",");
+                                string newchange = newstring.Substring(0, index+1);
+                                newchange = JObject.Parse(newchange + "}")["next_change_id"].ToString();
 
                                 UsedChangeId = newchange;
                                 textBox1.Invoke((MethodInvoker)delegate
