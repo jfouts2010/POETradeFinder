@@ -53,7 +53,7 @@ namespace ItemWatcher2
             bgw2.DoWork += SyncNinja;
             bgw3.DoWork += SyncHead;
             bgw4.DoWork += ProcessItems;
-            bgw4.DoWork += ProcessItems;
+            
 
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
@@ -223,10 +223,11 @@ namespace ItemWatcher2
                             using (StreamReader reader = new StreamReader(stream))
                             {
 
-                                char[] buffer = new char[65];
-                                reader.ReadBlock(buffer, 0, 64);
+                                char[] buffer = new char[100];
+                                reader.ReadBlock(buffer, 0, 99);
                                 string newstring = new string(buffer);
-
+                                int index = newstring.IndexOf("\",");
+                                newstring = newstring.Substring(0, index + 1);
                                 newstring = JObject.Parse(newstring + "}")["next_change_id"].ToString();
                                 if (newstring.Equals(tempChangeID))
                                 {
@@ -354,16 +355,17 @@ namespace ItemWatcher2
         }
         private void GetValuesOfWatchedRares()
         {
-
-            for (int i = 0; i < watchedRares.Count; i++)
+            List<POETradeConfig> tempRareList = watchedRares.ToArray().ToList();
+            for (int i = 0; i < tempRareList.Count; i++)
             {
-                POETradeConfig rare = watchedRares[i];
-                if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
-                    continue;
+                POETradeConfig rare = tempRareList[i];
                 txtRareUpdateStatus.Invoke((MethodInvoker)delegate
                 {
-                    txtRareUpdateStatus.Text = i + " / " + watchedRares.Count;
+                    txtRareUpdateStatus.Text = (i+1) + " / " + tempRareList.Count;
                 });
+                if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
+                    continue;
+                
                 string killme = "";
                 List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare, out killme);
                 if (prices.Count > 0)
@@ -371,9 +373,9 @@ namespace ItemWatcher2
                 else
                     rare.estimated_value = 10000;
                 rare.last_time_saved = DateTime.Now;
-                watchedRares[i] = rare;
+                tempRareList[i] = rare;
             }
-            saveRares();
+            saveRares(tempRareList);
         }
         #endregion
 
@@ -381,7 +383,7 @@ namespace ItemWatcher2
         {
             System.Threading.Thread.Sleep(15000);
             Queue<Item> secondrareQueue = new Queue<Item>();
-            //if (config.do_watch_rares && watchedRares.Count > 0)
+            
             while (true)
             {
                 try
@@ -402,7 +404,7 @@ namespace ItemWatcher2
                             continue;
                         itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                         itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                        if (config.do_all_uniques)
+                        if ( config.do_all_uniques)
                         {
                             if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                             {
@@ -721,10 +723,12 @@ namespace ItemWatcher2
                                 // Console application output  
 
                                 double secondsToResponse = (DateTime.Now - now).TotalSeconds;
-                                char[] buffer = new char[65];
-                                reader.ReadBlock(buffer, 0, 64);
+                                char[] buffer = new char[100];
+                                reader.ReadBlock(buffer, 0, 99);
                                 string newstring = new string(buffer);
-                                string newchange = JObject.Parse(newstring + "}")["next_change_id"].ToString();
+                                int index = newstring.IndexOf("\",");
+                                string newchange = newstring.Substring(0, index + 1);
+                                newchange = JObject.Parse(newchange + "}")["next_change_id"].ToString();
 
                                 UsedChangeId = newchange;
                                 textBox1.Invoke((MethodInvoker)delegate
@@ -757,12 +761,9 @@ namespace ItemWatcher2
                                 JEnumerable<JToken> stash = jt.Children();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
-                                if (accName.ToLower() == config.account_name.ToLower())
+                                if (!string.IsNullOrEmpty(config.account_name) && accName.ToLower() == config.account_name.ToLower())
                                     PlayItsMeSound();
-                                if (accName.ToLower().Contains("wyoian") || name.ToLower().Contains("gotta_slay_fast"))
-                                {
-                                    int x = 5;
-                                }
+                                
                                 if (config.blocked_accounts.Contains(accName))
                                     continue;
                                 JEnumerable<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children();
@@ -1599,9 +1600,11 @@ namespace ItemWatcher2
                 craftables = new List<POETradeCraftable>();
             }
         }
-        public static void saveRares()
+        public static void saveRares(List<POETradeConfig> rares = null)
         {
-            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(watchedRares);
+            if (rares == null)
+                rares = watchedRares;
+            string serialized = Newtonsoft.Json.JsonConvert.SerializeObject(rares);
             JArray ja = JArray.Parse(serialized);
             serialized = ja.ToString();
             System.IO.File.Delete(FinalVariables.rareFileName);
