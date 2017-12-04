@@ -33,20 +33,20 @@
             this.txtBase = new System.Windows.Forms.TextBox();
             this.txtDamage = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtAps = new System.Windows.Forms.TextBox();
-            this.txtCrit = new System.Windows.Forms.TextBox();
-            this.txtDPS = new System.Windows.Forms.TextBox();
-            this.txtEdps = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtPdps = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.txtEdps = new System.Windows.Forms.TextBox();
+            this.txtDPS = new System.Windows.Forms.TextBox();
+            this.txtCrit = new System.Windows.Forms.TextBox();
+            this.txtAps = new System.Windows.Forms.TextBox();
+            this.txtName = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -87,6 +87,8 @@
             this.chkOpenPre = new System.Windows.Forms.CheckBox();
             this.chkOpenSuffix = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.txtManualPrice = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -158,40 +160,68 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 201);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
-            // txtName
+            // label9
             // 
-            this.txtName.Location = new System.Drawing.Point(103, 3);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(94, 20);
-            this.txtName.TabIndex = 6;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 175);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(31, 13);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "Pdps";
             // 
-            // txtAps
+            // label8
             // 
-            this.txtAps.Location = new System.Drawing.Point(103, 78);
-            this.txtAps.Name = "txtAps";
-            this.txtAps.Size = new System.Drawing.Size(94, 20);
-            this.txtAps.TabIndex = 11;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 150);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.TabIndex = 30;
+            this.label8.Text = "Edps";
             // 
-            // txtCrit
+            // label7
             // 
-            this.txtCrit.Location = new System.Drawing.Point(103, 103);
-            this.txtCrit.Name = "txtCrit";
-            this.txtCrit.Size = new System.Drawing.Size(94, 20);
-            this.txtCrit.TabIndex = 13;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 125);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(26, 13);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "Dps";
             // 
-            // txtDPS
+            // label6
             // 
-            this.txtDPS.Location = new System.Drawing.Point(103, 128);
-            this.txtDPS.Name = "txtDPS";
-            this.txtDPS.Size = new System.Drawing.Size(94, 20);
-            this.txtDPS.TabIndex = 15;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 100);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(62, 13);
+            this.label6.TabIndex = 28;
+            this.label6.Text = "Crit Chance";
             // 
-            // txtEdps
+            // label5
             // 
-            this.txtEdps.Location = new System.Drawing.Point(103, 153);
-            this.txtEdps.Name = "txtEdps";
-            this.txtEdps.Size = new System.Drawing.Size(94, 20);
-            this.txtEdps.TabIndex = 17;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 75);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(28, 13);
+            this.label5.TabIndex = 27;
+            this.label5.Text = "APS";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 13);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Damage";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(72, 13);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "Specific Base";
             // 
             // txtPdps
             // 
@@ -209,68 +239,40 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Name ";
             // 
-            // label3
+            // txtEdps
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
-            this.label3.TabIndex = 25;
-            this.label3.Text = "Specific Base";
+            this.txtEdps.Location = new System.Drawing.Point(103, 153);
+            this.txtEdps.Name = "txtEdps";
+            this.txtEdps.Size = new System.Drawing.Size(94, 20);
+            this.txtEdps.TabIndex = 17;
             // 
-            // label4
+            // txtDPS
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "Damage";
+            this.txtDPS.Location = new System.Drawing.Point(103, 128);
+            this.txtDPS.Name = "txtDPS";
+            this.txtDPS.Size = new System.Drawing.Size(94, 20);
+            this.txtDPS.TabIndex = 15;
             // 
-            // label5
+            // txtCrit
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 75);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(28, 13);
-            this.label5.TabIndex = 27;
-            this.label5.Text = "APS";
+            this.txtCrit.Location = new System.Drawing.Point(103, 103);
+            this.txtCrit.Name = "txtCrit";
+            this.txtCrit.Size = new System.Drawing.Size(94, 20);
+            this.txtCrit.TabIndex = 13;
             // 
-            // label6
+            // txtAps
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 100);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 13);
-            this.label6.TabIndex = 28;
-            this.label6.Text = "Crit Chance";
+            this.txtAps.Location = new System.Drawing.Point(103, 78);
+            this.txtAps.Name = "txtAps";
+            this.txtAps.Size = new System.Drawing.Size(94, 20);
+            this.txtAps.TabIndex = 11;
             // 
-            // label7
+            // txtName
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 125);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 13);
-            this.label7.TabIndex = 29;
-            this.label7.Text = "Dps";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 150);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
-            this.label8.TabIndex = 30;
-            this.label8.Text = "Edps";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 175);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(31, 13);
-            this.label9.TabIndex = 31;
-            this.label9.Text = "Pdps";
+            this.txtName.Location = new System.Drawing.Point(103, 3);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(94, 20);
+            this.txtName.TabIndex = 6;
             // 
             // tableLayoutPanel2
             // 
@@ -639,11 +641,29 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDeleteClick);
             // 
+            // txtManualPrice
+            // 
+            this.txtManualPrice.Location = new System.Drawing.Point(518, 372);
+            this.txtManualPrice.Name = "txtManualPrice";
+            this.txtManualPrice.Size = new System.Drawing.Size(107, 20);
+            this.txtManualPrice.TabIndex = 38;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(444, 379);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(69, 13);
+            this.label26.TabIndex = 39;
+            this.label26.Text = "Manual Price";
+            // 
             // EditWatchedRares
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(970, 552);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.txtManualPrice);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.chkOpenSuffix);
             this.Controls.Add(this.chkOpenPre);
@@ -744,5 +764,7 @@
         private System.Windows.Forms.CheckBox chkOpenPre;
         private System.Windows.Forms.CheckBox chkOpenSuffix;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.TextBox txtManualPrice;
+        private System.Windows.Forms.Label label26;
     }
 }

@@ -87,11 +87,13 @@ namespace ItemWatcher2
                 quality = txtQuality.Text,
                 shield = txtShield.Text,
                 sockets = txtSockets.Text,
+                manual_price_override=int.Parse(txtManualPrice.Text)
             };
             if (ddlCorrupted.SelectedIndex != 0)
                 item.corrupted = (ddlCorrupted.SelectedIndex == 1);
             if (ddlEnchanted.SelectedIndex != 0)
                 item.enchanted = (ddlEnchanted.SelectedIndex == 1);
+            
             if (ddlCrafted.SelectedIndex != 0)
                 item.crafted = (ddlCrafted.SelectedIndex == 1);
             POETradeConfig.Rarity rarity;

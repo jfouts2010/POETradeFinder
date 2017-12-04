@@ -24,7 +24,7 @@ namespace ItemWatcher2
     {
         public POETradeConfig()
         {
-            league = "Harbinger";
+            league = Form1.LeagueName;
             normalize_q = true;
             mods = new Dictionary<string, string>();
             id = Guid.NewGuid();
@@ -53,6 +53,8 @@ namespace ItemWatcher2
         public Guid id { get; set; }
         public string league { get; set; }
         public string name { get; set; }
+        public decimal? manual_price_override { get; set; }
+
         public BaseType type { get; set; }
         public string baseType { get; set; }
         public string damage { get; set; }
@@ -78,6 +80,8 @@ namespace ItemWatcher2
 
         public DateTime last_time_saved { get; set; }
 
+
+
         //Calculated later
         public decimal estimated_value { get; set; }
         public string url { get; set; }
@@ -91,7 +95,7 @@ namespace ItemWatcher2
                 try
                 {
 
-                    if (p.Name != "mods" && p.Name != "rarity" && p.Name != "type" && p.Name!="id" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
+                    if (p.Name != "mods" && p.Name != "rarity" && p.Name != "type" && p.Name != "id" && !string.IsNullOrEmpty(p.GetValue(this).ToString()))
                         sb.Append("  " + p.Name + ":" + p.GetValue(this).ToString());
                     if (p.Name == "mods")
                     {
@@ -176,7 +180,7 @@ namespace ItemWatcher2
         public static readonly string final_CritPercent = "#% increased Critical Strike Chance";
 
 
-        public static Dictionary<string,decimal> GetItemMods(Item itemProp)
+        public static Dictionary<string, decimal> GetItemMods(Item itemProp)
         {
             Dictionary<string, decimal> initialMods = new Dictionary<string, decimal>();
             foreach (string ex in itemProp.explicitMods)
@@ -205,10 +209,45 @@ namespace ItemWatcher2
         {
             try
             {
-                if (itemProp.frameType >= 4 && itemProp.frameType != 9)
+                if (itemProp.frameType >= 5 && itemProp.frameType != 9)
                     return false;
                 if (conf.rarity != POETradeConfig.Rarity.none && (int)conf.rarity != itemProp.frameType)
                     return false;
+
+
+                //Cheap checks
+                if (itemProp.name.ToLower().Contains("blood rage") || itemProp.typeLine.ToLower().Contains("blood rage"))
+                {
+                    int x = 5;
+                }
+                
+                if (!string.IsNullOrEmpty(conf.name))
+                {
+                    if (itemProp.name.ToLower() != conf.name.ToLower() && itemProp.typeLine.ToLower() != conf.name.ToLower())
+                        return false;
+                }
+                if (conf.corrupted.HasValue)
+                {
+                    if (itemProp.corrupted != conf.corrupted.Value)
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(conf.links))
+                {
+
+                }
+                if (!string.IsNullOrEmpty(conf.quality))
+                {
+                    JToken aps = itemProp.properties.FirstOrDefault(p => p["name"].ToString() == "Quality");
+                    if (aps == null)
+                        return false;
+                    JToken aps2 = aps.Children().FirstOrDefault();
+                    JToken values = aps2.Next;
+                    JToken SAPS = values.Children().FirstOrDefault().FirstOrDefault()[0];
+                    if (Convert.ToDecimal(GetValueOrAvgValue(SAPS.ToString())) < Convert.ToDecimal(conf.quality))
+                        return false;
+                }
+
+                //base check
                 string baseType = "";
                 if (itemProp.properties != null && itemProp.properties.First()["type"] == null)
                     baseType = itemProp.properties.First()["name"].ToString();
@@ -217,9 +256,9 @@ namespace ItemWatcher2
                 typeLine = typeLine.Replace("Superior ", "");
                 if (itemProp.frameType == 1)
                 {
-                    
+
                     typeLine = typeLine.Split(new string[] { " of" }, StringSplitOptions.None)[0];
-                    if(typeLine.Contains("Map"))
+                    if (typeLine.Contains("Map"))
                     {
                         int x = 5;
                     }
@@ -301,6 +340,7 @@ namespace ItemWatcher2
                     if (conf.type.ToString() != generalBase)
                         return false;
                 }
+                //Expensive checks
                 if (!string.IsNullOrEmpty(conf.aps))
                 {
                     JToken aps = itemProp.properties.FirstOrDefault(p => p["name"].ToString() == "Attacks per Second");
@@ -339,14 +379,8 @@ namespace ItemWatcher2
                 {
 
                 }
-                if (!string.IsNullOrEmpty(conf.links))
-                {
 
-                }
-                if (!string.IsNullOrEmpty(conf.name))
-                {
 
-                }
                 if (!string.IsNullOrEmpty(conf.pdps))
                 {
                     decimal pdps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(itemProp);
@@ -354,10 +388,7 @@ namespace ItemWatcher2
                     if (pdps < Convert.ToDecimal(conf.pdps))
                         return false;
                 }
-                if (!string.IsNullOrEmpty(conf.quality))
-                {
 
-                }
                 if (!string.IsNullOrEmpty(conf.shield))
                 {
 
@@ -366,14 +397,10 @@ namespace ItemWatcher2
                 {
 
                 }
-                if (conf.corrupted.HasValue)
-                {
-                    if (itemProp.corrupted != conf.corrupted.Value)
-                        return false;
-                }
+
                 if (conf.mods.Count > 0)
                 {
-                    
+
                     Dictionary<string, decimal> FinalMods = new Dictionary<string, decimal>();
                     string coldres = "+ to cold resistance";
                     string fireres = "+ to fire resistance";
@@ -503,6 +530,7 @@ namespace ItemWatcher2
             else
                 return (Convert.ToDecimal(value));
         }
+        
     }
 
     public class POETradeCraftable : POETradeConfig
@@ -515,7 +543,7 @@ namespace ItemWatcher2
         }
         public Dictionary<string, string> requiredMods { get; set; }
         public Dictionary<string, string> craftableMods { get; set; }
-        public Dictionary<int,ValueUrlCombo> dpsBenchmarks { get; set; }
+        public Dictionary<int, ValueUrlCombo> dpsBenchmarks { get; set; }
 
     }
     [Serializable]
@@ -524,7 +552,7 @@ namespace ItemWatcher2
         public ValueUrlCombo(int v, string u)
         {
             value = v;
-            url=u;
+            url = u;
         }
 
         public int value { get; set; }
@@ -698,4 +726,5 @@ namespace ItemWatcher2
             return this.base_name;
         }
     }
+    
 }

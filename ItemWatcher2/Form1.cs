@@ -32,6 +32,7 @@ namespace ItemWatcher2
         private static BackgroundWorker bgw;
         private static string RealChangeId = "";
         private static string UsedChangeId = "";
+        public static string LeagueName = "Standard";
         public static List<Slot> Slots = new List<Slot>();
         public static List<Slot> justTextSlots = new List<Slot>();
         public static List<NotChaosCurrencyConversion> othercurrencies;
@@ -53,7 +54,7 @@ namespace ItemWatcher2
             bgw2.DoWork += SyncNinja;
             bgw3.DoWork += SyncHead;
             bgw4.DoWork += ProcessItems;
-            
+
 
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
@@ -312,7 +313,7 @@ namespace ItemWatcher2
             {
                 lblDebug.Invoke((MethodInvoker)delegate
                 {
-                    lblDebug.Text = "craft : "+count++ + "/" + copy.Count;
+                    lblDebug.Text = "craft : " + count++ + "/" + copy.Count;
                 });
                 if (DateTime.Now.Subtract(craft.last_time_saved).TotalHours < 2)
                     continue;
@@ -346,7 +347,7 @@ namespace ItemWatcher2
             craftables = copy;
             saveCraftables(copy);
             SaveConfigAndWatchlist();
-            
+
             LoadBasicInfo();
             lblDebug.Invoke((MethodInvoker)delegate
             {
@@ -361,17 +362,21 @@ namespace ItemWatcher2
                 POETradeConfig rare = tempRareList[i];
                 txtRareUpdateStatus.Invoke((MethodInvoker)delegate
                 {
-                    txtRareUpdateStatus.Text = (i+1) + " / " + tempRareList.Count;
+                    txtRareUpdateStatus.Text = (i + 1) + " / " + tempRareList.Count;
                 });
                 if (DateTime.Now.Subtract(rare.last_time_saved).TotalHours < 2)
                     continue;
-                
-                string killme = "";
-                List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare, out killme);
-                if (prices.Count > 0)
-                    rare.estimated_value = prices.Sum(p => p) / prices.Count;
+                if (rare.manual_price_override.HasValue)
+                    rare.estimated_value = rare.manual_price_override.Value;
                 else
-                    rare.estimated_value = 10000;
+                {
+                    string killme = "";
+                    List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare, out killme);
+                    if (prices.Count > 0)
+                        rare.estimated_value = prices.Sum(p => p) / prices.Count;
+                    else
+                        rare.estimated_value = 10000;
+                }
                 rare.last_time_saved = DateTime.Now;
                 tempRareList[i] = rare;
             }
@@ -383,7 +388,7 @@ namespace ItemWatcher2
         {
             System.Threading.Thread.Sleep(15000);
             Queue<Item> secondrareQueue = new Queue<Item>();
-            
+
             while (true)
             {
                 try
@@ -404,7 +409,7 @@ namespace ItemWatcher2
                             continue;
                         itemProp.name = itemProp.name.Replace("<<set:MS>><<set:M>><<set:S>>", "");
                         itemProp.typeLine = itemProp.typeLine.Replace("<<set:MS>><<set:M>><<set:S>>", "");
-                        if ( config.do_all_uniques)
+                        if (config.do_all_uniques)
                         {
                             if ((ninjaItems.Where(p => p.name == itemProp.name && p.type == itemProp.frameType.ToString() && p.base_type == itemProp.typeLine).Count() > 0) || (itemProp.frameType == 6 && ninjaItems.Where(p => p.name == itemProp.typeLine).Count() > 0))
                             {
@@ -439,13 +444,13 @@ namespace ItemWatcher2
                                 }
                             }
                         }
-
+                        
                         secondrareQueue.Enqueue(itemProp);
                     }
                     Item rareItemProp = null;
                     while (raresQueue.Count < 10 && secondrareQueue.Count > 0)
                     {
-                        
+
                         if (secondrareQueue.Count % 5 == 0)
                             txtRareStatus.Invoke((MethodInvoker)delegate
                             {
@@ -454,12 +459,13 @@ namespace ItemWatcher2
                         if (secondrareQueue.Count > 10000)
                             secondrareQueue = new Queue<Item>();
                         rareItemProp = secondrareQueue.Dequeue();
-                        if ((rareItemProp.frameType != 2 && rareItemProp.frameType != 1) || (rareItemProp.craftedMods!=null && rareItemProp.craftedMods.Count()>0))
-                            continue;
-                        if(rareItemProp.craftedMods!=null)
+                        if (rareItemProp.typeLine.ToLower().Contains("blood rage"))
                         {
                             int x = 5;
                         }
+                        if ((rareItemProp.frameType != 2 && rareItemProp.frameType != 1 && rareItemProp.frameType != 4) || (rareItemProp.craftedMods != null && rareItemProp.craftedMods.Count() > 0))
+                            continue;
+                      
                         if (config.do_watch_rares && watchedRares.Count > 0)//is rare
                         {
                             foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
@@ -478,7 +484,7 @@ namespace ItemWatcher2
                         if (config.do_craft_watch)
                         {
                             //each craftable
-                            
+
                             foreach (POETradeCraftable craft in craftables.OrderByDescending(p => p.requiredMods.Count))//order by more precice requirements. crit over non crit for same base. 
                             {
                                 //basic check
@@ -527,7 +533,7 @@ namespace ItemWatcher2
                                                                     fakeNinja.Explicits.Add(string.Format("Req : {0} : {1}", kvp.Key, kvp.Value));
                                                                 foreach (KeyValuePair<string, string> kvp in craft.craftableMods)
                                                                     fakeNinja.Explicits.Add(string.Format("Craft : {0} : {1}", kvp.Key, kvp.Value));
-                                                                craftedVersion.explicitMods[craftedVersion.explicitMods.Count()-1] = "Craft: " + craftedVersion.explicitMods.Last();
+                                                                craftedVersion.explicitMods[craftedVersion.explicitMods.Count() - 1] = "Craft: " + craftedVersion.explicitMods.Last();
                                                                 rareItemProp.explicitMods = craftedVersion.explicitMods;
                                                                 rareItemProp.pdps = dps;
                                                                 SetSlots(rareItemProp, fakeNinja, value.url);
@@ -577,7 +583,7 @@ namespace ItemWatcher2
                                                     mods.Add(key.Replace("#", craft.craftableMods[key]));
                                                     craftedVersion.explicitMods = mods.ToArray();
                                                     craftedVersion.typeLine = rareItemProp.typeLine;
-                                                    
+
                                                     int dps = NinjaPoETradeMethods.GetDdpsOfLocalWeapon(craftedVersion);
                                                     ValueUrlCombo value = craft.dpsBenchmarks.Where(p => dps > p.Key).OrderByDescending(p => p.Value.value).FirstOrDefault().Value;
                                                     if (value.value * (1 - (1 - config.profit_percent) * 2) > rareItemProp.value)//double profit
@@ -763,18 +769,19 @@ namespace ItemWatcher2
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
                                 if (!string.IsNullOrEmpty(config.account_name) && accName.ToLower() == config.account_name.ToLower())
                                     PlayItsMeSound();
-                                
+
                                 if (config.blocked_accounts.Contains(accName))
                                     continue;
                                 JEnumerable<JToken> items = stash.First(p => p.Path.EndsWith(".items")).First.Children();
+
                                 foreach (JToken item in items)
                                 {
                                     try
                                     {
                                         Item itemProp = item.ToObject<Item>();
 
-                                        if (itemProp.league != "Harbinger")
-                                            continue;
+                                        if (itemProp.league != LeagueName)
+                                            break;
                                         if (string.IsNullOrEmpty(itemProp.note))
                                             continue;
                                         decimal itemValue = GetPriceInChaos(itemProp.note);
@@ -1941,6 +1948,7 @@ namespace ItemWatcher2
             config.blocked_accounts.Add(Slots[2].account_name);
             SaveConfigAndWatchlist();
         }
+
 
 
     }
