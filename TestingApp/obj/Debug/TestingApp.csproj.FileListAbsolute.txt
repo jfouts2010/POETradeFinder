@@ -10,3 +10,10 @@ C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.cspr
 C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.exe
 C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.pdb
 C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\obj\Debug\TestingApp.csprojResolveAssemblyReference.cache
+C:\Users\John\source\repos\TradeFinder\TestingApp\bin\Debug\TestingApp.exe.config
+C:\Users\John\source\repos\TradeFinder\TestingApp\bin\Debug\TestingApp.exe
+C:\Users\John\source\repos\TradeFinder\TestingApp\bin\Debug\TestingApp.pdb
+C:\Users\John\source\repos\TradeFinder\TestingApp\obj\Debug\TestingApp.csprojResolveAssemblyReference.cache
+C:\Users\John\source\repos\TradeFinder\TestingApp\obj\Debug\TestingApp.csproj.CoreCompileInputs.cache
+C:\Users\John\source\repos\TradeFinder\TestingApp\obj\Debug\TestingApp.exe
+C:\Users\John\source\repos\TradeFinder\TestingApp\obj\Debug\TestingApp.pdb
