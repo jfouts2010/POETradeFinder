@@ -39,6 +39,7 @@ namespace ItemWatcher2
         public static DateTime last_time_clicked { get; set; }
         public Form1()
         {
+
             LoadBasicInfo();
 
             //GenerateAllBaseWepsFromString();
@@ -52,7 +53,7 @@ namespace ItemWatcher2
 
             bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
-            bgw3.DoWork += SyncHead;
+            //bgw3.DoWork += SyncHead;
             bgw4.DoWork += ProcessItems;
 
 
@@ -126,7 +127,7 @@ namespace ItemWatcher2
 
             }
         }
-        private void SyncHead(object sender, DoWorkEventArgs e)
+       /* private void SyncHead(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
@@ -164,7 +165,7 @@ namespace ItemWatcher2
                     });
                     RealChangeId = tempid;
                 }
-        }
+        }*/
         private void SyncCraftables(object sender, DoWorkEventArgs e)
         {
             while (true)
@@ -642,44 +643,13 @@ namespace ItemWatcher2
             {
                 textBox1.Text = "Converting Poe.Ninja Items";
             });
-
-            //why even do this when we overwrite
-            /*
-            if (config.do_all_uniques && config.LastSaved.AddHours(1) < DateTime.Now)
-                ninjaItems = NinjaPoETradeMethods.SetNinjaValues(ninjaItems, txtBoxUpdateThread);
-                */
-
             ninjaItems = config.SavedItems;
-
-
             textBox1.Invoke((MethodInvoker)delegate
             {
                 textBox1.Text = "Poe.Ninja Items Converted";
             });
 
-            HttpWebRequest request2 = WebRequest.Create("http://api.poe.ninja/api/Data/GetStats") as HttpWebRequest;
-            textBox1.Invoke((MethodInvoker)delegate
-            {
-                textBox1.Text = "Locating Head";
-            });
-
-            UsedChangeId = FindHead();
-            // Get response  
-            /*using (HttpWebResponse response2 = request2.GetResponse() as HttpWebResponse)
-            {
-                // Get the response stream  
-                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
-                {
-                    JObject jo = JObject.Parse(reader.ReadToEnd());
-                    changeID = jo.Children().ToList()[1].First.ToString();
-                }
-            }*/
-
-            // Create the web request  
-            textBox1.Invoke((MethodInvoker)delegate
-            {
-                textBox1.Text = "Found Head";
-            });
+            //Main loop to look for new items from ggg.trade
             while (true)
             {
                 try
@@ -690,30 +660,7 @@ namespace ItemWatcher2
                         lastClearedSeen = DateTime.Now;
                     }
                     SetTimeseconds(Slots);
-                    /* shouldnt need this anymore
-                    if (config.do_all_uniques_with_ranges && DateTime.Now.Subtract(refreshConfig).TotalSeconds > 50)
-                    {
-                        LoadBasicInfo();
-                        ninjaItems = config.SavedItems;
-                        refreshConfig = DateTime.Now;
-                    }
-                    */
-                    //detect if change is too old
-
-                    int currchange = int.Parse(UsedChangeId.Split('-').Last());
-                    int otherchange = int.Parse(RealChangeId.Split('-').Last());
-                    if (otherchange - currchange >= 400)
-                        UsedChangeId = UsedChangeId.Substring(0, 36) + otherchange;
-                    if (!txtBoxFasterSearch.Text.ToLower().Contains("run in"))
-                    {
-                        System.Threading.Thread.Sleep(5000);
-                    }
                     HttpWebRequest request = WebRequest.Create("http://www.pathofexile.com/api/public-stash-tabs?id=" + UsedChangeId) as HttpWebRequest;
-                    //textBox1.Invoke((MethodInvoker)delegate
-                    //{
-                    //    textBox1.Text = "Waiting for POE Change Response";
-                    //});
-                    // Get response  
                     DateTime now = DateTime.Now;
                     lastTimeAPIcalled = DateTime.Now;
                     using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -726,8 +673,6 @@ namespace ItemWatcher2
                             List<JToken> jo;
                             using (StreamReader reader = new StreamReader(stream))
                             {
-                                // Console application output  
-
                                 double secondsToResponse = (DateTime.Now - now).TotalSeconds;
                                 char[] buffer = new char[100];
                                 reader.ReadBlock(buffer, 0, 99);
@@ -752,18 +697,8 @@ namespace ItemWatcher2
                             }
 
                             List<JToken> stashes = jo[1].First().Children().ToList();
-
-                            //textBox1.Invoke((MethodInvoker)delegate
-                            //{
-                            //    textBox1.Text = "Parsing " + stashes.Count + " stashes";
-                            //});
-
                             foreach (JToken jt in stashes)
                             {
-                                //textBox1.Invoke((MethodInvoker)delegate
-                                //{
-                                //    textBox1.Text = "Parsing " + counter++ + " / " + stashes.Count;
-                                //});
                                 JEnumerable<JToken> stash = jt.Children();
                                 string name = stash.First(p => p.Path.EndsWith(".lastCharacterName")).First.ToString();
                                 string accName = stash.First(p => p.Path.EndsWith(".accountName")).First.ToString();
@@ -832,6 +767,10 @@ namespace ItemWatcher2
                 }
 
             }
+
+        }
+        public static void GetUrl()
+        {
 
         }
         public static List<ExplicitField> GetExplicitFields(NinjaItem nj, Item sellItem)
@@ -988,7 +927,7 @@ namespace ItemWatcher2
                 int x = findWhoGets(itemProp.id, config.number_of_people);
                 s.is_mine = x == config.my_number;
                 s.url = url;
-                s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Harbinger (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
+                s.Message = "@" + itemProp.char_name + " Hi, I would like to buy your " + itemProp.name + " " + itemProp.typeLine + " listed for " + GetOriginalPrice(itemProp.note) + " in Abyss (stash tab \"" + itemProp.inventoryId + "\"; position: left " + itemProp.x + ", top " + itemProp.y + ")";
 
 
                 if (Slots.Count == 3)
@@ -1781,7 +1720,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(Slots[0].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
@@ -1809,7 +1748,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(Slots[1].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {
@@ -1837,7 +1776,7 @@ namespace ItemWatcher2
                 request23.KeepAlive = true;
                 request23.ContentType = "application/x-www-form-urlencoded";
                 StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
-                postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+                postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(Slots[2].BaseItem.name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=1&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
                 postwriter.Close();
                 using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
                 {

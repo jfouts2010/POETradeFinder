@@ -31,14 +31,14 @@ namespace ItemWatcher2
             List<JObject> JJewlerys = new List<JObject>();
             List<JObject> JArmors = new List<JObject>();
             Dictionary<string, int> APIURLS = new Dictionary<string, int>();
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 1);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 2);
-            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Harbinger&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 3);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetDivinationCardsOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetProphecyOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueMapOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueJewelOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueFlaskOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 0);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueWeaponOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 1);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueArmourOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 2);
+            APIURLS.Add("http://api.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=Abyss&date=" + DateTime.Now.ToString("YYYY-mm-dd"), 3);
             txtBoxUpdateThread.Invoke((MethodInvoker)delegate
             {
                 txtBoxUpdateThread.Text = "Doing Ninja Update";
@@ -324,7 +324,7 @@ namespace ItemWatcher2
             StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
 
 
-            postwriter.Write("league=Harbinger&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity + "&q_max=0");
+            postwriter.Write("league=Abyss&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity + "&q_max=0");
             postwriter.Close();
 
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
@@ -552,7 +552,7 @@ namespace ItemWatcher2
             string name = nj.name;
             if (!string.IsNullOrEmpty(nj.base_type))
                 name += " " + nj.base_type;
-            postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=0&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&mod_name=&mod_min=&mod_max=&group_type=And&group_min=&group_max=&group_count=0&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
@@ -660,7 +660,7 @@ namespace ItemWatcher2
             string name = nj.name;
             if (!string.IsNullOrEmpty(nj.base_type))
                 name += " " + nj.base_type;
-            postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMaxSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMaxSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
@@ -718,7 +718,7 @@ namespace ItemWatcher2
             string name = nj.name;
             if (!string.IsNullOrEmpty(nj.base_type))
                 name += " " + nj.base_type;
-            postwriter.Write("league=Harbinger&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMidSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
+            postwriter.Write("league=Abyss&type=&base=&name=" + WebUtility.UrlEncode(name) + "&dmg_min=&dmg_max=&aps_min=&aps_max=&crit_min=&crit_max=&dps_min=&dps_max=&edps_min=&edps_max=&pdps_min=&pdps_max=&armour_min=&armour_max=&evasion_min=&evasion_max=&shield_min=&shield_max=&block_min=&block_max=&sockets_min=&sockets_max=&link_min=&link_max=&sockets_r=&sockets_g=&sockets_b=&sockets_w=&linked_r=&linked_g=&linked_b=&linked_w=&rlevel_min=&rlevel_max=&rstr_min=&rstr_max=&rdex_min=&rdex_max=&rint_min=&rint_max=&" + modsMidSearch + "group_type=And&group_min=&group_max=&group_count=" + explicitsToCheck.Count().ToString() + "&q_min=&q_max=&level_min=&level_max=&ilvl_min=&ilvl_max=&rarity=" + rarity + "&seller=&thread=&identified=&corrupted=&online=x&has_buyout=&altart=&capquality=x&buyout_min=&buyout_max=&buyout_currency=&crafted=&enchanted=");
             postwriter.Close();
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
             {
