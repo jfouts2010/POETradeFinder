@@ -628,12 +628,18 @@ namespace ItemWatcher2
             get
             {
                 int count = 0;
-                foreach (JObject jo in sockets.Children())
+                if (sockets != null)
                 {
-                    count++;
-                    if (jo["group"].ToString() != "0")
-                        return count;
+                    
+                    foreach (JObject jo in sockets.Children())
+                    {
+                        count++;
+                        if (jo["group"].ToString() != "0")
+                            return count;
+                    }
                 }
+                else
+                    return -1;
                 return count;
             }
         }

@@ -53,14 +53,15 @@ namespace ItemWatcher2
                     // Get the response stream  
                     using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                     {
+                        string x = reader.ReadToEnd();
                         if (APIURLS[s] == 0)
-                            Jsons.Add(JObject.Parse(reader.ReadToEnd()));
+                            Jsons.Add(JObject.Parse(x));
                         else if ((APIURLS[s] == 1))
-                            Jweps.Add(JObject.Parse(reader.ReadToEnd()));
+                            Jweps.Add(JObject.Parse(x));
                         else if ((APIURLS[s] == 2))
-                            JArmors.Add(JObject.Parse(reader.ReadToEnd()));
+                            JArmors.Add(JObject.Parse(x));
                         else
-                            JJewlerys.Add(JObject.Parse(reader.ReadToEnd()));
+                            JJewlerys.Add(JObject.Parse(x));
                     }
                 }
             }
@@ -172,6 +173,8 @@ namespace ItemWatcher2
             List<NinjaItem> localNinjaItems = new List<NinjaItem>();
             foreach (JObject jo2 in jo.First.First.Children().ToList())
             {
+                if (jo2["links"].ToString() == "5" || jo2["links"].ToString() == "6")
+                    continue;
                 NinjaItem newNinjaItem = new NinjaItem();
                 newNinjaItem.name = jo2.Children().ToList().First(p => p.Path.EndsWith(".name")).First.ToString();
                 newNinjaItem.is_weapon = (type == 1);
