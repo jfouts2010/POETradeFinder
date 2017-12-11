@@ -9,7 +9,6 @@ C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\bin\Debug\TestingApp.pdb
 C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.csprojResolveAssemblyReference.cache
 C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.exe
 C:\Users\Ian\Documents\Projects\TradeFinder\TestingApp\obj\Debug\TestingApp.pdb
-C:\Users\Ian\Documents\Work\OtherRepos\TradeFinder\TestingApp\obj\Debug\TestingApp.csprojResolveAssemblyReference.cache
 C:\Users\Ian\Documents\CodingProjects\TradeFinder\TestingApp\bin\Debug\TestingApp.exe.config
 C:\Users\Ian\Documents\CodingProjects\TradeFinder\TestingApp\bin\Debug\TestingApp.exe
 C:\Users\Ian\Documents\CodingProjects\TradeFinder\TestingApp\bin\Debug\TestingApp.pdb

@@ -11,80 +11,53 @@
     "dpsBenchmarks": {
       "200": {
         "value": 0,
-        "url": "http://poe.trade/search/anohummketomid"
+        "url": "http://poe.trade/search/uzyonagesaruih"
       },
       "210": {
         "value": 0,
-        "url": "http://poe.trade/search/arasimizihagos"
+        "url": "http://poe.trade/search/hihikaokitarah"
       },
       "220": {
         "value": 0,
-        "url": "http://poe.trade/search/oonaritutauses"
+        "url": "http://poe.trade/search/hitoyeninokuni"
       },
       "230": {
-        "value": 1,
-        "url": "http://poe.trade/search/mokimatadauriw"
+        "value": 0,
+        "url": "http://poe.trade/search/maoyuritakaret"
       },
       "240": {
-        "value": 1,
-        "url": "http://poe.trade/search/ehusimonisinik"
+        "value": 0,
+        "url": "http://poe.trade/search/igiwauterumoki"
       },
       "250": {
-        "value": 4,
-        "url": "http://poe.trade/search/etetehimyeyoka"
+        "value": 7,
+        "url": "http://poe.trade/search/sehoakasitiuou"
       },
       "260": {
-        "value": 7,
-        "url": "http://poe.trade/search/uawonotazitani"
+        "value": 10,
+        "url": "http://poe.trade/search/akohoriwonitet"
       },
       "270": {
-        "value": 27,
-        "url": "http://poe.trade/search/atokenakonarah"
+        "value": 19,
+        "url": "http://poe.trade/search/amatayetanokam"
       },
       "280": {
-        "value": 44,
-        "url": "http://poe.trade/search/gosimianorinan"
+        "value": 21,
+        "url": "http://poe.trade/search/oyokukatakitot"
       },
       "290": {
-        "value": 89,
-        "url": "http://poe.trade/search/romanonorazuri"
+        "value": 21,
+        "url": "http://poe.trade/search/itesimaotoriwo"
       },
       "300": {
-        "value": 236,
-        "url": "http://poe.trade/search/hitebihahiuban"
-      },
-      "310": {
-        "value": 225,
-        "url": "http://poe.trade/search/agureyoiroyama"
-      },
-      "320": {
-        "value": 225,
-        "url": "http://poe.trade/search/onitinisiikoho"
-      },
-      "330": {
-        "value": 1440,
-        "url": "http://poe.trade/search/yamotoniomarab"
-      },
-      "340": {
-        "value": 1440,
-        "url": "http://poe.trade/search/henosinatomazu"
-      },
-      "350": {
-        "value": 1440,
-        "url": "http://poe.trade/search/amitehaatamate"
-      },
-      "360": {
-        "value": 1440,
-        "url": "http://poe.trade/search/ikanohasitoten"
-      },
-      "370": {
         "value": 10000,
-        "url": "http://poe.trade/search/homotetohihois"
+        "url": "http://poe.trade/search/omomonitanimey"
       }
     },
     "id": "4b8b0d04-40f7-4a91-a773-7b45afd7ee70",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 2,
     "baseType": "",
     "damage": "",
@@ -109,7 +82,7 @@
     "normalize_q": true,
     "crafted": null,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:27:44.5616447-06:00",
+    "last_time_saved": "2017-12-11T15:32:10.897725-07:00",
     "estimated_value": 0.0,
     "url": "http://poe.trade/search/homotetohihois"
   },
@@ -122,132 +95,133 @@
     "dpsBenchmarks": {
       "300": {
         "value": 0,
-        "url": "http://poe.trade/search/akiosakanoamor"
+        "url": "http://poe.trade/search/idataganotewoa"
       },
       "310": {
         "value": 0,
-        "url": "http://poe.trade/search/hutayaniduaita"
+        "url": "http://poe.trade/search/imokenozazanat"
       },
       "320": {
         "value": 0,
-        "url": "http://poe.trade/search/otahuhagasinau"
+        "url": "http://poe.trade/search/mohoyamagoyoko"
       },
       "330": {
         "value": 0,
-        "url": "http://poe.trade/search/kakonarukaruno"
+        "url": "http://poe.trade/search/ekanimonookono"
       },
       "340": {
         "value": 0,
-        "url": "http://poe.trade/search/iadorioriitoki"
+        "url": "http://poe.trade/search/omihukitayamik"
       },
       "350": {
         "value": 0,
-        "url": "http://poe.trade/search/somikihinomoka"
+        "url": "http://poe.trade/search/itetoyagetoyer"
       },
       "360": {
         "value": 0,
-        "url": "http://poe.trade/search/anorihureyuona"
+        "url": "http://poe.trade/search/ehonoohoyokion"
       },
       "370": {
         "value": 0,
-        "url": "http://poe.trade/search/ikaukiwosinasi"
+        "url": "http://poe.trade/search/turumasiaratin"
       },
       "380": {
         "value": 0,
-        "url": "http://poe.trade/search/tusekaborukaka"
+        "url": "http://poe.trade/search/akosinyoninama"
       },
       "390": {
         "value": 0,
-        "url": "http://poe.trade/search/utewohorowaton"
+        "url": "http://poe.trade/search/simomoruisokoh"
       },
       "400": {
-        "value": 1,
-        "url": "http://poe.trade/search/otowasaruteder"
+        "value": 5,
+        "url": "http://poe.trade/search/isaresikihamko"
       },
       "410": {
-        "value": 3,
-        "url": "http://poe.trade/search/anakohorewonok"
+        "value": 12,
+        "url": "http://poe.trade/search/itasunosahubaw"
       },
       "420": {
-        "value": 7,
-        "url": "http://poe.trade/search/ahawahoharitat"
+        "value": 21,
+        "url": "http://poe.trade/search/asoritiwigaraw"
       },
       "430": {
-        "value": 11,
-        "url": "http://poe.trade/search/onamanoinarigo"
+        "value": 27,
+        "url": "http://poe.trade/search/omorikamanioas"
       },
       "440": {
-        "value": 16,
-        "url": "http://poe.trade/search/orikokasiyorea"
+        "value": 46,
+        "url": "http://poe.trade/search/aminaziwokarui"
       },
       "450": {
-        "value": 24,
-        "url": "http://poe.trade/search/koyohonihasana"
+        "value": 50,
+        "url": "http://poe.trade/search/iotamoterihaua"
       },
       "460": {
-        "value": 36,
-        "url": "http://poe.trade/search/atidusunikakan"
+        "value": 56,
+        "url": "http://poe.trade/search/mikokitazuzubo"
       },
       "470": {
-        "value": 42,
-        "url": "http://poe.trade/search/imomizazinonat"
+        "value": 61,
+        "url": "http://poe.trade/search/oahohihudomyom"
       },
       "480": {
-        "value": 48,
-        "url": "http://poe.trade/search/arikonotosomen"
+        "value": 70,
+        "url": "http://poe.trade/search/bebatamikokaha"
       },
       "490": {
-        "value": 52,
-        "url": "http://poe.trade/search/etesiohezotasu"
+        "value": 141,
+        "url": "http://poe.trade/search/ugihasutaserao"
       },
       "500": {
-        "value": 86,
-        "url": "http://poe.trade/search/omomorakohamon"
+        "value": 239,
+        "url": "http://poe.trade/search/ohinitehutasak"
       },
       "510": {
-        "value": 104,
-        "url": "http://poe.trade/search/anokarikaseten"
+        "value": 225,
+        "url": "http://poe.trade/search/resitokumasiwo"
       },
       "520": {
-        "value": 106,
-        "url": "http://poe.trade/search/haimimuomeyazi"
+        "value": 323,
+        "url": "http://poe.trade/search/hoetotoamkoror"
       },
       "530": {
-        "value": 234,
-        "url": "http://poe.trade/search/hahasitarakeno"
+        "value": 323,
+        "url": "http://poe.trade/search/umononohutotis"
       },
       "540": {
-        "value": 287,
-        "url": "http://poe.trade/search/urinoyumamahin"
+        "value": 323,
+        "url": "http://poe.trade/search/urimokoyotakim"
       },
       "550": {
-        "value": 382,
-        "url": "http://poe.trade/search/asimogeyadonit"
+        "value": 323,
+        "url": "http://poe.trade/search/hosionomarahom"
       },
       "560": {
-        "value": 382,
-        "url": "http://poe.trade/search/uwarimyomayosi"
+        "value": 323,
+        "url": "http://poe.trade/search/anititahituwas"
       },
       "570": {
-        "value": 382,
-        "url": "http://poe.trade/search/edomotasikanaz"
+        "value": 323,
+        "url": "http://poe.trade/search/inidotamyarehu"
       },
       "580": {
-        "value": 382,
-        "url": "http://poe.trade/search/akoyasisakamos"
+        "value": 323,
+        "url": "http://poe.trade/search/umahodohosotik"
       },
       "590": {
-        "value": 761,
-        "url": "http://poe.trade/search/akohunikuhamir"
+        "value": 348,
+        "url": "http://poe.trade/search/onamihahaniray"
       },
       "600": {
-        "value": 915,
-        "url": "http://poe.trade/search/woriyanahitota"
+        "value": 414,
+        "url": "http://poe.trade/search/zumaraziuitika"
       }
     },
     "id": "a62b5473-cbdd-4da9-b551-6dab3dfb1a06",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 8,
     "baseType": "",
     "damage": "",
@@ -270,7 +244,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:28:27.5957729-06:00",
+    "last_time_saved": "2017-12-11T15:33:11.2470162-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -285,69 +259,74 @@
     },
     "dpsBenchmarks": {
       "200": {
-        "value": 0,
-        "url": "http://poe.trade/search/imigutotarumak"
+        "value": 1,
+        "url": "http://poe.trade/search/mobaumenonomum"
       },
       "210": {
-        "value": 0,
-        "url": "http://poe.trade/search/obohirorubakey"
+        "value": 1,
+        "url": "http://poe.trade/search/hetasizomakiti"
       },
       "220": {
-        "value": 0,
-        "url": "http://poe.trade/search/onasikiimegaha"
+        "value": 1,
+        "url": "http://poe.trade/search/okeburenausiih"
       },
       "230": {
-        "value": 0,
-        "url": "http://poe.trade/search/aruautuotazuin"
+        "value": 1,
+        "url": "http://poe.trade/search/tagonaboasauga"
       },
       "240": {
-        "value": 0,
-        "url": "http://poe.trade/search/ominozayaradog"
+        "value": 2,
+        "url": "http://poe.trade/search/ikoyugomomahas"
       },
       "250": {
-        "value": 2,
-        "url": "http://poe.trade/search/akahimenahuhou"
+        "value": 14,
+        "url": "http://poe.trade/search/asetatunokaman"
       },
       "260": {
-        "value": 2,
-        "url": "http://poe.trade/search/amotonainitari"
+        "value": 21,
+        "url": "http://poe.trade/search/ikiwokobarited"
       },
       "270": {
-        "value": 33,
-        "url": "http://poe.trade/search/ikoyoorikiyari"
+        "value": 30,
+        "url": "http://poe.trade/search/hoesebanikatah"
       },
       "280": {
-        "value": 80,
-        "url": "http://poe.trade/search/huseriotosoite"
+        "value": 97,
+        "url": "http://poe.trade/search/binamahitohiko"
       },
       "290": {
-        "value": 101,
-        "url": "http://poe.trade/search/ononomarikukas"
+        "value": 585,
+        "url": "http://poe.trade/search/asitataninanom"
       },
       "300": {
-        "value": 170,
-        "url": "http://poe.trade/search/enaharuteriked"
+        "value": 585,
+        "url": "http://poe.trade/search/oahianzyekooki"
       },
       "310": {
-        "value": 372,
-        "url": "http://poe.trade/search/donasakahomoni"
+        "value": 585,
+        "url": "http://poe.trade/search/mkaruuritusiat"
       },
       "320": {
-        "value": 305,
-        "url": "http://poe.trade/search/itorenedatosin"
+        "value": 585,
+        "url": "http://poe.trade/search/imonorekanamos"
       },
       "330": {
-        "value": 240,
-        "url": "http://poe.trade/search/asikateyohikin"
+        "value": 585,
+        "url": "http://poe.trade/search/tasinanikasinu"
       },
       "340": {
+        "value": 585,
+        "url": "http://poe.trade/search/ohomeyagoyuwor"
+      },
+      "350": {
         "value": 10000,
-        "url": "http://poe.trade/search/owowasarurakot"
+        "url": "http://poe.trade/search/ahotimahorigon"
       }
     },
     "id": "5835b1cf-977a-4227-982c-c41cc40b5056",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 1,
     "baseType": "",
     "damage": "",
@@ -370,7 +349,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:28:48.7241991-06:00",
+    "last_time_saved": "2017-12-11T15:33:59.7315039-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -385,81 +364,70 @@
     },
     "dpsBenchmarks": {
       "200": {
-        "value": 0,
-        "url": "http://poe.trade/search/iyohoriwokawoz"
+        "value": 1,
+        "url": "http://poe.trade/search/keugahuorihito"
       },
       "210": {
-        "value": 0,
-        "url": "http://poe.trade/search/ubotohiogosima"
+        "value": 1,
+        "url": "http://poe.trade/search/hituasetanosim"
       },
       "220": {
-        "value": 0,
-        "url": "http://poe.trade/search/okanorikihitah"
+        "value": 1,
+        "url": "http://poe.trade/search/owomosehubeyog"
       },
       "230": {
-        "value": 0,
-        "url": "http://poe.trade/search/iyamonamarinon"
+        "value": 1,
+        "url": "http://poe.trade/search/omekimomasamom"
       },
       "240": {
-        "value": 0,
-        "url": "http://poe.trade/search/itimerenzurite"
+        "value": 1,
+        "url": "http://poe.trade/search/iyorimironotot"
       },
       "250": {
-        "value": 0,
-        "url": "http://poe.trade/search/rikasetebonadu"
+        "value": 1,
+        "url": "http://poe.trade/search/wazunogokomaru"
       },
       "260": {
-        "value": 0,
-        "url": "http://poe.trade/search/anodusikiomoka"
+        "value": 1,
+        "url": "http://poe.trade/search/ramenomosahini"
       },
       "270": {
-        "value": 0,
-        "url": "http://poe.trade/search/asiamiseyoatoi"
+        "value": 1,
+        "url": "http://poe.trade/search/ahihidenoyatar"
       },
       "280": {
         "value": 2,
-        "url": "http://poe.trade/search/aureyazatabuoy"
+        "url": "http://poe.trade/search/abokimimarahos"
       },
       "290": {
-        "value": 15,
-        "url": "http://poe.trade/search/reritawakoyosi"
+        "value": 2,
+        "url": "http://poe.trade/search/okimikikataram"
       },
       "300": {
-        "value": 45,
-        "url": "http://poe.trade/search/oridohimewatod"
+        "value": 2,
+        "url": "http://poe.trade/search/omonioharinoak"
       },
       "310": {
-        "value": 66,
-        "url": "http://poe.trade/search/aradarikitetob"
+        "value": 4,
+        "url": "http://poe.trade/search/itohuhikarehoh"
       },
       "320": {
-        "value": 169,
-        "url": "http://poe.trade/search/igononinazoima"
+        "value": 7,
+        "url": "http://poe.trade/search/taridamgareras"
       },
       "330": {
-        "value": 414,
-        "url": "http://poe.trade/search/nahikaritomosi"
+        "value": 2,
+        "url": "http://poe.trade/search/utagamazitasio"
       },
       "340": {
-        "value": 550,
-        "url": "http://poe.trade/search/onehosadorihum"
-      },
-      "350": {
-        "value": 550,
-        "url": "http://poe.trade/search/usemoyakutaris"
-      },
-      "360": {
-        "value": 586,
-        "url": "http://poe.trade/search/ohinagituhotos"
-      },
-      "370": {
         "value": 10000,
-        "url": "http://poe.trade/search/asuronobatitai"
+        "url": "http://poe.trade/search/tokatoretonasi"
       }
     },
     "id": "5c479fbb-e891-4081-a982-4a639c81173b",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 4,
     "baseType": "",
     "damage": "",
@@ -482,7 +450,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:29:14.883971-06:00",
+    "last_time_saved": "2017-12-11T15:34:30.7097401-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -495,92 +463,93 @@
     "dpsBenchmarks": {
       "200": {
         "value": 0,
-        "url": "http://poe.trade/search/tamizakomemona"
+        "url": "http://poe.trade/search/igewisitoahabi"
       },
       "210": {
         "value": 0,
-        "url": "http://poe.trade/search/asominiyehakim"
+        "url": "http://poe.trade/search/oyeragohiumahi"
       },
       "220": {
         "value": 0,
-        "url": "http://poe.trade/search/noguhiwatagara"
+        "url": "http://poe.trade/search/huwotatewoukim"
       },
       "230": {
-        "value": 0,
-        "url": "http://poe.trade/search/otoritomokohay"
+        "value": 1,
+        "url": "http://poe.trade/search/egitedokukiuna"
       },
       "240": {
-        "value": 0,
-        "url": "http://poe.trade/search/orekomtuotanog"
+        "value": 1,
+        "url": "http://poe.trade/search/sikioyomahiuwa"
       },
       "250": {
-        "value": 0,
-        "url": "http://poe.trade/search/anateyukotosuo"
+        "value": 1,
+        "url": "http://poe.trade/search/aooanarikimahe"
       },
       "260": {
-        "value": 0,
-        "url": "http://poe.trade/search/omeomasetarugo"
+        "value": 1,
+        "url": "http://poe.trade/search/sihotonaritani"
       },
       "270": {
         "value": 1,
-        "url": "http://poe.trade/search/hinenetonitoor"
+        "url": "http://poe.trade/search/autubetureteyo"
       },
       "280": {
-        "value": 4,
-        "url": "http://poe.trade/search/womikatiuboyun"
+        "value": 5,
+        "url": "http://poe.trade/search/inohokimeyotaw"
       },
       "290": {
-        "value": 6,
-        "url": "http://poe.trade/search/uahoyeragarako"
+        "value": 14,
+        "url": "http://poe.trade/search/anarihikiumago"
       },
       "300": {
-        "value": 13,
-        "url": "http://poe.trade/search/ogononokosinan"
+        "value": 22,
+        "url": "http://poe.trade/search/amgonorakorini"
       },
       "310": {
-        "value": 16,
-        "url": "http://poe.trade/search/uketubanitedok"
+        "value": 23,
+        "url": "http://poe.trade/search/abekasohionami"
       },
       "320": {
-        "value": 19,
-        "url": "http://poe.trade/search/etinotazubokan"
+        "value": 50,
+        "url": "http://poe.trade/search/aremonohatasik"
       },
       "330": {
-        "value": 49,
-        "url": "http://poe.trade/search/itonarimtaboro"
+        "value": 57,
+        "url": "http://poe.trade/search/anikenananhura"
       },
       "340": {
-        "value": 64,
-        "url": "http://poe.trade/search/aronamazitewom"
+        "value": 70,
+        "url": "http://poe.trade/search/akausiwonokuwa"
       },
       "350": {
-        "value": 81,
-        "url": "http://poe.trade/search/hoonomiuhikiyo"
+        "value": 129,
+        "url": "http://poe.trade/search/emarihomkihiki"
       },
       "360": {
-        "value": 115,
-        "url": "http://poe.trade/search/dahedatabamino"
+        "value": 150,
+        "url": "http://poe.trade/search/hamikobeneruto"
       },
       "370": {
-        "value": 173,
-        "url": "http://poe.trade/search/etoanariketuwa"
+        "value": 158,
+        "url": "http://poe.trade/search/oharegebeyokas"
       },
       "380": {
-        "value": 282,
-        "url": "http://poe.trade/search/siwokinaarekut"
+        "value": 199,
+        "url": "http://poe.trade/search/ruaukonoyonama"
       },
       "390": {
-        "value": 368,
-        "url": "http://poe.trade/search/ekenatobenasuz"
+        "value": 266,
+        "url": "http://poe.trade/search/asorunimigenoy"
       },
       "400": {
-        "value": 531,
-        "url": "http://poe.trade/search/moogomoikawono"
+        "value": 507,
+        "url": "http://poe.trade/search/inamerarinitan"
       }
     },
     "id": "d7feddea-5fe0-4074-825c-3a67573006e8",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 3,
     "baseType": "",
     "damage": "",
@@ -603,7 +572,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:29:49.8633766-06:00",
+    "last_time_saved": "2017-12-11T15:35:31.6819787-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -616,92 +585,93 @@
     "dpsBenchmarks": {
       "200": {
         "value": 0,
-        "url": "http://poe.trade/search/obonitesuwanon"
+        "url": "http://poe.trade/search/onaritabizurim"
       },
       "210": {
         "value": 0,
-        "url": "http://poe.trade/search/tarikasitasito"
+        "url": "http://poe.trade/search/ogoimonoirisim"
       },
       "220": {
         "value": 0,
-        "url": "http://poe.trade/search/aminoonitetazu"
+        "url": "http://poe.trade/search/hihikenarihebu"
       },
       "230": {
         "value": 0,
-        "url": "http://poe.trade/search/ooyahimanohate"
+        "url": "http://poe.trade/search/osokokemgenhit"
       },
       "240": {
         "value": 0,
-        "url": "http://poe.trade/search/honanonarekewa"
+        "url": "http://poe.trade/search/hotodukiitaima"
       },
       "250": {
         "value": 0,
-        "url": "http://poe.trade/search/arakikakarubar"
+        "url": "http://poe.trade/search/riniterinikime"
       },
       "260": {
         "value": 0,
-        "url": "http://poe.trade/search/ahioyeyumoyoni"
+        "url": "http://poe.trade/search/aseteyootonisi"
       },
       "270": {
         "value": 1,
-        "url": "http://poe.trade/search/uitakonohesina"
+        "url": "http://poe.trade/search/tasinawomarimo"
       },
       "280": {
         "value": 1,
-        "url": "http://poe.trade/search/ononorariyobah"
+        "url": "http://poe.trade/search/ariotowomautar"
       },
       "290": {
         "value": 1,
-        "url": "http://poe.trade/search/oukanoketuiyan"
+        "url": "http://poe.trade/search/hehihanagimian"
       },
       "300": {
         "value": 1,
-        "url": "http://poe.trade/search/ituretakohehin"
+        "url": "http://poe.trade/search/chaneowobohasi"
       },
       "310": {
-        "value": 2,
-        "url": "http://poe.trade/search/tarutomkarinon"
+        "value": 3,
+        "url": "http://poe.trade/search/okamogokugotas"
       },
       "320": {
-        "value": 4,
-        "url": "http://poe.trade/search/honagiwakokona"
+        "value": 3,
+        "url": "http://poe.trade/search/ihosiuousahaki"
       },
       "330": {
         "value": 11,
-        "url": "http://poe.trade/search/ekadonarunimat"
+        "url": "http://poe.trade/search/ikakukosidukin"
       },
       "340": {
-        "value": 46,
-        "url": "http://poe.trade/search/omatohihitamak"
+        "value": 26,
+        "url": "http://poe.trade/search/ranadugerutomo"
       },
       "350": {
-        "value": 106,
-        "url": "http://poe.trade/search/isikaritanamat"
+        "value": 107,
+        "url": "http://poe.trade/search/husikatonitawo"
       },
       "360": {
-        "value": 217,
-        "url": "http://poe.trade/search/heoiwasahokito"
+        "value": 331,
+        "url": "http://poe.trade/search/orihukewakoahi"
       },
       "370": {
-        "value": 260,
-        "url": "http://poe.trade/search/iyarahubetarat"
+        "value": 331,
+        "url": "http://poe.trade/search/urinikaukitona"
       },
       "380": {
-        "value": 355,
-        "url": "http://poe.trade/search/ikogonomahenar"
+        "value": 331,
+        "url": "http://poe.trade/search/imatatagukuima"
       },
       "390": {
-        "value": 355,
-        "url": "http://poe.trade/search/anikimkotohehu"
+        "value": 351,
+        "url": "http://poe.trade/search/harirumoriwani"
       },
       "400": {
-        "value": 360,
-        "url": "http://poe.trade/search/ukiakaotowonom"
+        "value": 10000,
+        "url": "http://poe.trade/search/ominonosiyonok"
       }
     },
     "id": "bcfd5326-b9e5-4b4f-8d5e-1f5dc135d4af",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 5,
     "baseType": "",
     "damage": "",
@@ -724,7 +694,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:30:20.984378-06:00",
+    "last_time_saved": "2017-12-11T15:36:16.4786127-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -737,120 +707,85 @@
     "dpsBenchmarks": {
       "300": {
         "value": 0,
-        "url": "http://poe.trade/search/anoharihuzamom"
+        "url": "http://poe.trade/search/tatotamauhakit"
       },
       "310": {
         "value": 0,
-        "url": "http://poe.trade/search/ogozimabakuahu"
+        "url": "http://poe.trade/search/ogorenizuninat"
       },
       "320": {
         "value": 0,
-        "url": "http://poe.trade/search/yetokakitahato"
+        "url": "http://poe.trade/search/ikoniwaritokia"
       },
       "330": {
         "value": 0,
-        "url": "http://poe.trade/search/uziterikonokao"
+        "url": "http://poe.trade/search/otaragazahinaz"
       },
       "340": {
         "value": 0,
-        "url": "http://poe.trade/search/tinarimakeyaba"
+        "url": "http://poe.trade/search/unoazitosazuho"
       },
       "350": {
         "value": 0,
-        "url": "http://poe.trade/search/ausikihusagano"
+        "url": "http://poe.trade/search/doresamekewahi"
       },
       "360": {
         "value": 0,
-        "url": "http://poe.trade/search/gokubetenakasi"
+        "url": "http://poe.trade/search/oihakautanasik"
       },
       "370": {
         "value": 0,
-        "url": "http://poe.trade/search/akotuourewosir"
+        "url": "http://poe.trade/search/uautetarahauma"
       },
       "380": {
         "value": 0,
-        "url": "http://poe.trade/search/ikamazazinokom"
+        "url": "http://poe.trade/search/aboagutetaotam"
       },
       "390": {
         "value": 0,
-        "url": "http://poe.trade/search/unanemahomatas"
+        "url": "http://poe.trade/search/aumotakenikaho"
       },
       "400": {
         "value": 0,
-        "url": "http://poe.trade/search/nanokugaritoki"
+        "url": "http://poe.trade/search/okosanotakohar"
       },
       "410": {
         "value": 0,
-        "url": "http://poe.trade/search/mabazinoahihum"
+        "url": "http://poe.trade/search/kotetanarenuta"
       },
       "420": {
         "value": 0,
-        "url": "http://poe.trade/search/uokamirekitomi"
+        "url": "http://poe.trade/search/ahasikiwamyeso"
       },
       "430": {
         "value": 0,
-        "url": "http://poe.trade/search/asanohukoyekak"
+        "url": "http://poe.trade/search/onoteuikiyosub"
       },
       "440": {
-        "value": 0,
-        "url": "http://poe.trade/search/hiriourebuorog"
+        "value": 1,
+        "url": "http://poe.trade/search/inikakinamguto"
       },
       "450": {
-        "value": 0,
-        "url": "http://poe.trade/search/oyomoyokokirar"
+        "value": 1,
+        "url": "http://poe.trade/search/nomagugamitota"
       },
       "460": {
-        "value": 0,
-        "url": "http://poe.trade/search/mimoitotetason"
+        "value": 2,
+        "url": "http://poe.trade/search/agasetayatosim"
       },
       "470": {
-        "value": 3,
-        "url": "http://poe.trade/search/koyaroyomamoru"
+        "value": 9,
+        "url": "http://poe.trade/search/hatusanamoreba"
       },
       "480": {
-        "value": 19,
-        "url": "http://poe.trade/search/owomatobabagum"
-      },
-      "490": {
-        "value": 44,
-        "url": "http://poe.trade/search/bonohokesitase"
-      },
-      "500": {
-        "value": 71,
-        "url": "http://poe.trade/search/ugagaihareoyua"
-      },
-      "510": {
-        "value": 106,
-        "url": "http://poe.trade/search/okamekisikisek"
-      },
-      "520": {
-        "value": 173,
-        "url": "http://poe.trade/search/orekokennimita"
-      },
-      "530": {
-        "value": 173,
-        "url": "http://poe.trade/search/inotiniotegora"
-      },
-      "540": {
-        "value": 220,
-        "url": "http://poe.trade/search/initurinoyaoka"
-      },
-      "550": {
-        "value": 306,
-        "url": "http://poe.trade/search/otohitamisebok"
-      },
-      "560": {
-        "value": 250,
-        "url": "http://poe.trade/search/haritomkosauka"
-      },
-      "570": {
         "value": 10000,
-        "url": "http://poe.trade/search/abarunusitatah"
+        "url": "http://poe.trade/search/tonimkokokusim"
       }
     },
     "id": "aa8a0355-517d-4a89-b626-632c4d7a3c14",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 9,
     "baseType": "",
     "damage": "",
@@ -873,7 +808,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:31:01.2495801-06:00",
+    "last_time_saved": "2017-12-11T15:37:00.6175858-07:00",
     "estimated_value": 0.0,
     "url": null
   },
@@ -886,132 +821,133 @@
     "dpsBenchmarks": {
       "300": {
         "value": 0,
-        "url": "http://poe.trade/search/uhikaharitanaz"
+        "url": "http://poe.trade/search/aukitinasiokit"
       },
       "310": {
         "value": 0,
-        "url": "http://poe.trade/search/itahuzukananam"
+        "url": "http://poe.trade/search/asanotagarimak"
       },
       "320": {
         "value": 0,
-        "url": "http://poe.trade/search/ataragenonamit"
+        "url": "http://poe.trade/search/hitetosarutaun"
       },
       "330": {
         "value": 0,
-        "url": "http://poe.trade/search/arimaukikinamo"
+        "url": "http://poe.trade/search/kobedoyozuhuko"
       },
       "340": {
         "value": 0,
-        "url": "http://poe.trade/search/agakasibeyomam"
+        "url": "http://poe.trade/search/iwoharikebohug"
       },
       "350": {
         "value": 0,
-        "url": "http://poe.trade/search/owamomisihohum"
+        "url": "http://poe.trade/search/anahasiyahohaz"
       },
       "360": {
         "value": 0,
-        "url": "http://poe.trade/search/oitoharisihiaz"
+        "url": "http://poe.trade/search/kanimiyebokuha"
       },
       "370": {
         "value": 0,
-        "url": "http://poe.trade/search/aruiwitedonobo"
+        "url": "http://poe.trade/search/userikoberitam"
       },
       "380": {
         "value": 0,
-        "url": "http://poe.trade/search/atokuganonizuo"
+        "url": "http://poe.trade/search/iyunomarinyeny"
       },
       "390": {
         "value": 0,
-        "url": "http://poe.trade/search/okimododomicho"
+        "url": "http://poe.trade/search/esuruorisikura"
       },
       "400": {
         "value": 0,
-        "url": "http://poe.trade/search/amorakosiwohas"
+        "url": "http://poe.trade/search/orinaseyawazuz"
       },
       "410": {
         "value": 0,
-        "url": "http://poe.trade/search/hugogomahikaki"
+        "url": "http://poe.trade/search/usihakiminikoo"
       },
       "420": {
         "value": 0,
-        "url": "http://poe.trade/search/mminahorayaake"
+        "url": "http://poe.trade/search/timabiturihimi"
       },
       "430": {
         "value": 0,
-        "url": "http://poe.trade/search/sirurarihitoti"
+        "url": "http://poe.trade/search/ukitumkazukoba"
       },
       "440": {
-        "value": 0,
-        "url": "http://poe.trade/search/eyerawiomamame"
+        "value": 1,
+        "url": "http://poe.trade/search/etasisabasanoh"
       },
       "450": {
-        "value": 0,
-        "url": "http://poe.trade/search/urikubosaroino"
+        "value": 1,
+        "url": "http://poe.trade/search/obonametazusit"
       },
       "460": {
-        "value": 1,
-        "url": "http://poe.trade/search/hakanasutituok"
+        "value": 9,
+        "url": "http://poe.trade/search/umonikamadohet"
       },
       "470": {
-        "value": 2,
-        "url": "http://poe.trade/search/okomiorukiniye"
+        "value": 9,
+        "url": "http://poe.trade/search/iminanitatarii"
       },
       "480": {
-        "value": 14,
-        "url": "http://poe.trade/search/tukahotokahaga"
+        "value": 16,
+        "url": "http://poe.trade/search/iwarutinatamok"
       },
       "490": {
-        "value": 236,
-        "url": "http://poe.trade/search/orukiheutaworu"
+        "value": 365,
+        "url": "http://poe.trade/search/ewitooretusata"
       },
       "500": {
-        "value": 289,
-        "url": "http://poe.trade/search/ichatatetunito"
+        "value": 507,
+        "url": "http://poe.trade/search/imonanonoarami"
       },
       "510": {
-        "value": 289,
-        "url": "http://poe.trade/search/ahurunokizanin"
+        "value": 507,
+        "url": "http://poe.trade/search/sitezurutorono"
       },
       "520": {
-        "value": 289,
-        "url": "http://poe.trade/search/automaboumguse"
+        "value": 507,
+        "url": "http://poe.trade/search/anakenarakarih"
       },
       "530": {
-        "value": 333,
-        "url": "http://poe.trade/search/bosikakahosisi"
+        "value": 507,
+        "url": "http://poe.trade/search/sanitokamikahe"
       },
       "540": {
-        "value": 333,
-        "url": "http://poe.trade/search/amanzitoitohom"
+        "value": 507,
+        "url": "http://poe.trade/search/iminabamogakok"
       },
       "550": {
-        "value": 333,
-        "url": "http://poe.trade/search/yabananakisimo"
+        "value": 507,
+        "url": "http://poe.trade/search/kotasenamamaut"
       },
       "560": {
-        "value": 333,
-        "url": "http://poe.trade/search/arariagowonisi"
+        "value": 507,
+        "url": "http://poe.trade/search/atonuhukoneiho"
       },
       "570": {
-        "value": 333,
-        "url": "http://poe.trade/search/akonamikinausi"
+        "value": 507,
+        "url": "http://poe.trade/search/unitabonosiman"
       },
       "580": {
-        "value": 333,
-        "url": "http://poe.trade/search/himahonomataom"
+        "value": 507,
+        "url": "http://poe.trade/search/reariyonunamok"
       },
       "590": {
-        "value": 365,
-        "url": "http://poe.trade/search/orihasitominah"
+        "value": 507,
+        "url": "http://poe.trade/search/akamohutererit"
       },
       "600": {
-        "value": 365,
-        "url": "http://poe.trade/search/uninyatonorino"
+        "value": 507,
+        "url": "http://poe.trade/search/sihabekahasasi"
       }
     },
     "id": "b6ea8d44-bfab-4362-8f50-1beaf2961356",
-    "league": "Harbinger",
+    "league": "Abyss",
     "name": "",
+    "manual_price_override": null,
     "type": 11,
     "baseType": "",
     "damage": "",
@@ -1034,248 +970,7 @@
     "normalize_q": true,
     "crafted": false,
     "enchanted": null,
-    "last_time_saved": "2017-08-18T09:31:45.4404236-06:00",
-    "estimated_value": 0.0,
-    "url": null
-  },
-  {
-    "requiredMods": {
-      "#% increased Critical Strike Chance": "23"
-    },
-    "craftableMods": {
-      "#% increased Attack Speed": "10",
-      "#% increased Critical Strike Chance": "23",
-      "Adds # to # Physical Damage": "22"
-    },
-    "dpsBenchmarks": {
-      "200": {
-        "value": 0,
-        "url": "http://poe.trade/search/arumotorimiwot"
-      },
-      "210": {
-        "value": 1,
-        "url": "http://poe.trade/search/hozakohaudokom"
-      },
-      "220": {
-        "value": 1,
-        "url": "http://poe.trade/search/irasihukokiyum"
-      },
-      "230": {
-        "value": 1,
-        "url": "http://poe.trade/search/ikokiuamehakir"
-      },
-      "240": {
-        "value": 1,
-        "url": "http://poe.trade/search/imoharetamasam"
-      },
-      "250": {
-        "value": 4,
-        "url": "http://poe.trade/search/harauritonomon"
-      },
-      "260": {
-        "value": 5,
-        "url": "http://poe.trade/search/awomoyokoumoti"
-      },
-      "270": {
-        "value": 10,
-        "url": "http://poe.trade/search/ohoonotetesahu"
-      },
-      "280": {
-        "value": 49,
-        "url": "http://poe.trade/search/okokokoyayahai"
-      },
-      "290": {
-        "value": 61,
-        "url": "http://poe.trade/search/azaninimakimom"
-      },
-      "300": {
-        "value": 69,
-        "url": "http://poe.trade/search/gutawokokiyomo"
-      },
-      "310": {
-        "value": 144,
-        "url": "http://poe.trade/search/ootaumasewobat"
-      },
-      "320": {
-        "value": 92,
-        "url": "http://poe.trade/search/tootasitaritok"
-      },
-      "330": {
-        "value": 316,
-        "url": "http://poe.trade/search/nasisakenoaris"
-      },
-      "340": {
-        "value": 316,
-        "url": "http://poe.trade/search/iwasatikatugik"
-      },
-      "350": {
-        "value": 1200,
-        "url": "http://poe.trade/search/hoterihomomito"
-      },
-      "360": {
-        "value": 1200,
-        "url": "http://poe.trade/search/arikekitonorik"
-      },
-      "370": {
-        "value": 1200,
-        "url": "http://poe.trade/search/inzihonanomiwo"
-      },
-      "380": {
-        "value": 1200,
-        "url": "http://poe.trade/search/tarauyohahuano"
-      },
-      "390": {
-        "value": 10000,
-        "url": "http://poe.trade/search/yarenazahasimo"
-      }
-    },
-    "id": "afa1b4c8-c8ab-4060-8610-3c887fe4196c",
-    "league": "Harbinger",
-    "name": "",
-    "type": 0,
-    "baseType": "",
-    "damage": "",
-    "aps": "",
-    "crit_chance": "",
-    "dps": "",
-    "edps": "",
-    "pdps": "200",
-    "armour": "",
-    "evasion": "",
-    "shield": "",
-    "sockets": "",
-    "links": "",
-    "mods": {},
-    "quality": "",
-    "level": "",
-    "ilvl": "",
-    "rarity": 0,
-    "corrupted": false,
-    "normalize_q": true,
-    "crafted": false,
-    "enchanted": null,
-    "last_time_saved": "2017-08-18T09:32:09.7734302-06:00",
-    "estimated_value": 0.0,
-    "url": null
-  },
-  {
-    "requiredMods": {},
-    "craftableMods": {
-      "Adds # to # Physical Damage": "22",
-      "#% increased Attack Speed": "10"
-    },
-    "dpsBenchmarks": {
-      "200": {
-        "value": 0,
-        "url": "http://poe.trade/search/imadoousinarut"
-      },
-      "210": {
-        "value": 0,
-        "url": "http://poe.trade/search/ommitesianonor"
-      },
-      "220": {
-        "value": 0,
-        "url": "http://poe.trade/search/usonikonitasiz"
-      },
-      "230": {
-        "value": 0,
-        "url": "http://poe.trade/search/ukimitahiohita"
-      },
-      "240": {
-        "value": 0,
-        "url": "http://poe.trade/search/hinimitenareot"
-      },
-      "250": {
-        "value": 0,
-        "url": "http://poe.trade/search/abokikaharioye"
-      },
-      "260": {
-        "value": 0,
-        "url": "http://poe.trade/search/onihomasuminom"
-      },
-      "270": {
-        "value": 0,
-        "url": "http://poe.trade/search/arikubenouworu"
-      },
-      "280": {
-        "value": 0,
-        "url": "http://poe.trade/search/aadasizuihehok"
-      },
-      "290": {
-        "value": 0,
-        "url": "http://poe.trade/search/abedoriotenika"
-      },
-      "300": {
-        "value": 0,
-        "url": "http://poe.trade/search/itonarahokomik"
-      },
-      "310": {
-        "value": 0,
-        "url": "http://poe.trade/search/ohakoraziohihi"
-      },
-      "320": {
-        "value": 1,
-        "url": "http://poe.trade/search/initanohionoko"
-      },
-      "330": {
-        "value": 6,
-        "url": "http://poe.trade/search/hinutasasiwago"
-      },
-      "340": {
-        "value": 19,
-        "url": "http://poe.trade/search/sihikitomahimo"
-      },
-      "350": {
-        "value": 53,
-        "url": "http://poe.trade/search/anonoraohitota"
-      },
-      "360": {
-        "value": 171,
-        "url": "http://poe.trade/search/osahumimayohom"
-      },
-      "370": {
-        "value": 542,
-        "url": "http://poe.trade/search/amitaminotusak"
-      },
-      "380": {
-        "value": 1016,
-        "url": "http://poe.trade/search/asitakitehutoa"
-      },
-      "390": {
-        "value": 1365,
-        "url": "http://poe.trade/search/oritoniaubimki"
-      },
-      "400": {
-        "value": 1365,
-        "url": "http://poe.trade/search/tomokinizoarer"
-      }
-    },
-    "id": "2b64cc25-45ad-44e6-9b99-153c288e9549",
-    "league": "Harbinger",
-    "name": "",
-    "type": 0,
-    "baseType": "",
-    "damage": "",
-    "aps": "",
-    "crit_chance": "",
-    "dps": "",
-    "edps": "",
-    "pdps": "200",
-    "armour": "",
-    "evasion": "",
-    "shield": "",
-    "sockets": "",
-    "links": "",
-    "mods": {},
-    "quality": "",
-    "level": "",
-    "ilvl": "",
-    "rarity": 0,
-    "corrupted": false,
-    "normalize_q": true,
-    "crafted": false,
-    "enchanted": null,
-    "last_time_saved": "2017-08-18T09:32:40.8573159-06:00",
+    "last_time_saved": "2017-12-11T15:37:49.1401433-07:00",
     "estimated_value": 0.0,
     "url": null
   }
