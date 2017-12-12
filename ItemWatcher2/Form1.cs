@@ -27,6 +27,7 @@ namespace ItemWatcher2
         public static List<POETradeCraftable> craftables;
         public static ItemWatchConfig config;
         public static ConcurrentQueue<Item> raresQueue = new ConcurrentQueue<Item>();
+        public static ConcurrentQueue<Item> secondrareQueue = new ConcurrentQueue<Item>();
 
         public static List<NinjaItem> ninjaItems = new List<NinjaItem>();
         private static BackgroundWorker bgw;
@@ -48,13 +49,15 @@ namespace ItemWatcher2
             BackgroundWorker bgw2 = new BackgroundWorker();
             BackgroundWorker bgw3 = new BackgroundWorker();
             BackgroundWorker bgw4 = new BackgroundWorker();
-
+            BackgroundWorker bgw5 = new BackgroundWorker();
+            BackgroundWorker bgw6 = new BackgroundWorker();
 
             bgw.DoWork += DoBackgroundWork;
             bgw2.DoWork += SyncNinja;
             bgw3.DoWork += SyncHead;
             bgw4.DoWork += ProcessItems;
-
+            bgw5.DoWork += ProcessItems;
+            bgw6.DoWork += ProcessItems;
 
             bgw.RunWorkerAsync();
             bgw2.RunWorkerAsync();
@@ -62,15 +65,15 @@ namespace ItemWatcher2
             bgw4.RunWorkerAsync();
             if (config.do_watch_rares)
             {
-                BackgroundWorker bgw5 = new BackgroundWorker();
-                bgw5.DoWork += SyncRares;
-                bgw5.RunWorkerAsync();
+                BackgroundWorker bgw7 = new BackgroundWorker();
+                bgw7.DoWork += SyncRares;
+                bgw7.RunWorkerAsync();
             }
             if (config.do_craft_watch)
             {
-                BackgroundWorker bgw6 = new BackgroundWorker();
-                bgw6.DoWork += SyncCraftables;
-                bgw6.RunWorkerAsync();
+                BackgroundWorker bgw8 = new BackgroundWorker();
+                bgw8.DoWork += SyncCraftables;
+                bgw8.RunWorkerAsync();
             }
         }
 
@@ -387,8 +390,8 @@ namespace ItemWatcher2
         private void ProcessItems(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(15000);
-            Queue<Item> secondrareQueue = new Queue<Item>();
-
+            double timeCraft = 0;
+            double timeRare = 0;
             while (true)
             {
                 try
@@ -428,6 +431,7 @@ namespace ItemWatcher2
 
 
                                     SetSlots(itemProp, ninja);
+                                    continue;
                                 }
                             }
                         }
@@ -441,13 +445,14 @@ namespace ItemWatcher2
                                 {
 
                                     SetSlots(itemProp, localitem);
+                                    continue;
                                 }
                             }
                         }
                         
                         secondrareQueue.Enqueue(itemProp);
                     }
-                    Item rareItemProp = null;
+                    
                     while (raresQueue.Count < 10 && secondrareQueue.Count > 0)
                     {
 
@@ -457,15 +462,17 @@ namespace ItemWatcher2
                                 txtRareStatus.Text = "Queue: " + secondrareQueue.Count;
                             });
                         if (secondrareQueue.Count > 10000)
-                            secondrareQueue = new Queue<Item>();
-                        rareItemProp = secondrareQueue.Dequeue();
-                        if (rareItemProp.typeLine.ToLower().Contains("blood rage"))
                         {
-                            int x = 5;
+                            
+                            secondrareQueue = new ConcurrentQueue<Item>();
                         }
+                        Item rareItemProp = null;
+                        secondrareQueue.TryDequeue(out rareItemProp);
+                        if (rareItemProp == null)
+                            continue;
                         if ((rareItemProp.frameType != 2 && rareItemProp.frameType != 1 && rareItemProp.frameType != 4) || (rareItemProp.craftedMods != null && rareItemProp.craftedMods.Count() > 0))
                             continue;
-                      
+                        DateTime now = DateTime.Now;
                         if (config.do_watch_rares && watchedRares.Count > 0)//is rare
                         {
                             foreach (POETradeConfig rare in watchedRares.OrderByDescending(p => p.estimated_value))
@@ -478,11 +485,14 @@ namespace ItemWatcher2
                                     foreach (KeyValuePair<string, string> kvp in rare.mods)
                                         fakeNinja.Explicits.Add(string.Format("{0} : {1}", kvp.Key, kvp.Value));
                                     SetSlots(rareItemProp, fakeNinja, rare.url);
+                                    break;
                                 }
                             }
+                            timeRare += DateTime.Now.Subtract(now).TotalSeconds;
                         }
                         if (config.do_craft_watch)
                         {
+                            now = DateTime.Now;
                             //each craftable
 
                             foreach (POETradeCraftable craft in craftables.OrderByDescending(p => p.requiredMods.Count))//order by more precice requirements. crit over non crit for same base. 
@@ -537,6 +547,7 @@ namespace ItemWatcher2
                                                                 rareItemProp.explicitMods = craftedVersion.explicitMods;
                                                                 rareItemProp.pdps = dps;
                                                                 SetSlots(rareItemProp, fakeNinja, value.url);
+
                                                             }
 
                                                         }
@@ -609,6 +620,7 @@ namespace ItemWatcher2
 
                                 }
                             }
+                            timeCraft += DateTime.Now.Subtract(now).TotalSeconds;
                         }
 
 
