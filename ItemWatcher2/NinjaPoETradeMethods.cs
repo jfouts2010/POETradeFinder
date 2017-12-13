@@ -327,7 +327,7 @@ namespace ItemWatcher2
             StreamWriter postwriter = new StreamWriter(request23.GetRequestStream());
 
 
-            postwriter.Write("league=Abyss&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity + "&q_max=0");
+            postwriter.Write("league=Standa"+"rd&type=&base=" + WebUtility.UrlEncode(itemName) + "&rarity=" + rarity + "&q_max=0");
             postwriter.Close();
 
             using (HttpWebResponse response2 = request23.GetResponse() as HttpWebResponse)
