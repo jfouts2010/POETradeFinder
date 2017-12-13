@@ -333,8 +333,21 @@ namespace ItemWatcher2
                     temp.rarity = POETradeConfig.Rarity.none;
                     string url = "";
                     List<int> ret = NinjaPoETradeMethods.GetPoeLowest5Prices(temp, out url);
+
                     if (ret.Count > 0)
-                        craft.dpsBenchmarks.Add(i, new ValueUrlCombo((int)ret.Average(), url));
+                    {
+                        decimal totalValue = 0;
+                        int counter = 0;
+                        for (int xx = 0; xx < ret.Count; xx += 2)
+                        {
+                            count += 10 - xx;
+                            totalValue += (ret[xx] * (10 - x));
+                        }
+
+
+
+                        craft.dpsBenchmarks.Add(i, new ValueUrlCombo((int)(totalValue / counter), url));
+                    }
                     else
                     {
                         craft.dpsBenchmarks.Add(i, new ValueUrlCombo(10000, url));
@@ -376,7 +389,18 @@ namespace ItemWatcher2
                     string killme = "";
                     List<int> prices = NinjaPoETradeMethods.GetPoeLowest5Prices(rare, out killme);
                     if (prices.Count > 0)
-                        rare.estimated_value = prices.Sum(p => p) / prices.Count;
+                    {
+                        decimal totalValue = 0;
+                        int count = 0;
+                        for (int x = 0; x < prices.Count; x += 2)
+                        {
+                            count += 10 - x;
+                            totalValue += (prices[x] * (10 - x));
+                        }
+
+                        rare.estimated_value = totalValue / count;
+                    }
+
                     else
                         rare.estimated_value = 10000;
                 }
@@ -449,10 +473,10 @@ namespace ItemWatcher2
                                 }
                             }
                         }
-                        
+
                         secondrareQueue.Enqueue(itemProp);
                     }
-                    
+
                     while (raresQueue.Count < 10 && secondrareQueue.Count > 0)
                     {
 
@@ -463,7 +487,7 @@ namespace ItemWatcher2
                             });
                         if (secondrareQueue.Count > 10000)
                         {
-                            
+
                             secondrareQueue = new ConcurrentQueue<Item>();
                         }
                         Item rareItemProp = null;
@@ -629,6 +653,7 @@ namespace ItemWatcher2
                 }
                 catch (Exception eee)
                 {
+
                     PlayErrorSound();
                     //System.Threading.Thread.Sleep(5000);
                 }
@@ -1556,8 +1581,20 @@ namespace ItemWatcher2
             serialized = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             JObject jo = JObject.Parse(serialized);
             serialized = jo.ToString();
-            System.IO.File.Delete(FinalVariables.configfile);
-            System.IO.File.WriteAllText(FinalVariables.configfile, serialized);
+            int tries = 0;
+            while (tries < 10)
+                try
+                {
+
+                    System.IO.File.Delete(FinalVariables.configfile);
+                    System.IO.File.WriteAllText(FinalVariables.configfile, serialized);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    System.Threading.Thread.Sleep(5000);
+
+                }
         }
         public static void LoadBasicInfo()
         {
